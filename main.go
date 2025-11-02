@@ -32,7 +32,7 @@ const (
 )
 
 var koala = []string{
-	"==== Fetchify ====",
+	"|=== Fetchify ===|",
 	"   __         __  ",
 	" /\"  \"\\     /\"  \"\\",
 	"(  (\\  )___(  /)  )",
@@ -43,7 +43,7 @@ var koala = []string{
 	" \\      \\_/      / ",
 	"   \\...__!__.../   ",
 	"        \" mh       ",
-	"   v1.0.4-generic   ",
+	"   v1.0.5-generic   ",
 }
 
 func main() {
@@ -81,7 +81,7 @@ func main() {
 	os := info.Platform
 
 	if info.Platform == "arch" {
-		os = "i use arch, btw"
+		os = "I use arch, btw"
 	}
 
 	if user.Username == "root" {

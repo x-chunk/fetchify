@@ -2,7 +2,10 @@ module fetchify
 
 go 1.24.1
 
-require github.com/shirou/gopsutil/v3 v3.24.5
+require (
+	github.com/shirou/gopsutil/v3 v3.24.5
+	github.com/veandco/go-sdl2 v0.4.40
+)
 
 require (
 	github.com/go-ole/go-ole v1.2.6 // indirect
