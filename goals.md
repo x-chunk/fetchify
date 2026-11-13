@@ -34,6 +34,17 @@ arbitrary commands at every shell start, so it needs its own design:
 timeouts, output limits, sanitization, and how it interacts with a
 configuration file that someone copied from the internet.
 
+### Configurable footer
+
+The line under the card shows only the collection time in version 2.0 and
+can only be turned on or off. The deferred version lets the configuration
+set its content: free text and placeholders such as the collection time,
+the version, the date or the value of an item.
+
+Constraint that keeps it possible: `ui` receives the footer content as
+data and does not compute it, so a configured footer replaces one input
+and leaves the layout untouched.
+
 ### Prebuilt binaries and distribution packages
 
 Release archives, an AUR package, a Nix package and similar. Version 2.0
