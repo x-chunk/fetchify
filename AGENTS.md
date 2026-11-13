@@ -3,6 +3,9 @@
 A fetch tool for Linux written in Go: it prints facts about the machine
 next to an ASCII-art logo. Module path: `go.xchunk.org/fetchify`.
 
+Read `plan.md` for the plan of the next version and `goals.md` for
+deferred work and deliberate non-goals before changing the design.
+
 ## Architecture
 
 The program is three layers under a thin `main`. Imports only go downward,
