@@ -28,8 +28,8 @@ func sample() sysinfo.Info {
 		},
 		Swap: &sysinfo.Usage{Used: gib, Total: 4 * gib, Percent: 25},
 		Disks: []sysinfo.Disk{
-			{Usage: sysinfo.Usage{Used: 100e9, Total: 500e9, Percent: 21}, Mountpoint: "/", Filesystem: "ext4"},
-			{Usage: sysinfo.Usage{Used: 250e9, Total: 1000e9, Percent: 25}, Mountpoint: "/home", Filesystem: "btrfs"},
+			{Usage: sysinfo.Usage{Used: 100 * gib, Total: 500 * gib, Percent: 21}, Mountpoint: "/", Filesystem: "ext4"},
+			{Usage: sysinfo.Usage{Used: 250 * gib, Total: 1000 * gib, Percent: 25}, Mountpoint: "/home", Filesystem: "btrfs"},
 		},
 	}
 }

@@ -59,7 +59,7 @@ func memorySection(info sysinfo.Info) []entry {
 	if info.Memory == nil {
 		return one("RAM", missing("Error"))
 	}
-	return one("RAM", usage(info.Memory.Usage, bytesPerGiB, "GiB", strings.Join(info.Memory.Types, ", "))...)
+	return one("RAM", usage(info.Memory.Usage, strings.Join(info.Memory.Types, ", "))...)
 }
 
 func swapSection(info sysinfo.Info) []entry {
@@ -69,7 +69,7 @@ func swapSection(info sysinfo.Info) []entry {
 	case info.Swap.Total == 0:
 		return one("Swap", missing("Disabled"))
 	}
-	return one("Swap", usage(*info.Swap, bytesPerGiB, "GiB", "")...)
+	return one("Swap", usage(*info.Swap, "")...)
 }
 
 // diskSection returns one entry per disk and no entries when there are
@@ -78,25 +78,21 @@ func diskSection(info sysinfo.Info) []entry {
 	var result []entry
 	for _, disk := range info.Disks {
 		key := fmt.Sprintf("Disk (%s)", disk.Mountpoint)
-		result = append(result, one(key, usage(disk.Usage, bytesPerGB, "GiB", disk.Filesystem)...)...)
+		result = append(result, one(key, usage(disk.Usage, disk.Filesystem)...)...)
 	}
 	return result
 }
 
-// Divisors that convert a byte count to the units shown on screen.
-const (
-	bytesPerGiB = 1 << 30
-	bytesPerGB  = 1e9
-)
+// bytesPerGiB converts a byte count to the unit shown on screen.
+const bytesPerGiB = 1 << 30
 
-// usage formats u as "<used> GiB / <total> <totalUnit> (<percent>%)" with
-// both sizes divided by unit, followed by " - <category>" when category is
-// not empty.
-func usage(u sysinfo.Usage, unit float64, totalUnit, category string) []render.Span {
+// usage formats u as "<used> GiB / <total> GiB (<percent>%)", followed by
+// " - <category>" when category is not empty.
+func usage(u sysinfo.Usage, category string) []render.Span {
 	spans := []render.Span{
-		render.Styled(fmt.Sprintf("%.2f GiB", float64(u.Used)/unit), styleUsed),
+		render.Styled(fmt.Sprintf("%.2f GiB", float64(u.Used)/bytesPerGiB), styleUsed),
 		render.Text(" / "),
-		render.Styled(fmt.Sprintf("%.2f %s", float64(u.Total)/unit, totalUnit), styleTotal),
+		render.Styled(fmt.Sprintf("%.2f GiB", float64(u.Total)/bytesPerGiB), styleTotal),
 		render.Text(fmt.Sprintf(" (%.0f%%)", u.Percent)),
 	}
 	if category != "" {
