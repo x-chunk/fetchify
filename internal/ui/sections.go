@@ -59,7 +59,7 @@ func memorySection(info sysinfo.Info) []entry {
 	if info.Memory == nil {
 		return one("RAM", missing("Error"))
 	}
-	return one("RAM", usage(info.Memory.Usage, bytesPerGiB, "Gib", strings.Join(info.Memory.Types, ", "))...)
+	return one("RAM", usage(info.Memory.Usage, bytesPerGiB, "GiB", strings.Join(info.Memory.Types, ", "))...)
 }
 
 func swapSection(info sysinfo.Info) []entry {
@@ -69,7 +69,7 @@ func swapSection(info sysinfo.Info) []entry {
 	case info.Swap.Total == 0:
 		return one("Swap", missing("Disabled"))
 	}
-	return one("Swap", usage(*info.Swap, bytesPerGiB, "Gib", "")...)
+	return one("Swap", usage(*info.Swap, bytesPerGiB, "GiB", "")...)
 }
 
 // diskSection returns one entry per disk and no entries when there are
