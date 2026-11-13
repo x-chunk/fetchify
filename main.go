@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fetchify/stdc"
+	"github.com/x-chunk/fetchify/stdc"
 	"flag"
 	"fmt"
 	"os"
