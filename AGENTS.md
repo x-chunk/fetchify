@@ -42,7 +42,7 @@ Design rules:
 ## Migration to beautify
 
 `internal/render` is a temporary stand-in for
-`github.com/x-chunk/beautify`, which is not implemented yet. It follows
+`go.xchunk.org/beautify`, which is not implemented yet. It follows
 the model of `beautify/dra` so that it can be deleted once the library
 exists. Read `plan.md` in the beautify repository before changing it, and
 do not grow it beyond what fetchify needs today.

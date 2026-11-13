@@ -1,7 +1,7 @@
 // Package render is the low-level output layer of fetchify: styled text,
 // the operations that lay it out, and the Engine that encodes it as bytes.
 //
-// It is a deliberately small stand-in for github.com/x-chunk/beautify/dra
+// It is a deliberately small stand-in for go.xchunk.org/beautify/dra
 // and follows the same rules, so that the migration is a mechanical swap:
 //
 //   - Span, Line and Block are immutable values. Operations return new
