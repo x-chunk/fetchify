@@ -3,8 +3,8 @@ package ui
 import (
 	"strings"
 
-	"github.com/x-chunk/fetchify/internal/render"
-	"github.com/x-chunk/fetchify/internal/sysinfo"
+	"go.xchunk.org/fetchify/internal/render"
+	"go.xchunk.org/fetchify/internal/sysinfo"
 )
 
 const (

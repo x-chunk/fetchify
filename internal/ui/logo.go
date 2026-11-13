@@ -1,6 +1,6 @@
 package ui
 
-import "github.com/x-chunk/fetchify/internal/render"
+import "go.xchunk.org/fetchify/internal/render"
 
 // logoLines is the ASCII-art koala shown to the left of the info column.
 var logoLines = []string{

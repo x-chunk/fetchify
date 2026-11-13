@@ -1,7 +1,7 @@
 # fetchify
 
 A fetch tool for Linux written in Go: it prints facts about the machine
-next to an ASCII-art logo. Module path: `github.com/x-chunk/fetchify`.
+next to an ASCII-art logo. Module path: `go.xchunk.org/fetchify`.
 
 ## Architecture
 

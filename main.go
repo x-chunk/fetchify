@@ -9,9 +9,9 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/x-chunk/fetchify/internal/render"
-	"github.com/x-chunk/fetchify/internal/sysinfo"
-	"github.com/x-chunk/fetchify/internal/ui"
+	"go.xchunk.org/fetchify/internal/render"
+	"go.xchunk.org/fetchify/internal/sysinfo"
+	"go.xchunk.org/fetchify/internal/ui"
 )
 
 func main() {

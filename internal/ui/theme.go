@@ -1,6 +1,6 @@
 package ui
 
-import "github.com/x-chunk/fetchify/internal/render"
+import "go.xchunk.org/fetchify/internal/render"
 
 // The styles of the screen, named by role so that the look is defined in
 // one place.
