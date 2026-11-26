@@ -97,6 +97,8 @@ type card struct {
 	layout  layout
 	border  config.BorderStyle
 	caption string
+	// dots puts the palette into the bottom edge.
+	dots bool
 }
 
 // Render implements beautify.Composable. A card without groups renders
@@ -137,6 +139,9 @@ func (c card) Render(ctx beautify.Context) (dra.Model, error) {
 	}
 	if c.caption != "" {
 		opts = append(opts, blocks.SectionsCaption(c.caption), blocks.SectionsCaptionStyle(c.theme.caption))
+	}
+	if c.dots {
+		opts = append(opts, blocks.SectionsFooter(paletteDots(ctx.Factory())))
 	}
 	return blocks.Sections(sections, opts...).Render(ctx)
 }

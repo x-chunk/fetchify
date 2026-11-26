@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"go.xchunk.org/beautify"
+	"go.xchunk.org/beautify/blocks"
 	"go.xchunk.org/beautify/dra"
 
 	"go.xchunk.org/fetchify/internal/config"
@@ -26,7 +27,7 @@ type Input struct {
 func Screen(in Input) beautify.Composable {
 	return beautify.ComposableFunc(func(ctx beautify.Context) (dra.Model, error) {
 		s := newScreen(in)
-		return s.card(s.fullLayout()).Render(ctx)
+		return s.column(s.fullLayout()).Render(ctx)
 	})
 }
 
@@ -72,5 +73,19 @@ func (s screen) card(lay layout) card {
 		layout:  lay,
 		border:  s.in.Config.Border.Style,
 		caption: caption(s.in.Info),
+		dots:    s.in.Config.Palette.Style == config.PaletteDots,
 	}
+}
+
+// column stacks the card and what hangs under it. Without groups there
+// is no card, and nothing hangs under nothing.
+func (s screen) column(lay layout) beautify.Composable {
+	if len(s.groups) == 0 {
+		return blocks.Space(0, 0)
+	}
+	children := []beautify.Composable{s.card(lay)}
+	if s.in.Config.Palette.Style == config.PaletteBlocks {
+		children = append(children, paletteBlocks())
+	}
+	return blocks.Column(children)
 }

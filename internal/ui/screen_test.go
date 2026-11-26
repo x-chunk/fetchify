@@ -39,6 +39,10 @@ type screenCase struct {
 func screenCases() []screenCase {
 	noIcons := config.Defaults()
 	noIcons.Icons.Enabled = false
+	blocksPalette := config.Defaults()
+	blocksPalette.Palette.Style = config.PaletteBlocks
+	noPalette := config.Defaults()
+	noPalette.Palette.Style = config.PaletteNone
 	return []screenCase{
 		{"ubuntu", ubuntuDesktop(), config.Defaults()},
 		{"arch", archLaptop(), config.Defaults()},
@@ -47,6 +51,8 @@ func screenCases() []screenCase {
 		{"raspberry", raspberryPi(), config.Defaults()},
 		{"unknown", unknownEverything(), config.Defaults()},
 		{"no_icons", ubuntuDesktop(), noIcons},
+		{"palette_blocks", ubuntuDesktop(), blocksPalette},
+		{"palette_none", ubuntuDesktop(), noPalette},
 	}
 }
 
