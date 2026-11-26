@@ -16,7 +16,7 @@ type Info struct {
 	// OS identifies the operating system distribution.
 	OS OS
 	// Kernel is the kernel release, for example "6.8.0-45-generic".
-	Kernel string
+	Kernel Value[string]
 	// Uptime is the time since boot, with one-second resolution.
 	Uptime time.Duration
 	// Shell is the base name of the user's login shell.

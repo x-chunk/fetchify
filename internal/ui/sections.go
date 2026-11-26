@@ -18,7 +18,7 @@ func osSection(info sysinfo.Info, f *dra.Factory) []entry {
 }
 
 func kernelSection(info sysinfo.Info, f *dra.Factory) []entry {
-	return one("Kernel", textOrMissing(f, info.Kernel))
+	return one("Kernel", textOrMissing(f, info.Kernel.V))
 }
 
 func uptimeSection(info sysinfo.Info, f *dra.Factory) []entry {

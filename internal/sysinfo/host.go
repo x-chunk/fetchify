@@ -9,11 +9,10 @@ import (
 	"github.com/shirou/gopsutil/v3/host"
 )
 
-// collectHost fills the operating system, kernel and uptime of info.
+// collectHost fills the operating system and uptime of info.
 func collectHost(info *Info) {
 	if stat, err := host.Info(); err == nil {
 		info.OS = OS{Name: stat.Platform, Version: stat.PlatformVersion}
-		info.Kernel = stat.KernelVersion
 		info.Uptime = time.Duration(stat.Uptime) * time.Second
 	}
 }
