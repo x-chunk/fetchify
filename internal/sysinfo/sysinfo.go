@@ -24,6 +24,8 @@ type Info struct {
 	Uptime Value[time.Duration]
 	// Shell is the base name of the user's login shell.
 	Shell Value[string]
+	// Terminal is the name of the terminal emulator.
+	Terminal Value[string]
 	// Desktop describes the graphical session.
 	Desktop Desktop
 	// CPU describes the processor.

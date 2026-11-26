@@ -85,6 +85,9 @@ var (
 			"USER":  "alice",
 			"HOME":  "/home/alice",
 			"SHELL": "/usr/bin/zsh",
+			"TERM":  "xterm-256color",
+
+			"GNOME_TERMINAL_SCREEN": "/org/gnome/Terminal/screen/1",
 		},
 	}
 	// archLaptop is an Arch laptop with a battery and two GPUs.
@@ -132,7 +135,7 @@ var (
 		uid:   1000,
 		pid:   2000,
 		users: map[int]string{1000: "carol"},
-		env:   map[string]string{"SHELL": "/usr/bin/fish"},
+		env:   map[string]string{"SHELL": "/usr/bin/fish", "TERM_PROGRAM": "tmux"},
 		commands: map[string]string{
 			"rpm -qa": "bash-5.2.32-1.fc41.x86_64\nkernel-6.11.4-301.fc41.x86_64\nfish-3.7.1-3.fc41.x86_64\n",
 		},
