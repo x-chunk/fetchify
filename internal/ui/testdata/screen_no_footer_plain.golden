@@ -1,21 +1,21 @@
-             --+oossssssoo+--             ╭─ System ───────────────────────────────────── alice@box ─╮
-         .:+ssssssssssssssssss+:.         │   OS        Ubuntu 24.04 LTS                             │
-       -+ssssssssssssssssssyyssss+-       │   Kernel    6.8.0-45-generic                             │
-     .ossssssssssssssssssdMMMNysssso.     │   Uptime    3h 25m                                       │
-   /ssssssssssshdmmNNmmyNMMMMhssssss/     │   Packages  1842 (dpkg), 12 (flatpak)                    │
-  +ssssssssshmydMMMMMMMNddddyssssssss+    │   Shell     zsh                                          │
- /sssssssshNMMMyhhyyyyhmNMMMNhssssssss/   │   Terminal  kitty                                        │
-.ssssssssdMMMNhsssssssssshNMMMdssssssss.  │   DE        GNOME                                        │
-+sssshhhyNMMNyssssssssssssyNMMMysssssss+  │   WM        Mutter  Wayland                              │
-ossyNMMMNyMMhsssssssssssssshmmmhssssssso  ├─ Hardware ───────────────────────────────────────────────┤
-ossyNMMMNyMMhsssssssssssssshmmmhssssssso  │   Host      ThinkPad X1 Carbon Gen 11                    │
-+sssshhhyNMMNyssssssssssssyNMMMysssssss+  │   CPU       AMD Ryzen 7 5800X  16 cores                  │
-.ssssssssdMMMNhsssssssssshNMMMdssssssss.  │   GPU       NVIDIA GeForce RTX 3070                      │
- /sssssssshNMMMyhhyyyyhdNMMMNhssssssss/   │   Display   2560x1440                                    │
-  +sssssssssdmydMMMMMMMMddddyssssssss+    │   Battery   ████████████░░░░  78%  charging              │
-   /ssssssssssshdmNNNNmyNMMMMhssssss/     ├─ Storage ────────────────────────────────────────────────┤
-    .ossssssssssssssssssdMMMNysssso.      │   RAM       ████░░░░░░░░░░░░  8.0 / 32.0 GiB  25%        │
-     -+sssssssssssssssssyyyssss+-         │   Swap      ████░░░░░░░░░░░░  1.0 /  4.0 GiB  25%        │
-       `:+ssssssssssssssssss+:´           │   /         ███░░░░░░░░░░░░░  100 /  500 GiB  21%  ext4  │
-           --+oossssssoo+--               │   /home     ████░░░░░░░░░░░░  250 / 1000 GiB  25%  btrfs │
+             --+oossssssoo+--             ╭─ 󰋽 System ─────────────────────────────────── alice@box ─╮
+         .:+ssssssssssssssssss+:.         │  OS        Ubuntu 24.04 LTS                             │
+       -+ssssssssssssssssssyyssss+-       │  Kernel    6.8.0-45-generic                             │
+     .ossssssssssssssssssdMMMNysssso.     │ 󰅐 Uptime    3h 25m                                       │
+   /ssssssssssshdmmNNmmyNMMMMhssssss/     │ 󰏖 Packages  1842 (dpkg), 12 (flatpak)                    │
+  +ssssssssshmydMMMMMMMNddddyssssssss+    │  Shell     zsh                                          │
+ /sssssssshNMMMyhhyyyyhmNMMMNhssssssss/   │  Terminal  kitty                                        │
+.ssssssssdMMMNhsssssssssshNMMMdssssssss.  │  DE        GNOME                                        │
++sssshhhyNMMNyssssssssssssyNMMMysssssss+  │  WM        Mutter  Wayland                              │
+ossyNMMMNyMMhsssssssssssssshmmmhssssssso  ├─ 󰘚 Hardware ─────────────────────────────────────────────┤
+ossyNMMMNyMMhsssssssssssssshmmmhssssssso  │ 󰌢 Host      ThinkPad X1 Carbon Gen 11                    │
++sssshhhyNMMNyssssssssssssyNMMMysssssss+  │  CPU       AMD Ryzen 7 5800X  16 cores                  │
+.ssssssssdMMMNhsssssssssshNMMMdssssssss.  │ 󰢮 GPU       NVIDIA GeForce RTX 3070                      │
+ /sssssssshNMMMyhhyyyyhdNMMMNhssssssss/   │ 󰍹 Display   2560x1440                                    │
+  +sssssssssdmydMMMMMMMMddddyssssssss+    │ 󰁹 Battery   ████████████░░░░  78%  charging              │
+   /ssssssssssshdmNNNNmyNMMMMhssssss/     ├─ 󰆼 Storage ──────────────────────────────────────────────┤
+    .ossssssssssssssssssdMMMNysssso.      │ 󰍛 RAM       ████░░░░░░░░░░░░  8.0 / 32.0 GiB  25%        │
+     -+sssssssssssssssssyyyssss+-         │ 󰓡 Swap      ████░░░░░░░░░░░░  1.0 /  4.0 GiB  25%        │
+       `:+ssssssssssssssssss+:´           │ 󰋊 /         ███░░░░░░░░░░░░░  100 /  500 GiB  21%  ext4  │
+           --+oossssssoo+--               │ 󰋊 /home     ████░░░░░░░░░░░░  250 / 1000 GiB  25%  btrfs │
                                           ╰──────────────────────────────────────── ● ● ● ● ● ● ● ● ─╯

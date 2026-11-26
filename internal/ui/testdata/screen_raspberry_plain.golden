@@ -1,17 +1,17 @@
         _,met$$$$$gg.        
-     ,g$$$$$$$$$$$$$$$P.     ╭─ System ─────────────────────────────── pi@raspberrypi ─╮
-   ,g$$P""       """Y$$.".   │   OS        Raspbian GNU/Linux 11 (bullseye)            │
-  ,$$P'              `$$$.   │   Kernel    6.6.31+rpt-rpi-v8                           │
-',$$P       ,ggs.     `$$b:  │   Uptime    10m                                         │
-`d$$'     ,$P"'   .    $$$   │   Packages  3 (dpkg)                                    │
- $$P      d$'     ,    $$P   │   Shell     bash                                        │
- $$:      $$.   -    ,d$$'   ├─ Hardware ──────────────────────────────────────────────┤
- $$;      Y$b._   _,d$P'     │   Host      Raspberry Pi 4 Model B Rev 1.4              │
- Y$$.    `.`"Y$$$$P"'        │   CPU       BCM2835  4 cores                            │
- `$$b      "-.__             ├─ Storage ───────────────────────────────────────────────┤
-  `Y$$b                      │   RAM       ████░░░░░░░░░░░░  0.9 /  3.7 GiB  24%       │
-   `Y$$.                     │   Swap      ░░░░░░░░░░░░░░░░  0.0 /  100 MiB   0%       │
-     `$$b.                   │   /         ███░░░░░░░░░░░░░  6.0 / 29.0 GiB  21%  ext4 │
+     ,g$$$$$$$$$$$$$$$P.     ╭─ 󰋽 System ───────────────────────────── pi@raspberrypi ─╮
+   ,g$$P""       """Y$$.".   │  OS        Raspbian GNU/Linux 11 (bullseye)            │
+  ,$$P'              `$$$.   │  Kernel    6.6.31+rpt-rpi-v8                           │
+',$$P       ,ggs.     `$$b:  │ 󰅐 Uptime    10m                                         │
+`d$$'     ,$P"'   .    $$$   │ 󰏖 Packages  3 (dpkg)                                    │
+ $$P      d$'     ,    $$P   │  Shell     bash                                        │
+ $$:      $$.   -    ,d$$'   ├─ 󰘚 Hardware ────────────────────────────────────────────┤
+ $$;      Y$b._   _,d$P'     │ 󰌢 Host      Raspberry Pi 4 Model B Rev 1.4              │
+ Y$$.    `.`"Y$$$$P"'        │  CPU       BCM2835  4 cores                            │
+ `$$b      "-.__             ├─ 󰆼 Storage ─────────────────────────────────────────────┤
+  `Y$$b                      │ 󰍛 RAM       ████░░░░░░░░░░░░  0.9 /  3.7 GiB  24%       │
+   `Y$$.                     │ 󰓡 Swap      ░░░░░░░░░░░░░░░░  0.0 /  100 MiB   0%       │
+     `$$b.                   │ 󰋊 /         ███░░░░░░░░░░░░░  6.0 / 29.0 GiB  21%  ext4 │
        `Y$$b.                ╰─────────────────────────────────────── ● ● ● ● ● ● ● ● ─╯
          `"Y$b._               collected in 12 ms
              `""""           

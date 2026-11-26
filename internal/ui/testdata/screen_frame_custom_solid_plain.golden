@@ -1,21 +1,21 @@
-                                       ╭─ System ────────────────────────────────── bob@archbook ─╮
-                  -`                   │   OS        Arch Linux btw                               │
-                 .o+`                  │   Kernel    6.10.5-arch1-1                               │
-                `ooo/                  │   Uptime    1d 2h 3m                                     │
-               `+oooo:                 │   Packages  1205 (pacman)                                │
-              `+oooooo:                │   Shell     bash                                         │
-              -+oooooo+:               │   Terminal  st                                           │
-            `/:-:++oooo+:              │   WM        i3  X11                                      │
-           `/++++/+++++++:             ├─ Hardware ───────────────────────────────────────────────┤
-          `/++++++++++++++:            │   Host      XPS 15 9520                                  │
-         `/+++ooooooooooooo/`          │   CPU       12th Gen Intel Core i7-12700H  20 cores      │
-        ./ooosssso++osssssso+`         │   GPU       Intel Iris Xe Graphics                       │
-       .oossssso-````/ossssss+`        │   GPU       NVIDIA GeForce RTX 3050 Mobile               │
-      -osssssso.      :ssssssso.       │   Display   1920x1200, 2560x1440                         │
-     :osssssss/        osssso+++.      │   Battery   ██░░░░░░░░░░░░░░  12%  discharging           │
-    /ossssssss/        +ssssooo/-      ├─ Storage ────────────────────────────────────────────────┤
-  `/ossssso+/:-        -:/+osssso+-    │   RAM       ██████████████░░  14.0 / 16.0 GiB  88%       │
- `+sso+:-`                 `.-/+oso:   │   Swap       disabled                                    │
-`++:.                           `-/+/  │   /         ███████████████░   450 /  512 GiB  92%  ext4 │
+                                       ╭─ 󰋽 System ──────────────────────────────── bob@archbook ─╮
+                  -`                   │  OS        Arch Linux btw                               │
+                 .o+`                  │  Kernel    6.10.5-arch1-1                               │
+                `ooo/                  │ 󰅐 Uptime    1d 2h 3m                                     │
+               `+oooo:                 │ 󰏖 Packages  1205 (pacman)                                │
+              `+oooooo:                │  Shell     bash                                         │
+              -+oooooo+:               │  Terminal  st                                           │
+            `/:-:++oooo+:              │  WM        i3  X11                                      │
+           `/++++/+++++++:             ├─ 󰘚 Hardware ─────────────────────────────────────────────┤
+          `/++++++++++++++:            │ 󰌢 Host      XPS 15 9520                                  │
+         `/+++ooooooooooooo/`          │  CPU       12th Gen Intel Core i7-12700H  20 cores      │
+        ./ooosssso++osssssso+`         │ 󰢮 GPU       Intel Iris Xe Graphics                       │
+       .oossssso-````/ossssss+`        │ 󰢮 GPU       NVIDIA GeForce RTX 3050 Mobile               │
+      -osssssso.      :ssssssso.       │ 󰍹 Display   1920x1200, 2560x1440                         │
+     :osssssss/        osssso+++.      │ 󰁹 Battery   ██░░░░░░░░░░░░░░  12%  discharging           │
+    /ossssssss/        +ssssooo/-      ├─ 󰆼 Storage ──────────────────────────────────────────────┤
+  `/ossssso+/:-        -:/+osssso+-    │ 󰍛 RAM       ██████████████░░  14.0 / 16.0 GiB  88%       │
+ `+sso+:-`                 `.-/+oso:   │ 󰓡 Swap       disabled                                    │
+`++:.                           `-/+/  │ 󰋊 /         ███████████████░   450 /  512 GiB  92%  ext4 │
 .`                                 `/  ╰──────────────────────────────────────── ● ● ● ● ● ● ● ● ─╯
                                          collected in 12 ms

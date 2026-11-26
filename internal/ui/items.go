@@ -83,7 +83,16 @@ func init() {
 	)
 }
 
-func osRows(info sysinfo.Info, _ itemEnv) []row {
+// osRows shows the name of the distribution with its icon.
+func osRows(info sysinfo.Info, env itemEnv) []row {
+	rows := osRowsWithoutIcon(info)
+	for i := range rows {
+		rows[i].icon = env.distro.Icon
+	}
+	return rows
+}
+
+func osRowsWithoutIcon(info sysinfo.Info) []row {
 	if info.OS.State != sysinfo.Present {
 		return []row{unknownRow("OS")}
 	}

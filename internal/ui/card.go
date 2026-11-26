@@ -29,6 +29,9 @@ func buildGroups(info sysinfo.Info, env itemEnv) []group {
 			}
 			settings := env.cfg.Items[id]
 			for _, r := range it.rows(info, env) {
+				if r.icon == 0 {
+					r.icon = itemIcons[id]
+				}
 				if settings.Label != nil {
 					r.label = *settings.Label
 				}
@@ -48,7 +51,7 @@ func buildGroups(info sysinfo.Info, env itemEnv) []group {
 // groupIcon returns the icon of a configured group.
 func groupIcon(g config.Group) rune {
 	if g.Icon == config.IconAuto {
-		return 0
+		return groupIcons[g.Title]
 	}
 	return firstRune(g.Icon)
 }

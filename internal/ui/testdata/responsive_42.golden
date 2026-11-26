@@ -1,22 +1,22 @@
-╭─ System ────────────────── alice@box ─╮
-│   OS        Ubuntu 24.04 LTS          │
-│   Kernel    6.8.0-45-generic          │
-│   Uptime    3h 25m                    │
-│   Packages  1842, 12                  │
-│   Shell     zsh                       │
-│   Terminal  kitty                     │
-│   DE        GNOME                     │
-│   WM        Mutter  Wayland           │
-├─ Hardware ────────────────────────────┤
-│   Host      ThinkPad X1 Carbon Gen 11 │
-│   CPU       AMD Ryzen 7 5800X         │
-│   GPU       NVIDIA GeForce RTX 3070   │
-│   Display   2560x1440                 │
-│   Battery   78%  charging             │
-├─ Storage ─────────────────────────────┤
-│   RAM       8.0 / 32.0 GiB  25%       │
-│   Swap      1.0 /  4.0 GiB  25%       │
-│   /         100 /  500 GiB  21%       │
-│   /home     250 / 1000 GiB  25%       │
+╭─ 󰋽 System ──────────────── alice@box ─╮
+│  OS        Ubuntu 24.04 LTS          │
+│  Kernel    6.8.0-45-generic          │
+│ 󰅐 Uptime    3h 25m                    │
+│ 󰏖 Packages  1842, 12                  │
+│  Shell     zsh                       │
+│  Terminal  kitty                     │
+│  DE        GNOME                     │
+│  WM        Mutter  Wayland           │
+├─ 󰘚 Hardware ──────────────────────────┤
+│ 󰌢 Host      ThinkPad X1 Carbon Gen 11 │
+│  CPU       AMD Ryzen 7 5800X         │
+│ 󰢮 GPU       NVIDIA GeForce RTX 3070   │
+│ 󰍹 Display   2560x1440                 │
+│ 󰁹 Battery   78%  charging             │
+├─ 󰆼 Storage ───────────────────────────┤
+│ 󰍛 RAM       8.0 / 32.0 GiB  25%       │
+│ 󰓡 Swap      1.0 /  4.0 GiB  25%       │
+│ 󰋊 /         100 /  500 GiB  21%       │
+│ 󰋊 /home     250 / 1000 GiB  25%       │
 ╰───────────────────── ● ● ● ● ● ● ● ● ─╯
   collected in 12 ms
