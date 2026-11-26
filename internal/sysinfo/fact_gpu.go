@@ -19,9 +19,10 @@ func init() {
 }
 
 // pciDevice is a display adapter found in sysfs. IDs are lower-case hex
-// without the 0x prefix.
+// without the 0x prefix; dir is its device directory in sysfs.
 type pciDevice struct {
 	addr, vendor, device string
+	dir                  string
 }
 
 // displayClasses are the PCI class codes of display controllers: VGA, 3D
@@ -109,7 +110,7 @@ func drmDevices(fsys fs.FS) []pciDevice {
 		if slices.ContainsFunc(devices, func(d pciDevice) bool { return d.addr == addr }) {
 			continue
 		}
-		devices = append(devices, pciDevice{addr: addr, vendor: vendor, device: device})
+		devices = append(devices, pciDevice{addr: addr, vendor: vendor, device: device, dir: dir})
 	}
 	slices.SortFunc(devices, func(a, b pciDevice) int { return strings.Compare(a.addr, b.addr) })
 	return devices

@@ -64,4 +64,9 @@ type Info struct {
 	Network Value[Network]
 	// Bluetooth reports whether Bluetooth is on.
 	Bluetooth Value[bool]
+	// CPUTemp is the temperature of the processor in degrees Celsius.
+	CPUTemp Value[float64]
+	// GPUTemp lists the temperatures of the GPUs that report one, in bus
+	// order, in degrees Celsius.
+	GPUTemp Value[[]float64]
 }
