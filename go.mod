@@ -1,4 +1,4 @@
-module go.xchunk.org/fetchify
+module go.xchunk.org/fetchify/v2
 
 go 1.24.1
 

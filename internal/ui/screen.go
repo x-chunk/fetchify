@@ -7,9 +7,9 @@ import (
 	"go.xchunk.org/beautify/blocks"
 	"go.xchunk.org/beautify/dra"
 
-	"go.xchunk.org/fetchify/internal/config"
-	"go.xchunk.org/fetchify/internal/distro"
-	"go.xchunk.org/fetchify/internal/sysinfo"
+	"go.xchunk.org/fetchify/v2/internal/config"
+	"go.xchunk.org/fetchify/v2/internal/distro"
+	"go.xchunk.org/fetchify/v2/internal/sysinfo"
 )
 
 // Input is everything the screen shows. ui measures and collects

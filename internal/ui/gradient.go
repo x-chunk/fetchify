@@ -3,7 +3,7 @@ package ui
 import (
 	"go.xchunk.org/beautify/dra"
 
-	"go.xchunk.org/fetchify/internal/config"
+	"go.xchunk.org/fetchify/v2/internal/config"
 )
 
 // rainbow are the stops of border.color = "rainbow".

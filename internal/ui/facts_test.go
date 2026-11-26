@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"go.xchunk.org/fetchify/internal/config"
-	"go.xchunk.org/fetchify/internal/sysinfo"
+	"go.xchunk.org/fetchify/v2/internal/config"
+	"go.xchunk.org/fetchify/v2/internal/sysinfo"
 )
 
 func TestFacts(t *testing.T) {

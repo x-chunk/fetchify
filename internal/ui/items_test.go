@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"go.xchunk.org/fetchify/internal/config"
-	"go.xchunk.org/fetchify/internal/sysinfo"
+	"go.xchunk.org/fetchify/v2/internal/config"
+	"go.xchunk.org/fetchify/v2/internal/sysinfo"
 )
 
 // describe writes a row as text for comparisons: muted segments in

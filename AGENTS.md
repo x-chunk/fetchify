@@ -2,7 +2,7 @@
 
 A fetch tool for Linux written in Go: it prints facts about the machine
 in a framed card next to the logo of the distribution. Module path:
-`go.xchunk.org/fetchify`.
+`go.xchunk.org/fetchify/v2`.
 
 Read `plan.md` for the design of version 2.0 and its decision log, and
 `goals.md` for deferred work and deliberate non-goals, before changing

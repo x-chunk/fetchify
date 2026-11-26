@@ -5,8 +5,8 @@ import (
 
 	"go.xchunk.org/beautify/dra"
 
-	"go.xchunk.org/fetchify/internal/config"
-	"go.xchunk.org/fetchify/internal/distro"
+	"go.xchunk.org/fetchify/v2/internal/config"
+	"go.xchunk.org/fetchify/v2/internal/distro"
 )
 
 func TestNewTheme(t *testing.T) {

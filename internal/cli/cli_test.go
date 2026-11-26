@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"go.xchunk.org/fetchify/internal/config"
+	"go.xchunk.org/fetchify/v2/internal/config"
 )
 
 // logos are the logo names of the tests.

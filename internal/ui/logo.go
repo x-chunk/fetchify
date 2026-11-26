@@ -6,8 +6,8 @@ import (
 
 	"go.xchunk.org/beautify/dra"
 
-	"go.xchunk.org/fetchify/internal/config"
-	"go.xchunk.org/fetchify/internal/distro"
+	"go.xchunk.org/fetchify/v2/internal/config"
+	"go.xchunk.org/fetchify/v2/internal/distro"
 )
 
 // logoSpacing is the number of cells between the logo and the card.

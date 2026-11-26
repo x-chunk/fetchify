@@ -15,11 +15,11 @@ import (
 	"go.xchunk.org/beautify"
 	"go.xchunk.org/beautify/dra"
 
-	"go.xchunk.org/fetchify/internal/cli"
-	"go.xchunk.org/fetchify/internal/config"
-	"go.xchunk.org/fetchify/internal/distro"
-	"go.xchunk.org/fetchify/internal/sysinfo"
-	"go.xchunk.org/fetchify/internal/ui"
+	"go.xchunk.org/fetchify/v2/internal/cli"
+	"go.xchunk.org/fetchify/v2/internal/config"
+	"go.xchunk.org/fetchify/v2/internal/distro"
+	"go.xchunk.org/fetchify/v2/internal/sysinfo"
+	"go.xchunk.org/fetchify/v2/internal/ui"
 )
 
 func main() {

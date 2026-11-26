@@ -3,8 +3,8 @@ package ui
 import (
 	"go.xchunk.org/beautify/dra"
 
-	"go.xchunk.org/fetchify/internal/config"
-	"go.xchunk.org/fetchify/internal/distro"
+	"go.xchunk.org/fetchify/v2/internal/config"
+	"go.xchunk.org/fetchify/v2/internal/distro"
 )
 
 // theme holds the styles of the card by role. It is resolved once per

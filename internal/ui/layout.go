@@ -7,7 +7,7 @@ import (
 	"go.xchunk.org/beautify/blocks"
 	"go.xchunk.org/beautify/dra"
 
-	"go.xchunk.org/fetchify/internal/config"
+	"go.xchunk.org/fetchify/v2/internal/config"
 )
 
 // layout controls how rows are drawn. The responsive screen lowers the

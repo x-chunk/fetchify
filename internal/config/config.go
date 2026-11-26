@@ -4,7 +4,7 @@ import (
 	"slices"
 	"time"
 
-	"go.xchunk.org/fetchify/internal/sysinfo"
+	"go.xchunk.org/fetchify/v2/internal/sysinfo"
 )
 
 // Config is the complete configuration of a run. Values are already

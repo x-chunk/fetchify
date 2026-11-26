@@ -4,7 +4,7 @@ import (
 	"net/netip"
 	"time"
 
-	"go.xchunk.org/fetchify/internal/sysinfo"
+	"go.xchunk.org/fetchify/v2/internal/sysinfo"
 )
 
 // Fixture machines of the screen tests. They mirror the fixture trees of

@@ -7,8 +7,8 @@ import (
 	"go.xchunk.org/beautify"
 	"go.xchunk.org/beautify/dra"
 
-	"go.xchunk.org/fetchify/internal/config"
-	"go.xchunk.org/fetchify/internal/distro"
+	"go.xchunk.org/fetchify/v2/internal/config"
+	"go.xchunk.org/fetchify/v2/internal/distro"
 )
 
 // testTheme is the theme of an Arch machine with the default

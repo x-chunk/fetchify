@@ -5,7 +5,7 @@ import (
 
 	"go.xchunk.org/beautify"
 
-	"go.xchunk.org/fetchify/internal/config"
+	"go.xchunk.org/fetchify/v2/internal/config"
 )
 
 func TestBarCells(t *testing.T) {

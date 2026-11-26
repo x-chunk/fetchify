@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"go.xchunk.org/fetchify/internal/sysinfo"
+	"go.xchunk.org/fetchify/v2/internal/sysinfo"
 )
 
 // Temperatures in degrees Celsius where the color of a reading turns to

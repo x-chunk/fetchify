@@ -13,9 +13,9 @@ import (
 	"go.xchunk.org/beautify"
 	"go.xchunk.org/beautify/dra"
 
-	"go.xchunk.org/fetchify/internal/cli"
-	"go.xchunk.org/fetchify/internal/config"
-	"go.xchunk.org/fetchify/internal/distro"
+	"go.xchunk.org/fetchify/v2/internal/cli"
+	"go.xchunk.org/fetchify/v2/internal/config"
+	"go.xchunk.org/fetchify/v2/internal/distro"
 )
 
 // failingWriter rejects every write.

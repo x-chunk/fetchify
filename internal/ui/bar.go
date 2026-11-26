@@ -7,7 +7,7 @@ import (
 	"go.xchunk.org/beautify"
 	"go.xchunk.org/beautify/dra"
 
-	"go.xchunk.org/fetchify/internal/config"
+	"go.xchunk.org/fetchify/v2/internal/config"
 )
 
 // Fixed thresholds of an inverted meter such as a battery: below the

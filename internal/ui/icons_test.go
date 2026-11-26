@@ -4,7 +4,7 @@ import (
 	"testing"
 	"unicode"
 
-	"go.xchunk.org/fetchify/internal/config"
+	"go.xchunk.org/fetchify/v2/internal/config"
 )
 
 func TestIconsArePrivateUse(t *testing.T) {

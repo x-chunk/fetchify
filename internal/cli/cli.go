@@ -11,7 +11,7 @@ import (
 	"slices"
 	"strings"
 
-	"go.xchunk.org/fetchify/internal/config"
+	"go.xchunk.org/fetchify/v2/internal/config"
 )
 
 // Options are the parsed flags.

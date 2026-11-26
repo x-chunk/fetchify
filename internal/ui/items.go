@@ -7,9 +7,9 @@ import (
 	"strconv"
 	"strings"
 
-	"go.xchunk.org/fetchify/internal/config"
-	"go.xchunk.org/fetchify/internal/distro"
-	"go.xchunk.org/fetchify/internal/sysinfo"
+	"go.xchunk.org/fetchify/v2/internal/config"
+	"go.xchunk.org/fetchify/v2/internal/distro"
+	"go.xchunk.org/fetchify/v2/internal/sysinfo"
 )
 
 // itemEnv is what an item needs besides the collected facts.

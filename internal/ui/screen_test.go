@@ -9,9 +9,9 @@ import (
 	"go.xchunk.org/beautify"
 	"go.xchunk.org/beautify/dra"
 
-	"go.xchunk.org/fetchify/internal/config"
-	"go.xchunk.org/fetchify/internal/golden"
-	"go.xchunk.org/fetchify/internal/sysinfo"
+	"go.xchunk.org/fetchify/v2/internal/config"
+	"go.xchunk.org/fetchify/v2/internal/golden"
+	"go.xchunk.org/fetchify/v2/internal/sysinfo"
 )
 
 // renderScreen renders the screen of info and cfg at profile p. A width

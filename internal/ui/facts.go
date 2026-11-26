@@ -4,8 +4,8 @@ import (
 	"slices"
 	"time"
 
-	"go.xchunk.org/fetchify/internal/config"
-	"go.xchunk.org/fetchify/internal/sysinfo"
+	"go.xchunk.org/fetchify/v2/internal/config"
+	"go.xchunk.org/fetchify/v2/internal/sysinfo"
 )
 
 // Facts returns the facts that the screen of cfg shows, sorted. The user
