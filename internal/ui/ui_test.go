@@ -26,13 +26,12 @@ func sample() sysinfo.Info {
 		WM:       sysinfo.Value[string]{State: sysinfo.Present, V: "i3"},
 		CPU:      sysinfo.Value[sysinfo.CPU]{State: sysinfo.Present, V: sysinfo.CPU{Model: "AMD Ryzen 7 5800X", Count: 16}},
 		GPU:      sysinfo.Value[[]string]{State: sysinfo.Present, V: []string{"NVIDIA GeForce RTX 3070"}},
-		Memory: &sysinfo.Memory{
-			Usage: sysinfo.Usage{Used: 8 * gib, Total: 32 * gib, Percent: 25},
-		},
-		Swap: &sysinfo.Usage{Used: gib, Total: 4 * gib, Percent: 25},
+		Memory:   sysinfo.Value[sysinfo.Usage]{State: sysinfo.Present, V: sysinfo.Usage{Used: 8 * gib, Total: 32 * gib, Available: 24 * gib}},
+		Swap:     &sysinfo.Usage{Used: gib, Total: 4 * gib, Available: 3 * gib},
 		Disks: []sysinfo.Disk{
-			{Usage: sysinfo.Usage{Used: 100 * gib, Total: 500 * gib, Percent: 21}, Mountpoint: "/", Filesystem: "ext4"},
-			{Usage: sysinfo.Usage{Used: 250 * gib, Total: 1000 * gib, Percent: 25}, Mountpoint: "/home", Filesystem: "btrfs"},
+			// Reserved blocks make Available less than Total-Used.
+			{Usage: sysinfo.Usage{Used: 100 * gib, Total: 500 * gib, Available: 376 * gib}, Mountpoint: "/", Filesystem: "ext4"},
+			{Usage: sysinfo.Usage{Used: 250 * gib, Total: 1000 * gib, Available: 750 * gib}, Mountpoint: "/home", Filesystem: "btrfs"},
 		},
 	}
 }
@@ -142,11 +141,6 @@ func TestSections(t *testing.T) {
 			"several gpus", gpuSection,
 			func(i *sysinfo.Info) { i.GPU.V = []string{"Intel UHD", "NVIDIA RTX"} },
 			[]string{"GPU: Intel UHD", "GPU: NVIDIA RTX"},
-		},
-		{
-			"memory types", memorySection,
-			func(i *sysinfo.Info) { i.Memory.Types = []string{"DDR4", "DDR5"} },
-			[]string{"RAM: 8.00 GiB / 32.00 GiB (25%) - DDR4, DDR5"},
 		},
 		{"no session", desktopSection, func(i *sysinfo.Info) { i.Session = sysinfo.Value[sysinfo.SessionType]{State: sysinfo.Absent} }, []string{"WM: i3"}},
 		{"swap disabled", swapSection, func(i *sysinfo.Info) { i.Swap = &sysinfo.Usage{} }, []string{"Swap: Disabled"}},

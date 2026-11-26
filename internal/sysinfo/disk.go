@@ -27,7 +27,7 @@ func disks() []Disk {
 			continue
 		}
 		result = append(result, Disk{
-			Usage:      Usage{Used: usage.Used, Total: usage.Total, Percent: usage.UsedPercent},
+			Usage:      Usage{Used: usage.Used, Total: usage.Total, Available: usage.Free},
 			Mountpoint: partition.Mountpoint,
 			Filesystem: partition.Fstype,
 		})

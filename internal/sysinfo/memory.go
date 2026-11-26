@@ -7,25 +7,6 @@ import (
 	"github.com/shirou/gopsutil/v3/mem"
 )
 
-// memory returns the state of physical memory, or nil when it cannot be
-// read. Module types come from dmidecode, which only works for root, so
-// they are looked up only when root is true.
-func memory(run runner, root bool) *Memory {
-	stat, err := mem.VirtualMemory()
-	if err != nil || stat.Total == 0 {
-		return nil
-	}
-	result := &Memory{
-		Usage: Usage{Used: stat.Used, Total: stat.Total, Percent: stat.UsedPercent},
-	}
-	if root {
-		if out, err := run("dmidecode", "-t", "memory"); err == nil {
-			result.Types = parseMemoryTypes(string(out))
-		}
-	}
-	return result
-}
-
 // parseMemoryTypes extracts the distinct module types from the output of
 // `dmidecode -t memory`, in order of first appearance. Empty slots report
 // "Unknown" or "Other" and are skipped, as are the "RAM" entries of the
@@ -57,5 +38,5 @@ func swap() *Usage {
 	if err != nil {
 		return nil
 	}
-	return &Usage{Used: stat.Used, Total: stat.Total, Percent: stat.UsedPercent}
+	return &Usage{Used: stat.Used, Total: stat.Total, Available: stat.Free}
 }

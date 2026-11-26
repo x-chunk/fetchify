@@ -1,7 +1,6 @@
 package sysinfo
 
 import (
-	"os"
 	"os/exec"
 	"time"
 )
@@ -43,31 +42,13 @@ type Info struct {
 	Display Value[[]Display]
 	// Battery lists the system batteries.
 	Battery Value[[]Battery]
-	// Memory is the physical memory state, or nil when it cannot be read.
-	Memory *Memory
+	// Memory is the use of physical memory.
+	Memory Value[Usage]
 	// Swap is the swap usage, or nil when it cannot be read. A Total of 0
 	// means swap is disabled.
 	Swap *Usage
 	// Disks lists the mounted file systems worth showing, in mount order.
 	Disks []Disk
-}
-
-// Usage is an amount of a resource in use out of a total.
-type Usage struct {
-	// Used and Total are sizes in bytes.
-	Used, Total uint64
-	// Percent is the used share in the range 0-100 as reported by the
-	// system. It can differ from Used/Total for file systems, where
-	// reserved blocks are excluded.
-	Percent float64
-}
-
-// Memory is the state of physical memory.
-type Memory struct {
-	Usage
-	// Types lists the distinct module types, for example "DDR4". It is
-	// empty when the types cannot be read, which requires root.
-	Types []string
 }
 
 // Disk is a mounted file system.
@@ -92,7 +73,6 @@ func run(name string, args ...string) ([]byte, error) {
 // It may run external commands (lspci, xprop, wmctrl, dmidecode) and
 // tolerates their absence.
 func collectLegacy(info *Info) {
-	info.Memory = memory(run, os.Geteuid() == 0)
 	info.Swap = swap()
 	info.Disks = disks()
 }

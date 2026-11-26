@@ -62,10 +62,10 @@ func gpuSection(info sysinfo.Info, f *dra.Factory) []entry {
 }
 
 func memorySection(info sysinfo.Info, f *dra.Factory) []entry {
-	if info.Memory == nil {
+	if info.Memory.State != sysinfo.Present {
 		return one("RAM", missing(f, "Error"))
 	}
-	return one("RAM", usage(f, info.Memory.Usage, strings.Join(info.Memory.Types, ", ")))
+	return one("RAM", usage(f, info.Memory.V, share(info.Memory.V.Used, info.Memory.V.Total), ""))
 }
 
 func swapSection(info sysinfo.Info, f *dra.Factory) []entry {
@@ -75,7 +75,7 @@ func swapSection(info sysinfo.Info, f *dra.Factory) []entry {
 	case info.Swap.Total == 0:
 		return one("Swap", missing(f, "Disabled"))
 	}
-	return one("Swap", usage(f, *info.Swap, ""))
+	return one("Swap", usage(f, *info.Swap, share(info.Swap.Used, info.Swap.Total), ""))
 }
 
 // diskSection returns one entry per disk and no entries when there are
@@ -84,7 +84,8 @@ func diskSection(info sysinfo.Info, f *dra.Factory) []entry {
 	var result []entry
 	for _, disk := range info.Disks {
 		key := fmt.Sprintf("Disk (%s)", disk.Mountpoint)
-		result = append(result, one(key, usage(f, disk.Usage, disk.Filesystem))...)
+		percent := share(disk.Used, disk.Used+disk.Available)
+		result = append(result, one(key, usage(f, disk.Usage, percent, disk.Filesystem))...)
 	}
 	return result
 }
@@ -92,14 +93,22 @@ func diskSection(info sysinfo.Info, f *dra.Factory) []entry {
 // bytesPerGiB converts a byte count to the unit shown on screen.
 const bytesPerGiB = 1 << 30
 
+// share returns part as a percentage of whole, or 0 when whole is 0.
+func share(part, whole uint64) float64 {
+	if whole == 0 {
+		return 0
+	}
+	return float64(part) / float64(whole) * 100
+}
+
 // usage formats u as "<used> GiB / <total> GiB (<percent>%)", followed by
 // " - <category>" when category is not empty.
-func usage(f *dra.Factory, u sysinfo.Usage, category string) dra.Model {
+func usage(f *dra.Factory, u sysinfo.Usage, percent float64, category string) dra.Model {
 	m := dra.Concat(
 		f.Styled(fmt.Sprintf("%.2f GiB", float64(u.Used)/bytesPerGiB), styleUsed),
 		f.Text(" / "),
 		f.Styled(fmt.Sprintf("%.2f GiB", float64(u.Total)/bytesPerGiB), styleTotal),
-		f.Text(fmt.Sprintf(" (%.0f%%)", u.Percent)),
+		f.Text(fmt.Sprintf(" (%.0f%%)", percent)),
 	)
 	if category != "" {
 		m = dra.Concat(m, f.Text(" - "), f.Styled(oneLine(category), styleCategory))
