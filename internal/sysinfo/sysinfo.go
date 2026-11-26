@@ -50,16 +50,7 @@ type Info struct {
 	// Swap is the use of swap space.
 	Swap Value[Usage]
 	// Disks lists the mounted file systems worth showing, in mount order.
-	Disks []Disk
-}
-
-// Disk is a mounted file system.
-type Disk struct {
-	Usage
-	// Mountpoint is the path the file system is mounted at.
-	Mountpoint string
-	// Filesystem is the file system type, for example "ext4".
-	Filesystem string
+	Disks Value[[]Disk]
 }
 
 // runner runs an external command and returns its standard output.
@@ -75,5 +66,4 @@ func run(name string, args ...string) ([]byte, error) {
 // It may run external commands (lspci, xprop, wmctrl, dmidecode) and
 // tolerates their absence.
 func collectLegacy(info *Info) {
-	info.Disks = disks()
 }

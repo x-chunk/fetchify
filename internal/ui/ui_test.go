@@ -28,11 +28,11 @@ func sample() sysinfo.Info {
 		GPU:      sysinfo.Value[[]string]{State: sysinfo.Present, V: []string{"NVIDIA GeForce RTX 3070"}},
 		Memory:   sysinfo.Value[sysinfo.Usage]{State: sysinfo.Present, V: sysinfo.Usage{Used: 8 * gib, Total: 32 * gib, Available: 24 * gib}},
 		Swap:     sysinfo.Value[sysinfo.Usage]{State: sysinfo.Present, V: sysinfo.Usage{Used: gib, Total: 4 * gib, Available: 3 * gib}},
-		Disks: []sysinfo.Disk{
+		Disks: sysinfo.Value[[]sysinfo.Disk]{State: sysinfo.Present, V: []sysinfo.Disk{
 			// Reserved blocks make Available less than Total-Used.
 			{Usage: sysinfo.Usage{Used: 100 * gib, Total: 500 * gib, Available: 376 * gib}, Mountpoint: "/", Filesystem: "ext4"},
 			{Usage: sysinfo.Usage{Used: 250 * gib, Total: 1000 * gib, Available: 750 * gib}, Mountpoint: "/home", Filesystem: "btrfs"},
-		},
+		}},
 	}
 }
 
@@ -151,7 +151,7 @@ func TestSections(t *testing.T) {
 			[]string{"RAM: 8.00 GiB / 32.00 GiB (25%) - DDR4, DDR5"},
 		},
 		{"swap disabled", swapSection, func(i *sysinfo.Info) { i.Swap = sysinfo.Value[sysinfo.Usage]{State: sysinfo.Absent} }, []string{"Swap: Disabled"}},
-		{"no disks", diskSection, func(i *sysinfo.Info) { i.Disks = nil }, nil},
+		{"no disks", diskSection, func(i *sysinfo.Info) { i.Disks = sysinfo.Value[[]sysinfo.Disk]{State: sysinfo.Absent} }, nil},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

@@ -19,6 +19,10 @@ type Options struct {
 	// Timeouts overrides Timeout for single facts. Zero or negative
 	// values are ignored.
 	Timeouts map[Fact]time.Duration
+	// DiskIgnore lists the mount points whose trees the disks fact leaves
+	// out. Nil means DefaultDiskIgnore; an empty, non-nil list ignores
+	// nothing.
+	DiskIgnore []string
 }
 
 // timeout returns the time limit of f.

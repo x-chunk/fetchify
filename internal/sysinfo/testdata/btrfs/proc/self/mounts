@@ -1,0 +1,6 @@
+/dev/nvme0n1p3 / btrfs rw,relatime,subvol=/root 0 0
+/dev/nvme0n1p3 /home btrfs rw,relatime,subvol=/home 0 0
+/dev/nvme0n1p2 /boot ext4 rw,relatime 0 0
+/dev/sda1 /srv/data xfs rw,relatime 0 0
+/dev/sda1 /data xfs rw,relatime 0 0
+/dev/nvme0n1p3 /var/home btrfs rw,relatime,subvol=/home 0 0

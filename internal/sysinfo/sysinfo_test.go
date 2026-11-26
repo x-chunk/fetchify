@@ -23,26 +23,6 @@ func commands(outputs map[string]string) runner {
 	}
 }
 
-func TestIsIgnoredMount(t *testing.T) {
-	tests := []struct {
-		mount string
-		want  bool
-	}{
-		{"/", false},
-		{"/home", false},
-		{"/boot", true},
-		{"/boot/efi", true},
-		{"/var/lib/docker", true},
-		{"/variable", false},
-		{"/opt/run", false},
-	}
-	for _, tt := range tests {
-		if got := isIgnoredMount(tt.mount); got != tt.want {
-			t.Errorf("isIgnoredMount(%q) = %v, want %v", tt.mount, got, tt.want)
-		}
-	}
-}
-
 // TestCollect is the smoke test against the machine that runs the tests.
 func TestCollect(t *testing.T) {
 	info := Collect(context.Background(), SystemSource(), Facts(), Options{})

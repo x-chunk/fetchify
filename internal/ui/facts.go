@@ -17,6 +17,7 @@ var facts = []sysinfo.Fact{
 	sysinfo.FactMemory,
 	sysinfo.FactMemoryType,
 	sysinfo.FactSwap,
+	sysinfo.FactDisks,
 }
 
 // Facts returns the facts the screen needs. Pass them to sysinfo.Collect.

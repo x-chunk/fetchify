@@ -83,9 +83,9 @@ func swapSection(info sysinfo.Info, f *dra.Factory) []entry {
 // no disks to show.
 func diskSection(info sysinfo.Info, f *dra.Factory) []entry {
 	var result []entry
-	for _, disk := range info.Disks {
+	for _, disk := range info.Disks.V {
 		key := fmt.Sprintf("Disk (%s)", disk.Mountpoint)
-		percent := share(disk.Used, disk.Used+disk.Available)
+		percent := share(disk.Usage.Used, disk.Usage.Used+disk.Usage.Available)
 		result = append(result, one(key, usage(f, disk.Usage, percent, disk.Filesystem))...)
 	}
 	return result

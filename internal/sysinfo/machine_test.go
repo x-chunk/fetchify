@@ -77,9 +77,16 @@ func collectOne(t *testing.T, m machine, f Fact) Info {
 var (
 	// ubuntuDesktop is a typical Ubuntu desktop with GNOME on Wayland.
 	ubuntuDesktop = machine{
-		dir:   "ubuntu-desktop",
-		uid:   1000,
-		pid:   4242,
+		dir: "ubuntu-desktop",
+		uid: 1000,
+		pid: 4242,
+		mounts: map[string]FSStat{
+			"/":             {Total: 500 * gib, Free: 400 * gib, Available: 376 * gib},
+			"/home":         {Total: 1000 * gib, Free: 750 * gib, Available: 700 * gib},
+			"/boot/efi":     {Total: 1 * gib, Free: 1 * gib, Available: 1 * gib},
+			"/mnt/My Drive": {Total: 64 * gib, Free: 63 * gib, Available: 63 * gib},
+			"/mnt/empty":    {},
+		},
 		users: map[int]string{1000: "alice"},
 		commands: map[string]string{
 			"lspci -mm": `01:00.0 "VGA compatible controller" "NVIDIA Corporation" "GA104 [GeForce RTX 3070]" -ra1 "Micro-Star International Co., Ltd. [MSI]" "Device 3903"` + "\n",
@@ -132,6 +139,11 @@ var (
 		dir: "container",
 		uid: 100123,
 		pid: 1,
+		mounts: map[string]FSStat{
+			"/":                {Total: 500 * gib, Free: 400 * gib, Available: 376 * gib},
+			"/etc/hosts":       {Total: 500 * gib, Free: 400 * gib, Available: 376 * gib},
+			"/etc/resolv.conf": {Total: 500 * gib, Free: 400 * gib, Available: 376 * gib},
+		},
 	}
 	// raspberryPi is a Raspberry Pi with a device tree and no DMI.
 	raspberryPi = machine{
@@ -143,9 +155,14 @@ var (
 	}
 	// btrfsBox is a Fedora machine with btrfs subvolumes and bind mounts.
 	btrfsBox = machine{
-		dir:   "btrfs",
-		uid:   1000,
-		pid:   2000,
+		dir: "btrfs",
+		uid: 1000,
+		pid: 2000,
+		mounts: map[string]FSStat{
+			"/":     {Total: 1000 * gib, Free: 700 * gib, Available: 700 * gib},
+			"/home": {Total: 1000 * gib, Free: 700 * gib, Available: 700 * gib},
+			"/data": {Total: 100 * gib, Free: 90 * gib, Available: 90 * gib},
+		},
 		users: map[int]string{1000: "carol"},
 		env: map[string]string{
 			"SHELL":               "/usr/bin/fish",
