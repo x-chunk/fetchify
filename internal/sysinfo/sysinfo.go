@@ -32,6 +32,8 @@ type Info struct {
 	DE Value[string]
 	// WM is the name of the window manager or Wayland compositor.
 	WM Value[string]
+	// Host is the model of the machine.
+	Host Value[string]
 	// CPU describes the processor.
 	CPU CPU
 	// GPUs lists the names of the display adapters, in bus order.
