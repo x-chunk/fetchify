@@ -52,6 +52,16 @@ rhel.txt                 fastfetch src/logo/ascii/r/rhel.txt
 rhel_small.txt           fetchify, after fastfetch src/logo/ascii/r/rhel_small.txt
 rocky.txt                fastfetch src/logo/ascii/r/rocky.txt
 rocky_small.txt          fetchify, after fastfetch src/logo/ascii/r/rocky_small.txt
+alpine.txt               fastfetch src/logo/ascii/a/alpine.txt
+alpine_small.txt         fastfetch src/logo/ascii/a/alpine_small.txt
+gentoo.txt               fastfetch src/logo/ascii/g/gentoo.txt
+gentoo_small.txt         fastfetch src/logo/ascii/g/gentoo_small.txt
+nixos.txt                fastfetch src/logo/ascii/n/nixos2.txt
+nixos_small.txt          fastfetch src/logo/ascii/n/nixos_old_small.txt
+opensuse.txt             fastfetch src/logo/ascii/o/opensuse.txt
+opensuse_small.txt       fastfetch src/logo/ascii/o/opensuse_small.txt
+void.txt                 fetchify, after fastfetch src/logo/ascii/v/void.txt
+void_small.txt           fastfetch src/logo/ascii/v/void_small.txt
 
 
 fastfetch license

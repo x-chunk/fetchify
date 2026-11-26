@@ -96,6 +96,7 @@ func TestLookup(t *testing.T) {
 		{"ID_LIKE chain", Release{ID: "garuda", IDLike: []string{"nope", "arch"}}, "arch"},
 		{"derivative", Release{ID: "neon", IDLike: []string{"ubuntu", "debian"}}, "ubuntu"},
 		{"raspbian", Release{ID: "raspbian", IDLike: []string{"debian"}}, "debian"},
+		{"opensuse alias", Release{ID: "opensuse-tumbleweed", IDLike: []string{"opensuse", "suse"}}, "opensuse"},
 		{"unknown", Release{ID: "plan9"}, LinuxID},
 		{"empty", Release{}, LinuxID},
 		{"koala is never chosen", Release{ID: "koala"}, LinuxID},
@@ -112,5 +113,13 @@ func TestLookup(t *testing.T) {
 	d.Colors[0] = dra.Red
 	if again, _ := ByID(LinuxID); again.Colors[0] == dra.Red {
 		t.Error("ByID shares the palette with the table")
+	}
+}
+
+// TestTableSize pins the first version of the table: 22 distributions
+// and the two generic entries.
+func TestTableSize(t *testing.T) {
+	if n := len(IDs()); n != 24 {
+		t.Errorf("table has %d entries, want 24: %v", n, IDs())
 	}
 }
