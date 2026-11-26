@@ -1,5 +1,7 @@
 package ui
 
+import "strings"
+
 // row is one line of the card before layout: an icon, a label and a
 // value made of parts. Rows are data so that the screen can lay them out
 // again with less detail when space is short.
@@ -73,4 +75,16 @@ func textValue(text string) []segment {
 // unknownRow is the row of a fact that could not be determined.
 func unknownRow(label string) row {
 	return row{label: label, value: []segment{{text: "unknown", role: roleMuted}}}
+}
+
+// oneLine replaces line breaks in collected text with U+FFFD. beautify
+// sanitizes every other control character, but it keeps line breaks as
+// layout, and a value that spans several lines would break the card.
+func oneLine(s string) string {
+	return strings.Map(func(r rune) rune {
+		if r == '\n' || r == '\r' {
+			return '\uFFFD'
+		}
+		return r
+	}, s)
 }

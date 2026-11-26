@@ -14,7 +14,7 @@ does not import beautify.
 
 ```
 main.go            flags, wiring, the only code that writes output
-internal/ui/       sysinfo.Info -> beautify.Template: content, wording, styles
+internal/ui/       sysinfo.Info and config -> beautify.Composable: content, styles
 internal/sysinfo/  collects machine facts as plain data
 internal/golden/   golden-file test helper
 ```
@@ -22,7 +22,7 @@ internal/golden/   golden-file test helper
 Pipeline:
 
 ```
-sysinfo.Collect() -> ui.Build(info) -> beautify.Composer.Render -> one Write
+sysinfo.Collect() -> ui.Screen(input) -> beautify.Composer.Render -> one Write
 ```
 
 Design rules:
@@ -33,9 +33,9 @@ Design rules:
 - Code that parses the output of an external command is a pure function
   with tests. The code that runs the command takes a `runner` so tests can
   replace it.
-- `ui` is a pure function of `sysinfo.Info`. It collects nothing and
-  writes nothing. What is shown and in which order is the `sections` slice
-  in `ui.go`; a new line of output is a new `section`.
+- `ui` is a pure function of `ui.Input`. It collects nothing and writes
+  nothing. What is shown and in which order is the configuration; a new
+  kind of row is a new item in the registry of `ui/items.go`.
 - Styles are named by role in `ui/theme.go`. Do not use a color directly
   in a section.
 - Presentation is built from beautify blocks and `dra` operations. Models

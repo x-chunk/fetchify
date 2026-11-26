@@ -38,7 +38,7 @@ func TestRunPrintsScreen(t *testing.T) {
 		t.Fatalf("exit code = %d, stderr %q", code, stderr.String())
 	}
 	out := stdout.String()
-	if !strings.Contains(out, "==== Fetchify ====") || !strings.HasSuffix(out, "\n") {
+	if !strings.Contains(out, "collected in") || !strings.HasSuffix(out, "\n") {
 		t.Errorf("unexpected output: %q", out)
 	}
 }

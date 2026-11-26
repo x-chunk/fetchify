@@ -9,10 +9,12 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"time"
 
 	"go.xchunk.org/beautify"
 	"go.xchunk.org/beautify/dra"
 
+	"go.xchunk.org/fetchify/internal/config"
 	"go.xchunk.org/fetchify/internal/sysinfo"
 	"go.xchunk.org/fetchify/internal/ui"
 )
@@ -48,14 +50,16 @@ func run(args []string, stdout, stderr io.Writer) int {
 		clearScreen(stdout)
 	}
 
-	// The profile and the width are fixed until the screen learns to
-	// adapt to the terminal: ANSI16 is what fetchify has always written,
-	// and an unbounded width keeps lines from being cut.
-	composer := beautify.NewComposer(stdout,
-		beautify.WithProfile(dra.ProfileANSI16),
-		beautify.WithWidth(0),
-	)
-	if err := composer.Render(ui.Build(sysinfo.Collect(context.Background(), sysinfo.SystemSource(), ui.Facts(), sysinfo.Options{}))); err != nil {
+	cfg := config.Defaults()
+	start := time.Now()
+	info := sysinfo.Collect(context.Background(), sysinfo.SystemSource(), ui.Facts(cfg), sysinfo.Options{})
+	elapsed := time.Since(start)
+
+	// The profile is fixed until it is detected from the terminal: ANSI16
+	// is what fetchify has always written.
+	composer := beautify.NewComposer(stdout, beautify.WithProfile(dra.ProfileANSI16))
+	screen := beautify.NewTemplate(ui.Screen(ui.Input{Info: info, Config: cfg, Elapsed: elapsed}))
+	if err := composer.Render(screen); err != nil {
 		fmt.Fprintln(stderr, "fetchify:", err)
 		return 1
 	}
