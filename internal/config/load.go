@@ -68,6 +68,9 @@ func Parse(path string, data []byte, known Known) (Config, error) {
 	}
 	d := &decoder{positions: keyPositions(data), known: known}
 	cfg := d.config(raw)
+	// A value of the wrong type was not stored and the default stays, so
+	// validation does not report the same mistake twice.
+	d.validate(cfg, raw)
 	if len(d.problems) > 0 {
 		slices.SortStableFunc(d.problems, func(a, b Problem) int {
 			if (a.Line == 0) != (b.Line == 0) {
@@ -154,22 +157,22 @@ func (d *decoder) config(raw map[string]any) Config {
 	if t, ok := d.table(raw, "logo"); ok {
 		d.unknown(t, "logo", "name", "size", "gradient", "colors", "direction")
 		d.str(t, "logo.name", &cfg.Logo.Name)
-		d.enum(t, "logo.size", (*string)(&cfg.Logo.Size), SizeAuto, SizeFull, SizeSmall)
+		d.str(t, "logo.size", (*string)(&cfg.Logo.Size))
 		d.boolean(t, "logo.gradient", &cfg.Logo.Gradient)
-		d.colorList(t, "logo.colors", &cfg.Logo.Colors)
-		d.enum(t, "logo.direction", (*string)(&cfg.Logo.Direction), Vertical, Horizontal, Diagonal)
+		d.stringList(t, "logo.colors", &cfg.Logo.Colors)
+		d.str(t, "logo.direction", (*string)(&cfg.Logo.Direction))
 	}
 	if t, ok := d.table(raw, "colors"); ok {
 		d.unknown(t, "colors", "mode", "accent")
-		d.enum(t, "colors.mode", (*string)(&cfg.Colors.Mode), ModeAuto, ModeTrueColor, Mode256, Mode16, ModeNone)
+		d.str(t, "colors.mode", (*string)(&cfg.Colors.Mode))
 		d.str(t, "colors.accent", &cfg.Colors.Accent)
 	}
 	if t, ok := d.table(raw, "border"); ok {
 		d.unknown(t, "border", "style", "color", "colors", "direction")
-		d.enum(t, "border.style", (*string)(&cfg.Border.Style), BorderRounded, BorderSquare, BorderDouble, BorderHeavy, BorderASCII)
-		d.enum(t, "border.color", (*string)(&cfg.Border.Color), BorderAccent, BorderLogo, BorderRainbow, BorderCustom)
-		d.colorList(t, "border.colors", &cfg.Border.Colors)
-		d.enum(t, "border.direction", (*string)(&cfg.Border.Direction), Vertical, Horizontal, Diagonal)
+		d.str(t, "border.style", (*string)(&cfg.Border.Style))
+		d.str(t, "border.color", (*string)(&cfg.Border.Color))
+		d.stringList(t, "border.colors", &cfg.Border.Colors)
+		d.str(t, "border.direction", (*string)(&cfg.Border.Direction))
 	}
 	if t, ok := d.table(raw, "icons"); ok {
 		d.unknown(t, "icons", "enabled")
@@ -177,13 +180,13 @@ func (d *decoder) config(raw map[string]any) Config {
 	}
 	if t, ok := d.table(raw, "bars"); ok {
 		d.unknown(t, "bars", "style", "width", "thresholds")
-		d.enum(t, "bars.style", (*string)(&cfg.Bars.Style), BarBlock, BarThin)
+		d.str(t, "bars.style", (*string)(&cfg.Bars.Style))
 		d.integer(t, "bars.width", &cfg.Bars.Width)
 		d.thresholds(t, "bars.thresholds", &cfg.Bars.Thresholds)
 	}
 	if t, ok := d.table(raw, "palette"); ok {
 		d.unknown(t, "palette", "style")
-		d.enum(t, "palette.style", (*string)(&cfg.Palette.Style), PaletteDots, PaletteBlocks, PaletteNone)
+		d.str(t, "palette.style", (*string)(&cfg.Palette.Style))
 	}
 	if v, ok := raw["group"]; ok {
 		cfg.Groups = d.groups(v)
@@ -346,18 +349,6 @@ func (d *decoder) stringList(t map[string]any, key string, dst *[]string) {
 		out = append(out, s)
 	}
 	*dst = out
-}
-
-// enum decodes a string. Checking it against the allowed values is part
-// of validation.
-func (d *decoder) enum(t map[string]any, key string, dst *string, allowed ...any) {
-	d.str(t, key, dst)
-}
-
-// colorList decodes a list of colors. Checking their form is part of
-// validation.
-func (d *decoder) colorList(t map[string]any, key string, dst *[]string) {
-	d.stringList(t, key, dst)
 }
 
 // timeout decodes a time limit given in milliseconds.
