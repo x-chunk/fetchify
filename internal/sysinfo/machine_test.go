@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -43,7 +44,7 @@ func (m machine) source() Source {
 		Run: func(_ context.Context, name string, args ...string) ([]byte, error) {
 			out, ok := m.commands[strings.Join(append([]string{name}, args...), " ")]
 			if !ok {
-				return nil, errNotFound
+				return nil, &exec.Error{Name: name, Err: exec.ErrNotFound}
 			}
 			return []byte(out), nil
 		},

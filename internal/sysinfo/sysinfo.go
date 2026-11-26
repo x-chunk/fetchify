@@ -60,4 +60,8 @@ type Info struct {
 	LocalIP Value[LocalIP]
 	// PublicIP is the address the machine has on the internet.
 	PublicIP Value[netip.Addr]
+	// Network is the interface of the default route.
+	Network Value[Network]
+	// Bluetooth reports whether Bluetooth is on.
+	Bluetooth Value[bool]
 }

@@ -5,6 +5,7 @@ import (
 	"context"
 	"errors"
 	"io/fs"
+	"os/exec"
 	"path"
 	"strings"
 )
@@ -204,6 +205,11 @@ func (s *session) run(ctx context.Context, name string, args ...string) ([]byte,
 		return nil, errNoRunner
 	}
 	return s.src.Run(ctx, name, args...)
+}
+
+// notInstalled reports whether err means that a command does not exist.
+func notInstalled(err error) bool {
+	return errors.Is(err, exec.ErrNotFound) || errors.Is(err, errNoRunner)
 }
 
 // countLines runs a command and counts the non-blank lines of its output.
