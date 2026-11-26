@@ -1,2 +1,4 @@
+github.com/pelletier/go-toml/v2 v2.4.3 h1:GTRvJQutkOSftxIFD5xw9aepkYNuPWmVJpffdDPYVpY=
+github.com/pelletier/go-toml/v2 v2.4.3/go.mod h1:2gIqNv+qfxSVS7cM2xJQKtLSTLUE9V8t9Stt+h56mCY=
 go.xchunk.org/beautify v0.1.0-rc.2 h1:KHvKD49L17JRWFh2blAioYek0rhsuIVuq9rpCI1v2V4=
 go.xchunk.org/beautify v0.1.0-rc.2/go.mod h1:EZ3HRaUe5RniInd/8kOTBL61f8Zhuqzmmxtv5ymvRsI=
