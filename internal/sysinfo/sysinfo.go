@@ -35,7 +35,7 @@ type Info struct {
 	// Host is the model of the machine.
 	Host Value[string]
 	// CPU describes the processor.
-	CPU CPU
+	CPU Value[CPU]
 	// GPUs lists the names of the display adapters, in bus order.
 	GPUs []string
 	// Memory is the physical memory state, or nil when it cannot be read.
@@ -45,14 +45,6 @@ type Info struct {
 	Swap *Usage
 	// Disks lists the mounted file systems worth showing, in mount order.
 	Disks []Disk
-}
-
-// CPU describes the processor.
-type CPU struct {
-	// Model is the model name of the first processor.
-	Model string
-	// Cores is the number of logical CPUs usable by the process.
-	Cores int
 }
 
 // Usage is an amount of a resource in use out of a total.
@@ -95,7 +87,6 @@ func run(name string, args ...string) ([]byte, error) {
 // It may run external commands (lspci, xprop, wmctrl, dmidecode) and
 // tolerates their absence.
 func collectLegacy(info *Info) {
-	info.CPU = processor()
 	info.GPUs = gpus(run)
 	info.Memory = memory(run, os.Geteuid() == 0)
 	info.Swap = swap()

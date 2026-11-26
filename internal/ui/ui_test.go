@@ -24,7 +24,7 @@ func sample() sysinfo.Info {
 		Shell:    sysinfo.Value[string]{State: sysinfo.Present, V: "zsh"},
 		Session:  sysinfo.Value[sysinfo.SessionType]{State: sysinfo.Present, V: sysinfo.X11},
 		WM:       sysinfo.Value[string]{State: sysinfo.Present, V: "i3"},
-		CPU:      sysinfo.CPU{Model: "AMD Ryzen 7 5800X", Cores: 16},
+		CPU:      sysinfo.Value[sysinfo.CPU]{State: sysinfo.Present, V: sysinfo.CPU{Model: "AMD Ryzen 7 5800X", Count: 16}},
 		GPUs:     []string{"NVIDIA GeForce RTX 3070"},
 		Memory: &sysinfo.Memory{
 			Usage: sysinfo.Usage{Used: 8 * gib, Total: 32 * gib, Percent: 25},

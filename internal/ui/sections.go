@@ -43,8 +43,8 @@ func desktopSection(info sysinfo.Info, f *dra.Factory) []entry {
 
 func cpuSection(info sysinfo.Info, f *dra.Factory) []entry {
 	return one("CPU", dra.Concat(
-		textOrMissing(f, info.CPU.Model),
-		f.Text(fmt.Sprintf(" (%d cores)", info.CPU.Cores)),
+		textOrMissing(f, info.CPU.V.Model),
+		f.Text(fmt.Sprintf(" (%d cores)", info.CPU.V.Count)),
 	))
 }
 
