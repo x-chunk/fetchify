@@ -41,6 +41,8 @@ type Info struct {
 	GPU Value[[]string]
 	// Display lists the connected outputs.
 	Display Value[[]Display]
+	// Battery lists the system batteries.
+	Battery Value[[]Battery]
 	// Memory is the physical memory state, or nil when it cannot be read.
 	Memory *Memory
 	// Swap is the swap usage, or nil when it cannot be read. A Total of 0
