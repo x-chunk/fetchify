@@ -1,0 +1,7 @@
+PRETTY_NAME="elementary OS 8 Circe"
+NAME="elementary OS"
+VERSION_ID="8"
+VERSION="8 Circe"
+ID=elementary
+ID_LIKE="ubuntu debian"
+UBUNTU_CODENAME=noble

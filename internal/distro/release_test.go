@@ -66,3 +66,32 @@ func FuzzParseRelease(f *testing.F) {
 		ParseRelease(data)
 	})
 }
+
+// TestLookupReleaseFiles parses the os-release file of every distribution
+// in the table and checks which entry it resolves to.
+func TestLookupReleaseFiles(t *testing.T) {
+	want := map[string]string{
+		"almalinux": "almalinux", "alpine": "alpine", "arch": "arch", "artix": "artix",
+		"cachyos": "cachyos", "centos": "centos", "debian": "debian", "elementary": "elementary",
+		"endeavouros": "endeavouros", "fedora": "fedora", "gentoo": "gentoo", "kali": "kali",
+		"linuxmint": "linuxmint", "manjaro": "manjaro", "nixos": "nixos", "ol": "rhel",
+		"opensuse-tumbleweed": "opensuse", "pop": "pop", "raspbian": "debian", "rhel": "rhel",
+		"rocky": "rocky", "sles": "opensuse", "ubuntu": "ubuntu", "void": "void", "zorin": "zorin",
+	}
+	files, err := os.ReadDir(filepath.Join("testdata", "os-release"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(files) != len(want) {
+		t.Errorf("%d fixtures, %d expectations", len(files), len(want))
+	}
+	for _, f := range files {
+		data, err := os.ReadFile(filepath.Join("testdata", "os-release", f.Name()))
+		if err != nil {
+			t.Fatal(err)
+		}
+		if got := Lookup(ParseRelease(data)).ID; got != want[f.Name()] {
+			t.Errorf("%s resolves to %q, want %q", f.Name(), got, want[f.Name()])
+		}
+	}
+}
