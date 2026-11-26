@@ -91,8 +91,9 @@ Design rules:
 
 - Format with `gofmt`. Run `go vet ./...` and `go test ./...` before every
   commit.
-- `go build -o fetchify .` must keep working from the repository root:
-  `install.sh` relies on it.
+- Install and run with `go install .` or `go run .` from the repository
+  root; `go install go.xchunk.org/fetchify/v2@latest` is the only
+  supported installation.
 
 ## Code comments and documentation
 
