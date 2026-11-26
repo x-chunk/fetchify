@@ -50,6 +50,8 @@ type theme struct {
 	danger  dra.Style
 	// badge is the neutral look of a badge.
 	badge dra.Style
+	// gradient colors the frame instead of frame when it has stops.
+	gradient dra.Gradient
 }
 
 // newTheme resolves the theme. The accent is the configured color or, for
@@ -67,17 +69,27 @@ func newTheme(cfg config.Config, d distro.Distro, root bool) theme {
 	if root {
 		caption = dra.Foreground(dra.Red).WithAttrs(dra.Bold)
 	}
+	frame := dra.Foreground(accent)
+	var gradient dra.Gradient
+	switch stops := frameColors(cfg, d.Colors); len(stops) {
+	case 0:
+	case 1:
+		frame = dra.Foreground(stops[0])
+	default:
+		gradient = dra.NewGradient(axes[cfg.Border.Direction], stops...)
+	}
 	return theme{
-		accent:  accent,
-		frame:   dra.Foreground(accent),
-		title:   dra.Foreground(accent).WithAttrs(dra.Bold),
-		label:   dra.Foreground(accent),
-		icon:    dra.Foreground(accent),
-		muted:   muted,
-		caption: caption,
-		good:    dra.Foreground(dra.Green),
-		warning: dra.Foreground(dra.Yellow),
-		danger:  dra.Foreground(dra.Red),
-		badge:   muted.WithAttrs(dra.Reverse),
+		accent:   accent,
+		frame:    frame,
+		gradient: gradient,
+		title:    dra.Foreground(accent).WithAttrs(dra.Bold),
+		label:    dra.Foreground(accent),
+		icon:     dra.Foreground(accent),
+		muted:    muted,
+		caption:  caption,
+		good:     dra.Foreground(dra.Green),
+		warning:  dra.Foreground(dra.Yellow),
+		danger:   dra.Foreground(dra.Red),
+		badge:    muted.WithAttrs(dra.Reverse),
 	}
 }

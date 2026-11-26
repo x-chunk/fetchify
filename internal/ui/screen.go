@@ -103,7 +103,15 @@ func (s screen) withLogo(size distro.Size, column beautify.Composable) beautify.
 		return column
 	}
 	logo := beautify.ComposableFunc(func(ctx beautify.Context) (dra.Model, error) {
-		return blocks.Model(logoModel(ctx.Factory(), d, d.Logo(size))).Render(ctx)
+		m := logoModel(ctx.Factory(), d, d.Logo(size))
+		if cfg := s.in.Config.Logo; cfg.Gradient {
+			stops := hexColors(cfg.Colors)
+			if len(stops) == 0 {
+				stops = solidColors(d.Colors)
+			}
+			m = recolorLogo(m, dra.NewGradient(axes[cfg.Direction], stops...))
+		}
+		return blocks.Model(m).Render(ctx)
 	})
 	return blocks.Row(
 		[]blocks.Cell{blocks.Auto(logo), blocks.Auto(column)},

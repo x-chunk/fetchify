@@ -140,6 +140,9 @@ func (c card) Render(ctx beautify.Context) (dra.Model, error) {
 	if c.caption != "" {
 		opts = append(opts, blocks.SectionsCaption(c.caption), blocks.SectionsCaptionStyle(c.theme.caption))
 	}
+	if !c.theme.gradient.IsZero() {
+		opts = append(opts, blocks.SectionsBorderGradient(c.theme.gradient))
+	}
 	if c.dots {
 		opts = append(opts, blocks.SectionsFooter(paletteDots(ctx.Factory())))
 	}

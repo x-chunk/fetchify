@@ -49,6 +49,18 @@ func screenCases() []screenCase {
 	small.Logo.Size = config.SizeSmall
 	noLogo := config.Defaults()
 	noLogo.Logo.Name = config.LogoNone
+	logoGradient := config.Defaults()
+	logoGradient.Logo.Gradient = true
+	logoGradient.Logo.Direction = config.Horizontal
+	logoGradient.Border.Color = config.BorderLogo
+	rainbowFrame := config.Defaults()
+	rainbowFrame.Border.Color = config.BorderRainbow
+	rainbowFrame.Border.Direction = config.Diagonal
+	rainbowFrame.Logo.Gradient = true
+	rainbowFrame.Logo.Colors = []string{"#ff0000", "#0000ff"}
+	customFrame := config.Defaults()
+	customFrame.Border.Color = config.BorderCustom
+	customFrame.Border.Colors = []string{"#00ff00"}
 	return []screenCase{
 		{"ubuntu", ubuntuDesktop(), config.Defaults()},
 		{"arch", archLaptop(), config.Defaults()},
@@ -62,6 +74,9 @@ func screenCases() []screenCase {
 		{"logo_koala", ubuntuDesktop(), koala},
 		{"logo_small", archLaptop(), small},
 		{"logo_none", ubuntuDesktop(), noLogo},
+		{"gradient_logo", ubuntuDesktop(), logoGradient},
+		{"gradient_rainbow", archLaptop(), rainbowFrame},
+		{"frame_custom_solid", archLaptop(), customFrame},
 	}
 }
 

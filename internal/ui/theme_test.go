@@ -29,3 +29,20 @@ func TestNewTheme(t *testing.T) {
 		t.Errorf("custom accent and root: %+v", th)
 	}
 }
+
+func TestFrameColors(t *testing.T) {
+	ubuntu, _ := distro.ByID("ubuntu")
+	cfg := config.Defaults()
+	if th := newTheme(cfg, ubuntu, false); !th.gradient.IsZero() {
+		t.Error("accent frame has a gradient")
+	}
+	cfg.Border.Color = config.BorderLogo
+	// Ubuntu has one real color; TerminalDefault cannot be a stop.
+	if th := newTheme(cfg, ubuntu, false); !th.gradient.IsZero() || th.frame != dra.Foreground(ubuntu.Colors[0]) {
+		t.Errorf("logo frame of a one-color logo: %+v", th)
+	}
+	cfg.Border.Color = config.BorderRainbow
+	if th := newTheme(cfg, ubuntu, false); th.gradient.IsZero() {
+		t.Error("rainbow frame has no gradient")
+	}
+}
