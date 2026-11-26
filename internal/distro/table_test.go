@@ -94,6 +94,8 @@ func TestLookup(t *testing.T) {
 		{"direct", Release{ID: "arch"}, "arch"},
 		{"alias", Release{ID: "archarm"}, "arch"},
 		{"ID_LIKE chain", Release{ID: "garuda", IDLike: []string{"nope", "arch"}}, "arch"},
+		{"derivative", Release{ID: "neon", IDLike: []string{"ubuntu", "debian"}}, "ubuntu"},
+		{"raspbian", Release{ID: "raspbian", IDLike: []string{"debian"}}, "debian"},
 		{"unknown", Release{ID: "plan9"}, LinuxID},
 		{"empty", Release{}, LinuxID},
 		{"koala is never chosen", Release{ID: "koala"}, LinuxID},

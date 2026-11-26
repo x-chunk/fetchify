@@ -28,6 +28,20 @@ endeavouros.txt          fastfetch src/logo/ascii/e/endeavouros.txt
 endeavouros_small.txt    fetchify, after fastfetch src/logo/ascii/e/endeavouros_small.txt
 manjaro.txt              fastfetch src/logo/ascii/m/manjaro.txt
 manjaro_small.txt        fastfetch src/logo/ascii/m/manjaro_small.txt
+debian.txt               fastfetch src/logo/ascii/d/debian.txt
+debian_small.txt         fastfetch src/logo/ascii/d/debian_small.txt
+elementary.txt           fastfetch src/logo/ascii/e/elementary.txt
+elementary_small.txt     fastfetch src/logo/ascii/e/elementary_small.txt
+kali.txt                 fetchify, after fastfetch src/logo/ascii/k/kali.txt
+kali_small.txt           fetchify, after fastfetch src/logo/ascii/k/kali.txt
+linuxmint.txt            fastfetch src/logo/ascii/l/linuxmint.txt
+linuxmint_small.txt      fastfetch src/logo/ascii/l/linuxmint2_small.txt
+pop.txt                  fastfetch src/logo/ascii/p/pop.txt
+pop_small.txt            fetchify, after fastfetch src/logo/ascii/p/pop_small.txt
+ubuntu.txt               fastfetch src/logo/ascii/u/ubuntu_old.txt
+ubuntu_small.txt         fastfetch src/logo/ascii/u/ubuntu_old2_small.txt
+zorin.txt                fastfetch src/logo/ascii/z/zorin.txt
+zorin_small.txt          fetchify
 
 
 fastfetch license
