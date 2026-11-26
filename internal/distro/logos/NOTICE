@@ -42,6 +42,16 @@ ubuntu.txt               fastfetch src/logo/ascii/u/ubuntu_old.txt
 ubuntu_small.txt         fastfetch src/logo/ascii/u/ubuntu_old2_small.txt
 zorin.txt                fastfetch src/logo/ascii/z/zorin.txt
 zorin_small.txt          fetchify
+almalinux.txt            fastfetch src/logo/ascii/a/almalinux.txt
+almalinux_small.txt      fetchify
+centos.txt               fastfetch src/logo/ascii/c/centos.txt
+centos_small.txt         fastfetch src/logo/ascii/c/centos_small.txt
+fedora.txt               fastfetch src/logo/ascii/f/fedora.txt
+fedora_small.txt         fastfetch src/logo/ascii/f/fedora2_small.txt
+rhel.txt                 fastfetch src/logo/ascii/r/rhel.txt
+rhel_small.txt           fetchify, after fastfetch src/logo/ascii/r/rhel_small.txt
+rocky.txt                fastfetch src/logo/ascii/r/rocky.txt
+rocky_small.txt          fetchify, after fastfetch src/logo/ascii/r/rocky_small.txt
 
 
 fastfetch license
