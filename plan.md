@@ -1367,3 +1367,10 @@ added or changed, and why.
 | 2026-11-26 | `gpu` takes the PCI address from `device/uevent` (`PCI_SLOT_NAME`). Cards without PCI IDs, such as the VideoCore of a Raspberry Pi, are skipped. | `io/fs` cannot read symbolic links before Go 1.25, and the plan resolves names through PCI IDs only. |
 | 2026-11-26 | `/etc` is in the default disk ignore list. | Container runtimes bind-mount `/etc/hosts`, `/etc/hostname` and `/etc/resolv.conf` from the host disk; they appeared as disks. |
 | 2026-11-26 | `Options.DiskIgnore` is the collector setting of section 8.3; nil means `sysinfo.DefaultDiskIgnore`. | Keeps the default in `sysinfo`, next to the code that uses it. |
+| 2026-11-26 | `Source` gained `Interfaces`, `Readlink` and `Fetch`. | `local_ip`, `timezone` and `public_ip` need them, and section 8.2 adds a field for every new facility. |
+| 2026-11-26 | Facts can have their own default time limit (`public_ip`: 1 s); `Options.Timeouts` still overrides it. `Options.PublicIPURL` carries `items.public_ip.url`. | The global default of 200 ms is too short for a network round trip. |
+| 2026-11-26 | `gpu_driver` reads `DRIVER=` from `device/uevent` instead of the `driver` link. | Same reason as the PCI address: no symbolic links through `io/fs`. |
+| 2026-11-26 | `bios` is a struct of vendor, version and date, not a string. | `sysinfo` returns raw data; `ui` decides how to join it. |
+| 2026-11-26 | `gpu_temp` and `gpu_memory` list readings only for GPUs that report them, in bus order. | Integrated GPUs usually have neither sensor nor video memory counters. |
+| 2026-11-26 | `users` parses `run/utmp` with the glibc record layout of 384 bytes and falls back to `who`. | No dependency for one struct; `who` covers systems with another layout. |
+| 2026-11-26 | `theme`, `icon_theme`, `font`, `cursor`, `terminal_font` and `media` are `Absent` without a graphical session, a terminal or a player, and `Unknown` when the setting is not found. A command that is not installed is told apart from one that fails through `exec.ErrNotFound`. | Section 10: a missing tool is `Unknown`, a fact that does not apply is `Absent`. |
