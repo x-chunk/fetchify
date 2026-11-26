@@ -68,6 +68,9 @@ func fact[T any](get func(ctx context.Context, s *session) Value[T], field func(
 type session struct {
 	src  Source
 	opts Options
+	// cpuUsageInterval is copied from the package variable when the run
+	// starts, so a collector that outlives Collect does not read it.
+	cpuUsageInterval time.Duration
 
 	procOnce  sync.Once
 	procNames map[string]bool
@@ -99,7 +102,7 @@ func Collect(ctx context.Context, src Source, facts []Fact, opts Options) Info {
 func collect(ctx context.Context, src Source, facts []Fact, opts Options, registry map[Fact]collector) Info {
 	var info Info
 
-	s := &session{src: src, opts: opts}
+	s := &session{src: src, opts: opts, cpuUsageInterval: cpuUsageInterval}
 	seen := make(map[Fact]bool, len(facts))
 	results := make(chan func(*Info), len(facts))
 	var pending int

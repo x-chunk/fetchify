@@ -69,4 +69,8 @@ type Info struct {
 	// GPUTemp lists the temperatures of the GPUs that report one, in bus
 	// order, in degrees Celsius.
 	GPUTemp Value[[]float64]
+	// CPUUsage is the share of processor time in use, in percent.
+	CPUUsage Value[float64]
+	// Load is the load average over 1, 5 and 15 minutes.
+	Load Value[[3]float64]
 }
