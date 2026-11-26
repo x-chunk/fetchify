@@ -113,6 +113,7 @@ var (
 		users: map[int]string{1000: "bob"},
 		env: map[string]string{
 			"USER":    "bob",
+			"HOME":    "/home/bob",
 			"SHELL":   "/bin/bash",
 			"DISPLAY": ":0",
 		},

@@ -94,4 +94,12 @@ type Info struct {
 	Timezone Value[string]
 	// Date is the current time.
 	Date Value[time.Time]
+	// Theme is the GTK or widget theme.
+	Theme Value[string]
+	// IconTheme is the icon theme.
+	IconTheme Value[string]
+	// Font is the interface font with its size.
+	Font Value[string]
+	// Cursor is the cursor theme.
+	Cursor Value[string]
 }
