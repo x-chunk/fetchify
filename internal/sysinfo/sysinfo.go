@@ -47,9 +47,8 @@ type Info struct {
 	// MemoryType lists the distinct types of the installed memory
 	// modules, for example "DDR4".
 	MemoryType Value[[]string]
-	// Swap is the swap usage, or nil when it cannot be read. A Total of 0
-	// means swap is disabled.
-	Swap *Usage
+	// Swap is the use of swap space.
+	Swap Value[Usage]
 	// Disks lists the mounted file systems worth showing, in mount order.
 	Disks []Disk
 }
@@ -76,6 +75,5 @@ func run(name string, args ...string) ([]byte, error) {
 // It may run external commands (lspci, xprop, wmctrl, dmidecode) and
 // tolerates their absence.
 func collectLegacy(info *Info) {
-	info.Swap = swap()
 	info.Disks = disks()
 }

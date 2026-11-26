@@ -70,13 +70,13 @@ func memorySection(info sysinfo.Info, f *dra.Factory) []entry {
 }
 
 func swapSection(info sysinfo.Info, f *dra.Factory) []entry {
-	switch {
-	case info.Swap == nil:
+	switch info.Swap.State {
+	case sysinfo.Unknown:
 		return one("Swap", missing(f, "Error"))
-	case info.Swap.Total == 0:
+	case sysinfo.Absent:
 		return one("Swap", missing(f, "Disabled"))
 	}
-	return one("Swap", usage(f, *info.Swap, share(info.Swap.Used, info.Swap.Total), ""))
+	return one("Swap", usage(f, info.Swap.V, share(info.Swap.V.Used, info.Swap.V.Total), ""))
 }
 
 // diskSection returns one entry per disk and no entries when there are
