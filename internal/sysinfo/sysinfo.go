@@ -82,4 +82,10 @@ type Info struct {
 	Board Value[string]
 	// BIOS identifies the firmware.
 	BIOS Value[BIOS]
+	// Init is the name of the init process.
+	Init Value[string]
+	// Processes is the number of processes.
+	Processes Value[int]
+	// Users is the number of distinct users with a login session.
+	Users Value[int]
 }
