@@ -1,0 +1,66 @@
+# fetchify configuration
+#
+# Location: $XDG_CONFIG_HOME/fetchify/config.toml, or
+# ~/.config/fetchify/config.toml. Keys left out keep the values shown
+# here, and an array replaces its default as a whole.
+
+clear      = false     # clear the screen before printing
+footer     = true      # the line under the card
+timeout_ms = 200       # default time limit per item, 1-10000
+
+[logo]
+name      = "auto"     # auto | a distribution id | "koala" | "none"
+size      = "auto"     # auto | full | small
+gradient  = false      # recolor the logo with a gradient
+colors    = []         # gradient stops; empty = the logo's own colors
+direction = "vertical" # vertical | horizontal | diagonal
+
+[colors]
+mode   = "auto"        # auto | truecolor | 256 | 16 | none
+accent = "auto"        # auto = from the distribution, or "#rrggbb"
+
+[border]
+style     = "rounded"  # rounded | square | double | heavy | ascii
+color     = "accent"   # accent | logo | rainbow | custom
+colors    = []         # stops for color = "custom"
+direction = "vertical" # vertical | horizontal | diagonal
+
+[icons]
+enabled = true         # needs a Nerd Font
+
+[bars]
+style      = "block"   # block | thin
+width      = 16        # 4-40
+thresholds = [60, 85]  # percent where the color turns to warning and danger
+
+[palette]
+style = "dots"         # dots | blocks | none
+
+# Groups are the sections of the card, in order. Defining any group
+# replaces all three default groups. icon = "auto" takes the icon of the
+# default group with the same title.
+
+[[group]]
+title = "System"
+icon  = "auto"
+items = ["os", "kernel", "uptime", "packages", "shell", "terminal", "de", "wm"]
+
+[[group]]
+title = "Hardware"
+icon  = "auto"
+items = ["host", "cpu", "gpu", "display", "battery"]
+
+[[group]]
+title = "Storage"
+icon  = "auto"
+items = ["memory", "swap", "disks"]
+
+# Settings of single items. Every item accepts:
+#   label      = "..."   replaces the label
+#   icon       = "..."   replaces the icon; "" removes it
+#   timeout_ms = 500     replaces the time limit
+# Item-specific keys: items.disks.ignore, items.memory.show_type,
+# items.public_ip.url.
+
+[items.disks]
+ignore = ["/boot", "/efi", "/etc", "/run", "/var", "/tmp", "/dev", "/sys", "/proc", "/snap", "/nix/store"]
