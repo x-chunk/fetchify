@@ -1,126 +1,109 @@
 package sysinfo
 
 import (
-	"os"
-	"os/exec"
+	"net/netip"
 	"time"
 )
 
-// Info is a snapshot of the machine. Every field is optional: a zero
-// value means the fact could not be determined.
+// Info is a snapshot of the machine: one field per fact, each with the
+// state of its collection. Fields of facts that were not requested are
+// Unknown. Values are raw data, such as sizes in bytes and unformatted
+// names; presenting them is the job of the caller.
 type Info struct {
-	// User is the login name of the current user.
-	User string
+	// User is the identity the process runs as.
+	User Value[User]
 	// Hostname is the host name reported by the kernel.
-	Hostname string
-	// Root reports whether the process runs with superuser privileges.
-	Root bool
-	// OS identifies the operating system distribution.
-	OS OS
+	Hostname Value[string]
+	// OS is the raw content of os-release. Parse it with
+	// distro.ParseRelease.
+	OS Value[[]byte]
 	// Kernel is the kernel release, for example "6.8.0-45-generic".
-	Kernel string
+	Kernel Value[string]
+	// Packages lists the installed package counts per manager.
+	Packages Value[[]PackageCount]
 	// Uptime is the time since boot, with one-second resolution.
-	Uptime time.Duration
+	Uptime Value[time.Duration]
 	// Shell is the base name of the user's login shell.
-	Shell string
-	// Desktop describes the graphical session.
-	Desktop Desktop
+	Shell Value[string]
+	// Terminal is the name of the terminal emulator.
+	Terminal Value[string]
+	// Session is the protocol of the graphical session.
+	Session Value[SessionType]
+	// DE is the name of the desktop environment.
+	DE Value[string]
+	// WM is the name of the window manager or Wayland compositor.
+	WM Value[string]
+	// Host is the model of the machine.
+	Host Value[string]
 	// CPU describes the processor.
-	CPU CPU
-	// GPUs lists the names of the display adapters, in bus order.
-	GPUs []string
-	// Memory is the physical memory state, or nil when it cannot be read.
-	Memory *Memory
-	// Swap is the swap usage, or nil when it cannot be read. A Total of 0
-	// means swap is disabled.
-	Swap *Usage
+	CPU Value[CPU]
+	// GPU lists the names of the display adapters in bus order, as
+	// "<vendor> <device>" without cleaning.
+	GPU Value[[]string]
+	// Display lists the connected outputs.
+	Display Value[[]Display]
+	// Battery lists the system batteries.
+	Battery Value[[]Battery]
+	// Memory is the use of physical memory.
+	Memory Value[Usage]
+	// MemoryType lists the distinct types of the installed memory
+	// modules, for example "DDR4".
+	MemoryType Value[[]string]
+	// Swap is the use of swap space.
+	Swap Value[Usage]
 	// Disks lists the mounted file systems worth showing, in mount order.
-	Disks []Disk
-}
+	Disks Value[[]Disk]
 
-// OS identifies an operating system distribution.
-type OS struct {
-	// Name is the distribution identifier, for example "ubuntu".
-	Name string
-	// Version is the distribution version, for example "24.04".
-	Version string
-}
+	// The facts below are opt-in: they are collected only when asked for.
 
-// Desktop describes the graphical session.
-type Desktop struct {
-	// WM is the name of the window manager or desktop environment. It is
-	// empty when there is no graphical session or it cannot be detected.
-	WM string
-	// Server is the display server protocol of the session.
-	Server DisplayServer
-}
-
-// DisplayServer is a display server protocol.
-type DisplayServer string
-
-// The display server protocols fetchify can tell apart.
-const (
-	X11     DisplayServer = "X11"
-	Wayland DisplayServer = "Wayland"
-)
-
-// CPU describes the processor.
-type CPU struct {
-	// Model is the model name of the first processor.
-	Model string
-	// Cores is the number of logical CPUs usable by the process.
-	Cores int
-}
-
-// Usage is an amount of a resource in use out of a total.
-type Usage struct {
-	// Used and Total are sizes in bytes.
-	Used, Total uint64
-	// Percent is the used share in the range 0-100 as reported by the
-	// system. It can differ from Used/Total for file systems, where
-	// reserved blocks are excluded.
-	Percent float64
-}
-
-// Memory is the state of physical memory.
-type Memory struct {
-	Usage
-	// Types lists the distinct module types, for example "DDR4". It is
-	// empty when the types cannot be read, which requires root.
-	Types []string
-}
-
-// Disk is a mounted file system.
-type Disk struct {
-	Usage
-	// Mountpoint is the path the file system is mounted at.
-	Mountpoint string
-	// Filesystem is the file system type, for example "ext4".
-	Filesystem string
-}
-
-// runner runs an external command and returns its standard output.
-// Collectors take it as a parameter so tests can replace it.
-type runner func(name string, args ...string) ([]byte, error)
-
-// run is the runner that executes real commands.
-func run(name string, args ...string) ([]byte, error) {
-	return exec.Command(name, args...).Output()
-}
-
-// Collect gathers a snapshot of the machine. It never fails: facts that
-// cannot be determined are left at their zero values. It may run external
-// commands (lspci, xprop, wmctrl, dmidecode) and tolerates their absence.
-func Collect() Info {
-	var info Info
-	collectHost(&info)
-	info.Root = os.Geteuid() == 0
-	info.Shell = shell(os.Getenv)
-	info.Desktop = desktop(run, os.Getenv)
-	info.CPU = processor()
-	info.GPUs = gpus(run)
-	info.Memory = memory(run, info.Root)
-	info.Swap = swap()
-	info.Disks = disks()
-	return info
+	// LocalIP is the first global unicast address of the machine.
+	LocalIP Value[LocalIP]
+	// PublicIP is the address the machine has on the internet.
+	PublicIP Value[netip.Addr]
+	// Network is the interface of the default route.
+	Network Value[Network]
+	// Bluetooth reports whether Bluetooth is on.
+	Bluetooth Value[bool]
+	// CPUTemp is the temperature of the processor in degrees Celsius.
+	CPUTemp Value[float64]
+	// GPUTemp lists the temperatures of the GPUs that report one, in bus
+	// order, in degrees Celsius.
+	GPUTemp Value[[]float64]
+	// CPUUsage is the share of processor time in use, in percent.
+	CPUUsage Value[float64]
+	// Load is the load average over 1, 5 and 15 minutes.
+	Load Value[[3]float64]
+	// GPUDriver lists the kernel drivers of the GPUs in bus order.
+	GPUDriver Value[[]string]
+	// GPUMemory lists the video memory use of the GPUs that report it,
+	// in bus order.
+	GPUMemory Value[[]Usage]
+	// Board is the vendor and the name of the main board.
+	Board Value[string]
+	// BIOS identifies the firmware.
+	BIOS Value[BIOS]
+	// Init is the name of the init process.
+	Init Value[string]
+	// Processes is the number of processes.
+	Processes Value[int]
+	// Users is the number of distinct users with a login session.
+	Users Value[int]
+	// Locale is the locale of messages, for example "en_US.UTF-8".
+	Locale Value[string]
+	// Timezone is the IANA name of the time zone.
+	Timezone Value[string]
+	// Date is the current time.
+	Date Value[time.Time]
+	// Theme is the GTK or widget theme.
+	Theme Value[string]
+	// IconTheme is the icon theme.
+	IconTheme Value[string]
+	// Font is the interface font with its size.
+	Font Value[string]
+	// Cursor is the cursor theme.
+	Cursor Value[string]
+	// TerminalFont is the font of the terminal emulator.
+	TerminalFont Value[string]
+	// Media is what a media player is playing.
+	Media Value[Media]
 }

@@ -1,0 +1,12 @@
+Package: bash
+Status: install ok installed
+Version: 5.2
+
+Package: old
+Status: deinstall ok config-files
+
+Package: coreutils
+Status: install ok installed
+
+Package: zsh
+Status: install ok installed

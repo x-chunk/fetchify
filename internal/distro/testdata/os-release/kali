@@ -1,0 +1,6 @@
+PRETTY_NAME="Kali GNU/Linux Rolling"
+NAME="Kali GNU/Linux"
+VERSION_ID="2024.4"
+VERSION="2024.4"
+ID=kali
+ID_LIKE=debian

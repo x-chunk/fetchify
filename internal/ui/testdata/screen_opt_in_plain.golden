@@ -1,0 +1,48 @@
+                                          ╭─ 󰋽 System ───────────────────────────────────── alice@box ─╮
+                                          │  OS          Ubuntu 24.04 LTS                             │
+                                          │  Kernel      6.8.0-45-generic                             │
+                                          │ 󰅐 Uptime      3h 25m                                       │
+                                          │ 󰏖 Packages    1842 (dpkg), 12 (flatpak)                    │
+                                          │  Shell       zsh                                          │
+                                          │  Terminal    kitty                                        │
+                                          │  DE          GNOME                                        │
+                                          │  WM          Mutter  Wayland                              │
+                                          ├─ 󰘚 Hardware ───────────────────────────────────────────────┤
+                                          │ 󰌢 Host        ThinkPad X1 Carbon Gen 11                    │
+                                          │  CPU         AMD Ryzen 7 5800X  16 cores                  │
+                                          │ 󰢮 GPU         NVIDIA GeForce RTX 3070                      │
+                                          │ 󰍹 Display     2560x1440                                    │
+             --+oossssssoo+--             │ 󰁹 Battery     ████████████░░░░  78%  charging              │
+         .:+ssssssssssssssssss+:.         ├─ 󰆼 Storage ────────────────────────────────────────────────┤
+       -+ssssssssssssssssssyyssss+-       │ 󰍛 RAM         ████░░░░░░░░░░░░  8.0 / 32.0 GiB  25%        │
+     .ossssssssssssssssssdMMMNysssso.     │ 󰓡 Swap        ████░░░░░░░░░░░░  1.0 /  4.0 GiB  25%        │
+   /ssssssssssshdmmNNmmyNMMMMhssssss/     │ 󰋊 /           ███░░░░░░░░░░░░░  100 /  500 GiB  21%  ext4  │
+  +ssssssssshmydMMMMMMMNddddyssssssss+    │ 󰋊 /home       ████░░░░░░░░░░░░  250 / 1000 GiB  25%  btrfs │
+ /sssssssshNMMMyhhyyyyhmNMMMNhssssssss/   ├─ Extra ────────────────────────────────────────────────────┤
+.ssssssssdMMMNhsssssssssshNMMMdssssssss.  │ 󰘮 BIOS        American Megatrends Inc. 4601  09/18/2013    │
++sssshhhyNMMNyssssssssssssyNMMMysssssss+  │ 󰂯 Bluetooth    on                                          │
+ossyNMMMNyMMhsssssssssssssshmmmhssssssso  │ 󰚗 Board       ASUSTeK COMPUTER INC. P8H61-M LX             │
+ossyNMMMNyMMhsssssssssssssshmmmhssssssso  │ 󰔏 CPU Temp    54°C                                         │
++sssshhhyNMMNyssssssssssssyNMMMysssssss+  │ 󰊚 CPU Usage   █████░░░░░░░░░░░  31%                        │
+.ssssssssdMMMNhsssssssssshNMMMdssssssss.  │ 󰇀 Cursor      Bibata                                       │
+ /sssssssshNMMMyhhyyyyhdNMMMNhssssssss/   │ 󰃭 Date        2026-11-26 16:06                             │
+  +sssssssssdmydMMMMMMMMddddyssssssss+    │ 󰛖 Font        Inter 10                                     │
+   /ssssssssssshdmNNNNmyNMMMMhssssss/     │ 󰢻 GPU Driver  nvidia                                       │
+    .ossssssssssssssssssdMMMNysssso.      │ 󰾲 VRAM        █░░░░░░░░░░░░░░░  0.5 / 8.0 GiB   6%         │
+     -+sssssssssssssssssyyyssss+-         │ 󰔏 GPU Temp    71°C                                         │
+       `:+ssssssssssssssssss+:´           │ 󰔏 GPU Temp    90°C                                         │
+           --+oossssssoo+--               │ 󰚝 Icons       Papirus                                      │
+                                          │ 󱓞 Init        systemd                                      │
+                                          │ 󰄪 Load        0.52 0.58 0.59                               │
+                                          │ 󰩠 Local IP    192.168.1.23  wlan0                          │
+                                          │ 󰗊 Locale      en_US.UTF-8                                  │
+                                          │ 󰝚 Media       Daft Punk - Around the World  playing        │
+                                          │ 󰀂 Network     Home  wifi, wlan0                            │
+                                          │ 󰉻 Processes   308                                          │
+                                          │ 󰇧 Public IP   203.0.113.7                                  │
+                                          │ 󰛖 Term Font   JetBrains Mono                               │
+                                          │ 󰏘 Theme       Adwaita-dark                                 │
+                                          │ 󰛍 Timezone    Asia/Oral                                    │
+                                          │ 󰀎 Users       1                                            │
+                                          ╰────────────────────────────────────────── ● ● ● ● ● ● ● ● ─╯
+                                            collected in 12 ms

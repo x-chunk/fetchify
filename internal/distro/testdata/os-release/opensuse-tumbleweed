@@ -1,0 +1,8 @@
+NAME="openSUSE Tumbleweed"
+# VERSION="20241120"
+ID="opensuse-tumbleweed"
+ID_LIKE="opensuse suse"
+VERSION_ID="20241120"
+PRETTY_NAME="openSUSE Tumbleweed"
+ANSI_COLOR="0;32"
+CPE_NAME="cpe:/o:opensuse:tumbleweed:20241120"

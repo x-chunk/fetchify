@@ -1,0 +1,8 @@
+BUG_REPORT_URL="https://github.com/NixOS/nixpkgs/issues"
+BUILD_ID="24.11.20241123.abcdef0"
+ID=nixos
+NAME=NixOS
+PRETTY_NAME="NixOS 24.11 (Vicuna)"
+VERSION="24.11 (Vicuna)"
+VERSION_CODENAME=vicuna
+VERSION_ID="24.11"

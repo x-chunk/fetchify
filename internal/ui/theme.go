@@ -1,24 +1,74 @@
 package ui
 
-import "go.xchunk.org/fetchify/internal/render"
+import (
+	"go.xchunk.org/beautify/dra"
 
-// The styles of the screen, named by role so that the look is defined in
-// one place.
-var (
-	styleKey      = render.Foreground(render.Yellow)
-	styleUser     = render.Foreground(render.Red)
-	styleAt       = render.Foreground(render.Green)
-	styleHost     = render.Foreground(render.Cyan)
-	styleRule     = render.Foreground(render.Green)
-	styleWarning  = render.Foreground(render.Red)
-	styleMissing  = render.Foreground(render.Red)
-	styleUsed     = render.Foreground(render.Green)
-	styleTotal    = render.Foreground(render.Cyan)
-	styleCategory = render.Foreground(render.Magenta)
+	"go.xchunk.org/fetchify/v2/internal/config"
+	"go.xchunk.org/fetchify/v2/internal/distro"
 )
 
-// paletteColors is the order of the color swatches under the info list.
-var paletteColors = []render.Color{
-	render.Black, render.Red, render.Green, render.Yellow,
-	render.Blue, render.Magenta, render.Cyan, render.White,
+// theme holds the styles of the card by role. It is resolved once per
+// run from the configuration and the distribution; no part of the screen
+// uses a color directly.
+//
+// Good, Warning, Danger, Muted and the palette use the 16-color palette
+// so that they follow the terminal theme. The accent is 24-bit: it
+// carries the identity of the distribution, and beautify converts it for
+// weaker terminals.
+type theme struct {
+	accent  dra.Color
+	frame   dra.Style
+	title   dra.Style
+	label   dra.Style
+	icon    dra.Style
+	value   dra.Style
+	muted   dra.Style
+	caption dra.Style
+	good    dra.Style
+	warning dra.Style
+	danger  dra.Style
+	// badge is the neutral look of a badge.
+	badge dra.Style
+	// gradient colors the frame instead of frame when it has stops.
+	gradient dra.Gradient
+}
+
+// newTheme resolves the theme. The accent is the configured color or, for
+// "auto" and anything that does not parse, the accent of d. root turns
+// the caption red, which replaces the old warning text.
+func newTheme(cfg config.Config, d distro.Distro, root bool) theme {
+	accent := d.Accent
+	if cfg.Colors.Accent != config.AccentAuto {
+		if c, err := dra.Hex(cfg.Colors.Accent); err == nil {
+			accent = c
+		}
+	}
+	muted := dra.Foreground(dra.BrightBlack)
+	caption := dra.Style{Attrs: dra.Bold}
+	if root {
+		caption = dra.Foreground(dra.Red).WithAttrs(dra.Bold)
+	}
+	frame := dra.Foreground(accent)
+	var gradient dra.Gradient
+	switch stops := frameColors(cfg, d.Colors); len(stops) {
+	case 0:
+	case 1:
+		frame = dra.Foreground(stops[0])
+	default:
+		gradient = dra.NewGradient(axes[cfg.Border.Direction], stops...)
+	}
+	return theme{
+		accent:   accent,
+		frame:    frame,
+		gradient: gradient,
+		title:    dra.Foreground(accent).WithAttrs(dra.Bold),
+		label:    dra.Foreground(accent),
+		icon:     dra.Foreground(accent),
+		muted:    muted,
+		caption:  caption,
+		good:     dra.Foreground(dra.Green),
+		warning:  dra.Foreground(dra.Yellow),
+		danger:   dra.Foreground(dra.Red),
+		badge:    muted.WithAttrs(dra.Reverse),
+	}
 }

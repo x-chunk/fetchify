@@ -1,0 +1,8 @@
+C:Q1x
+P:musl
+V:1.2
+
+P:busybox
+V:1.36
+
+P:alpine-baselayout

@@ -1,0 +1,20 @@
+             --+oossssssoo+--
+         .:+ssssssssssssssssss+:.
+       -+ssssssssssssssssssyyssss+-
+     .ossssssssssssssssssd${2}MMMNy${1}sssso.
+   /sssssssssss${2}hdmmNNmmyNMMMMh${1}ssssss/
+  +sssssssss${2}hm${1}yd${2}MMMMMMMNddddy${1}ssssssss+
+ /ssssssss${2}hNMMM${1}yh${2}hyyyyhmNMMMNh${1}ssssssss/
+.ssssssss${2}dMMMNh${1}ssssssssss${2}hNMMMd${1}ssssssss.
++ssss${2}hhhyNMMNy${1}ssssssssssss${2}yNMMMy${1}sssssss+
+oss${2}yNMMMNyMMh${1}ssssssssssssss${2}hmmmh${1}ssssssso
+oss${2}yNMMMNyMMh${1}sssssssssssssshmmmhssssssso
++ssss${2}hhhyNMMNy${1}ssssssssssss${2}yNMMMy${1}sssssss+
+.ssssssss${2}dMMMNh${1}ssssssssss${2}hNMMMd${1}ssssssss.
+ /ssssssss${2}hNMMM${1}yh${2}hyyyyhdNMMMNh${1}ssssssss/
+  +sssssssss${2}dm${1}yd${2}MMMMMMMMddddy${1}ssssssss+
+   /sssssssssss${2}hdmNNNNmyNMMMMh${1}ssssss/
+    .ossssssssssssssssss${2}dMMMNy${1}sssso.
+     -+sssssssssssssssss${2}yyy${1}ssss+-
+       `:+ssssssssssssssssss+:´
+           --+oossssssoo+--

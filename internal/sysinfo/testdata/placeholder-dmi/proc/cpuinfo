@@ -1,0 +1,12 @@
+processor	: 0
+vendor_id	: AuthenticAMD
+model name	: AMD Ryzen 5 3600 6-Core Processor
+cpu MHz		: 3800.000
+flags		: fpu vme
+
+processor	: 1
+vendor_id	: AuthenticAMD
+model name	: AMD Ryzen 5 3600 6-Core Processor
+cpu MHz		: 3800.000
+flags		: fpu vme
+

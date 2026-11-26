@@ -1,0 +1,22 @@
+                                          ╭─ 󰋽 System ─────────────────────────────────── alice@box ─╮
+             --+oossssssoo+--             │  OS        Ubuntu 24.04 LTS                             │
+         .:+ssssssssssssssssss+:.         │  Kernel    6.8.0-45-generic                             │
+       -+ssssssssssssssssssyyssss+-       │ 󰅐 Uptime    3h 25m                                       │
+     .ossssssssssssssssssdMMMNysssso.     │ 󰏖 Packages  1842 (dpkg), 12 (flatpak)                    │
+   /ssssssssssshdmmNNmmyNMMMMhssssss/     │  Shell     zsh                                          │
+  +ssssssssshmydMMMMMMMNddddyssssssss+    │  Terminal  kitty                                        │
+ /sssssssshNMMMyhhyyyyhmNMMMNhssssssss/   │  DE        GNOME                                        │
+.ssssssssdMMMNhsssssssssshNMMMdssssssss.  │  WM        Mutter  Wayland                              │
++sssshhhyNMMNyssssssssssssyNMMMysssssss+  ├─ 󰘚 Hardware ─────────────────────────────────────────────┤
+ossyNMMMNyMMhsssssssssssssshmmmhssssssso  │ 󰌢 Host      ThinkPad X1 Carbon Gen 11                    │
+ossyNMMMNyMMhsssssssssssssshmmmhssssssso  │  CPU       AMD Ryzen 7 5800X  16 cores                  │
++sssshhhyNMMNyssssssssssssyNMMMysssssss+  │ 󰢮 GPU       NVIDIA GeForce RTX 3070                      │
+.ssssssssdMMMNhsssssssssshNMMMdssssssss.  │ 󰍹 Display   2560x1440                                    │
+ /sssssssshNMMMyhhyyyyhdNMMMNhssssssss/   │ 󰁹 Battery   ████████████░░░░  78%  charging              │
+  +sssssssssdmydMMMMMMMMddddyssssssss+    ├─ 󰆼 Storage ──────────────────────────────────────────────┤
+   /ssssssssssshdmNNNNmyNMMMMhssssss/     │ 󰍛 RAM       ████░░░░░░░░░░░░  8.0 / 32.0 GiB  25%        │
+    .ossssssssssssssssssdMMMNysssso.      │ 󰓡 Swap      ████░░░░░░░░░░░░  1.0 /  4.0 GiB  25%        │
+     -+sssssssssssssssssyyyssss+-         │ 󰋊 /         ███░░░░░░░░░░░░░  100 /  500 GiB  21%  ext4  │
+       `:+ssssssssssssssssss+:´           │ 󰋊 /home     ████░░░░░░░░░░░░  250 / 1000 GiB  25%  btrfs │
+           --+oossssssoo+--               ╰──────────────────────────────────────── ● ● ● ● ● ● ● ● ─╯
+                                            collected in 12 ms

@@ -1,0 +1,12 @@
+processor	: 0
+vendor_id	: AuthenticAMD
+model name	: Intel(R) Xeon(R) Gold 6130 CPU @ 2.10GHz
+cpu MHz		: 3800.000
+flags		: fpu vme
+
+processor	: 1
+vendor_id	: AuthenticAMD
+model name	: Intel(R) Xeon(R) Gold 6130 CPU @ 2.10GHz
+cpu MHz		: 3800.000
+flags		: fpu vme
+

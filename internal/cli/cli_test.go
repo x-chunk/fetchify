@@ -1,0 +1,80 @@
+package cli
+
+import (
+	"errors"
+	"strings"
+	"testing"
+
+	"go.xchunk.org/fetchify/v2/internal/config"
+)
+
+// logos are the logo names of the tests.
+var logos = []string{"arch", "koala"}
+
+func TestParse(t *testing.T) {
+	tests := []struct {
+		args []string
+		want Options
+	}{
+		{nil, Options{}},
+		{[]string{"--help"}, Options{Help: true}},
+		{[]string{"-h"}, Options{Help: true}},
+		{[]string{"--dont-clear"}, Options{}},
+		{[]string{"--clear"}, Options{Clear: true}},
+		{[]string{"--config", "/x.toml", "--logo=arch", "--no-icons"}, Options{ConfigPath: "/x.toml", Logo: "arch", NoIcons: true}},
+		{[]string{"--logo", "none", "--print-config"}, Options{Logo: "none", PrintConfig: true}},
+		{[]string{"--no-color"}, Options{NoColor: true}},
+		{[]string{"--version"}, Options{Version: true}},
+	}
+	for _, tt := range tests {
+		got, err := Parse(tt.args, logos)
+		if err != nil || got != tt.want {
+			t.Errorf("Parse(%q) = %+v, %v; want %+v", tt.args, got, err, tt.want)
+		}
+	}
+}
+
+func TestParseErrors(t *testing.T) {
+	for _, args := range [][]string{{"--nope"}, {"extra"}, {"--help=maybe"}, {"--logo", "windows"}, {"--config"}} {
+		_, err := Parse(args, logos)
+		if !errors.Is(err, ErrUsage) {
+			t.Errorf("Parse(%q) error = %v, want ErrUsage", args, err)
+		}
+	}
+}
+
+func TestUnknownLogoListsKnown(t *testing.T) {
+	_, err := Parse([]string{"--logo", "windows"}, logos)
+	if err == nil || !strings.Contains(err.Error(), "arch, koala") {
+		t.Errorf("err = %v", err)
+	}
+}
+
+func TestApply(t *testing.T) {
+	cfg := config.Defaults()
+	Options{Logo: "koala", NoIcons: true, NoColor: true, Clear: true}.Apply(&cfg)
+	if cfg.Logo.Name != "koala" || cfg.Icons.Enabled || cfg.Colors.Mode != config.ModeNone || !cfg.Clear {
+		t.Errorf("Apply: %+v %+v", cfg.Logo, cfg.Icons)
+	}
+	cfg = config.Defaults()
+	Options{}.Apply(&cfg)
+	if cfg.Logo.Name != config.LogoAuto || !cfg.Icons.Enabled {
+		t.Error("empty options changed the configuration")
+	}
+}
+
+func TestUsage(t *testing.T) {
+	if !strings.HasPrefix(Usage(), "Usage: fetchify") {
+		t.Errorf("usage = %q", Usage())
+	}
+	if strings.Contains(Usage(), "dont-clear") {
+		t.Error("the ignored --dont-clear is listed in the help")
+	}
+}
+
+func TestVersion(t *testing.T) {
+	// Test binaries carry no module version.
+	if v := Version(); v != "dev" {
+		t.Errorf("Version() = %q, want dev", v)
+	}
+}
