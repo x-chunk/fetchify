@@ -1,6 +1,7 @@
 package sysinfo
 
 import (
+	"context"
 	"errors"
 	"slices"
 	"testing"
@@ -141,8 +142,9 @@ func TestIsIgnoredMount(t *testing.T) {
 	}
 }
 
+// TestCollect is the smoke test against the machine that runs the tests.
 func TestCollect(t *testing.T) {
-	info := Collect()
+	info := Collect(context.Background(), SystemSource(), Facts(), Options{})
 	if info.CPU.Cores < 1 {
 		t.Errorf("CPU.Cores = %d, want at least 1", info.CPU.Cores)
 	}

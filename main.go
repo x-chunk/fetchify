@@ -3,6 +3,7 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"io"
@@ -54,7 +55,7 @@ func run(args []string, stdout, stderr io.Writer) int {
 		beautify.WithProfile(dra.ProfileANSI16),
 		beautify.WithWidth(0),
 	)
-	if err := composer.Render(ui.Build(sysinfo.Collect())); err != nil {
+	if err := composer.Render(ui.Build(sysinfo.Collect(context.Background(), sysinfo.SystemSource(), sysinfo.Facts(), sysinfo.Options{}))); err != nil {
 		fmt.Fprintln(stderr, "fetchify:", err)
 		return 1
 	}

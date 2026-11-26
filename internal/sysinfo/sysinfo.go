@@ -108,12 +108,11 @@ func run(name string, args ...string) ([]byte, error) {
 	return exec.Command(name, args...).Output()
 }
 
-// Collect gathers a snapshot of the machine. It never fails: facts that
-// cannot be determined are left at their zero values. It may run external
-// commands (lspci, xprop, wmctrl, dmidecode) and tolerates their absence.
-func Collect() Info {
-	var info Info
-	collectHost(&info)
+// collectLegacy fills the fields that are not yet collected as facts.
+// It may run external commands (lspci, xprop, wmctrl, dmidecode) and
+// tolerates their absence.
+func collectLegacy(info *Info) {
+	collectHost(info)
 	info.Root = os.Geteuid() == 0
 	info.Shell = shell(os.Getenv)
 	info.Desktop = desktop(run, os.Getenv)
@@ -122,5 +121,4 @@ func Collect() Info {
 	info.Memory = memory(run, info.Root)
 	info.Swap = swap()
 	info.Disks = disks()
-	return info
 }
