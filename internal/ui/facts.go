@@ -15,6 +15,7 @@ var facts = []sysinfo.Fact{
 	sysinfo.FactCPU,
 	sysinfo.FactGPU,
 	sysinfo.FactMemory,
+	sysinfo.FactMemoryType,
 }
 
 // Facts returns the facts the screen needs. Pass them to sysinfo.Collect.

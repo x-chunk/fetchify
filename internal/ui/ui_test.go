@@ -143,6 +143,13 @@ func TestSections(t *testing.T) {
 			[]string{"GPU: Intel UHD", "GPU: NVIDIA RTX"},
 		},
 		{"no session", desktopSection, func(i *sysinfo.Info) { i.Session = sysinfo.Value[sysinfo.SessionType]{State: sysinfo.Absent} }, []string{"WM: i3"}},
+		{
+			"memory types", memorySection,
+			func(i *sysinfo.Info) {
+				i.MemoryType = sysinfo.Value[[]string]{State: sysinfo.Present, V: []string{"DDR4", "DDR5"}}
+			},
+			[]string{"RAM: 8.00 GiB / 32.00 GiB (25%) - DDR4, DDR5"},
+		},
 		{"swap disabled", swapSection, func(i *sysinfo.Info) { i.Swap = &sysinfo.Usage{} }, []string{"Swap: Disabled"}},
 		{"no disks", diskSection, func(i *sysinfo.Info) { i.Disks = nil }, nil},
 	}

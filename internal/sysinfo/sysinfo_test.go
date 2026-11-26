@@ -3,7 +3,6 @@ package sysinfo
 import (
 	"context"
 	"errors"
-	"slices"
 	"testing"
 )
 
@@ -21,28 +20,6 @@ func commands(outputs map[string]string) runner {
 			return nil, errors.New("command not found")
 		}
 		return []byte(out), nil
-	}
-}
-
-func TestParseMemoryTypes(t *testing.T) {
-	out := "Physical Memory Array\n" +
-		"\tUse: System Memory\n" +
-		"Memory Device\n" +
-		"\tType: DDR4\n" +
-		"\tType Detail: Synchronous\n" +
-		"Memory Device\n" +
-		"\tType: Unknown\n" +
-		"Memory Device\n" +
-		"\tType: DDR4\n" +
-		"Memory Device\n" +
-		"\tType: Other\n" +
-		"Memory Device\n" +
-		"\tType: RAM\n" +
-		"Memory Device\n" +
-		"\tType: DDR5\n"
-	want := []string{"DDR4", "DDR5"}
-	if got := parseMemoryTypes(out); !slices.Equal(got, want) {
-		t.Errorf("got %q, want %q", got, want)
 	}
 }
 

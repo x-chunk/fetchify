@@ -44,6 +44,9 @@ type Info struct {
 	Battery Value[[]Battery]
 	// Memory is the use of physical memory.
 	Memory Value[Usage]
+	// MemoryType lists the distinct types of the installed memory
+	// modules, for example "DDR4".
+	MemoryType Value[[]string]
 	// Swap is the swap usage, or nil when it cannot be read. A Total of 0
 	// means swap is disabled.
 	Swap *Usage

@@ -65,7 +65,8 @@ func memorySection(info sysinfo.Info, f *dra.Factory) []entry {
 	if info.Memory.State != sysinfo.Present {
 		return one("RAM", missing(f, "Error"))
 	}
-	return one("RAM", usage(f, info.Memory.V, share(info.Memory.V.Used, info.Memory.V.Total), ""))
+	types := strings.Join(info.MemoryType.V, ", ")
+	return one("RAM", usage(f, info.Memory.V, share(info.Memory.V.Used, info.Memory.V.Total), types))
 }
 
 func swapSection(info sysinfo.Info, f *dra.Factory) []entry {
