@@ -1,6 +1,7 @@
 package ui
 
 import (
+	"net/netip"
 	"time"
 
 	"go.xchunk.org/fetchify/internal/sysinfo"
@@ -145,6 +146,36 @@ func raspberryPi() sysinfo.Info {
 			{Mountpoint: "/", Filesystem: "ext4", Usage: sysinfo.Usage{Used: 6 * gibibyte, Total: 29 * gibibyte, Available: 22 * gibibyte}},
 		}),
 	}
+}
+
+// everyOptIn has a value for every opt-in fact.
+func everyOptIn() sysinfo.Info {
+	info := ubuntuDesktop()
+	info.LocalIP = present(sysinfo.LocalIP{Addr: netip.MustParseAddr("192.168.1.23"), Interface: "wlan0"})
+	info.PublicIP = present(netip.MustParseAddr("203.0.113.7"))
+	info.Network = present(sysinfo.Network{Interface: "wlan0", Type: "wifi", SSID: "Home"})
+	info.Bluetooth = present(true)
+	info.CPUTemp = present(54.4)
+	info.GPUTemp = present([]float64{71, 90})
+	info.CPUUsage = present(31.2)
+	info.Load = present([3]float64{0.52, 0.58, 0.59})
+	info.GPUDriver = present([]string{"nvidia"})
+	info.GPUMemory = present([]sysinfo.Usage{{Used: 512 << 20, Total: 8 * gibibyte, Available: 8*gibibyte - 512<<20}})
+	info.Board = present("ASUSTeK COMPUTER INC. P8H61-M LX")
+	info.BIOS = present(sysinfo.BIOS{Vendor: "American Megatrends Inc.", Version: "4601", Date: "09/18/2013"})
+	info.Init = present("systemd")
+	info.Processes = present(308)
+	info.Users = present(1)
+	info.Locale = present("en_US.UTF-8")
+	info.Timezone = present("Asia/Oral")
+	info.Date = present(time.Date(2026, 11, 26, 16, 6, 0, 0, time.UTC))
+	info.Theme = present("Adwaita-dark")
+	info.IconTheme = present("Papirus")
+	info.Font = present("Inter 10")
+	info.Cursor = present("Bibata")
+	info.TerminalFont = present("JetBrains Mono")
+	info.Media = present(sysinfo.Media{Artist: "Daft Punk", Title: "Around the World", Status: "Playing"})
+	return info
 }
 
 // unknownEverything has every default fact Unknown.

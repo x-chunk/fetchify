@@ -33,3 +33,11 @@ func TestIconsArePrivateUse(t *testing.T) {
 		}
 	}
 }
+
+func TestEveryItemHasAnIcon(t *testing.T) {
+	for _, id := range ItemIDs() {
+		if _, ok := itemIcons[id]; !ok && id != "os" {
+			t.Errorf("item %q has no icon", id)
+		}
+	}
+}

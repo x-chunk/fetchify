@@ -1,6 +1,7 @@
 package ui
 
 import (
+	"slices"
 	"strings"
 	"testing"
 	"time"
@@ -64,6 +65,23 @@ func screenCases() []screenCase {
 	customFrame.Border.Colors = []string{"#00ff00"}
 	noFooter := config.Defaults()
 	noFooter.Footer = false
+	optIn := config.Defaults()
+	var optInItems []string
+	for _, id := range ItemIDs() {
+		if !slices.ContainsFunc(optIn.Groups, func(g config.Group) bool { return slices.Contains(g.Items, id) }) {
+			optInItems = append(optInItems, id)
+		}
+	}
+	optIn.Groups = append(optIn.Groups, config.Group{Title: "Extra", Icon: "", Items: optInItems})
+	custom := config.Defaults()
+	custom.Groups = []config.Group{
+		{Title: "Me", Icon: config.IconAuto, Items: []string{"os", "shell", "uptime"}},
+		{Title: "Nothing", Items: []string{"battery"}},
+		{Title: "Box", Icon: "*", Items: []string{"cpu", "memory"}},
+	}
+	thin := config.Defaults()
+	thin.Bars.Style = config.BarThin
+	thin.Border.Style = config.BorderHeavy
 	return []screenCase{
 		{"ubuntu", ubuntuDesktop(), config.Defaults()},
 		{"arch", archLaptop(), config.Defaults()},
@@ -81,6 +99,9 @@ func screenCases() []screenCase {
 		{"gradient_rainbow", archLaptop(), rainbowFrame},
 		{"frame_custom_solid", archLaptop(), customFrame},
 		{"no_footer", ubuntuDesktop(), noFooter},
+		{"opt_in", everyOptIn(), optIn},
+		{"custom_groups", sshServer(), custom},
+		{"thin_heavy", archLaptop(), thin},
 	}
 }
 
