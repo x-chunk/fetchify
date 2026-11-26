@@ -47,14 +47,14 @@ func run(args []string, stdout, stderr io.Writer) int {
 		clearScreen(stdout)
 	}
 
-	screen, err := ui.Build(sysinfo.Collect()).Render(beautify.NewContext(nil))
-	if err != nil {
-		fmt.Fprintln(stderr, "fetchify:", err)
-		return 1
-	}
-	out := dra.NewEngine(dra.ProfileANSI16).Append(nil, screen)
-	out = append(out, '\n')
-	if _, err := stdout.Write(out); err != nil {
+	// The profile and the width are fixed until the screen learns to
+	// adapt to the terminal: ANSI16 is what fetchify has always written,
+	// and an unbounded width keeps lines from being cut.
+	composer := beautify.NewComposer(stdout,
+		beautify.WithProfile(dra.ProfileANSI16),
+		beautify.WithWidth(0),
+	)
+	if err := composer.Render(ui.Build(sysinfo.Collect())); err != nil {
 		fmt.Fprintln(stderr, "fetchify:", err)
 		return 1
 	}

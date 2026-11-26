@@ -2,9 +2,15 @@ package main
 
 import (
 	"bytes"
+	"errors"
 	"strings"
 	"testing"
 )
+
+// failingWriter rejects every write.
+type failingWriter struct{}
+
+func (failingWriter) Write([]byte) (int, error) { return 0, errors.New("disk full") }
 
 func TestRunHelp(t *testing.T) {
 	var stdout, stderr bytes.Buffer
@@ -34,5 +40,15 @@ func TestRunPrintsScreen(t *testing.T) {
 	out := stdout.String()
 	if !strings.Contains(out, "==== Fetchify ====") || !strings.HasSuffix(out, "\n") {
 		t.Errorf("unexpected output: %q", out)
+	}
+}
+
+func TestRunWriteError(t *testing.T) {
+	var stderr bytes.Buffer
+	if code := run([]string{"--dont-clear"}, failingWriter{}, &stderr); code != 1 {
+		t.Errorf("exit code = %d, want 1", code)
+	}
+	if !strings.Contains(stderr.String(), "disk full") {
+		t.Errorf("stderr = %q, want the write error", stderr.String())
 	}
 }
