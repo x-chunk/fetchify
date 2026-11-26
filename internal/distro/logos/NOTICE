@@ -18,6 +18,16 @@ koala.txt                fetchify (the mascot; the drawing is signed "mh")
 koala_small.txt          fetchify
 linux.txt                fastfetch src/logo/ascii/l/linux.txt
 linux_small.txt          fastfetch src/logo/ascii/l/linux_small.txt
+arch.txt                 fastfetch src/logo/ascii/a/arch.txt
+arch_small.txt           fastfetch src/logo/ascii/a/arch_small.txt
+artix.txt                fastfetch src/logo/ascii/a/artix.txt
+artix_small.txt          fastfetch src/logo/ascii/a/artix2_small.txt
+cachyos.txt              fetchify, after fastfetch src/logo/ascii/c/cachyos.txt
+cachyos_small.txt        fetchify, after fastfetch src/logo/ascii/c/cachyos_small.txt
+endeavouros.txt          fastfetch src/logo/ascii/e/endeavouros.txt
+endeavouros_small.txt    fetchify, after fastfetch src/logo/ascii/e/endeavouros_small.txt
+manjaro.txt              fastfetch src/logo/ascii/m/manjaro.txt
+manjaro_small.txt        fastfetch src/logo/ascii/m/manjaro_small.txt
 
 
 fastfetch license
