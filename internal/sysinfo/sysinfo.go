@@ -28,6 +28,8 @@ type Info struct {
 	Terminal Value[string]
 	// Session is the protocol of the graphical session.
 	Session Value[SessionType]
+	// DE is the name of the desktop environment.
+	DE Value[string]
 	// Desktop describes the graphical session.
 	Desktop Desktop
 	// CPU describes the processor.
