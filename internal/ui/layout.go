@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"go.xchunk.org/beautify"
+	"go.xchunk.org/beautify/blocks"
 	"go.xchunk.org/beautify/dra"
 
 	"go.xchunk.org/fetchify/internal/config"
@@ -14,6 +15,8 @@ import (
 type layout struct {
 	// icons adds the icon column.
 	icons bool
+	// details shows the segments marked as details.
+	details bool
 	// bars draws the bar of meters; without it only the numbers remain.
 	bars bool
 	// barWidth is the width of bars in cells.
@@ -118,18 +121,54 @@ func renderRows(ctx beautify.Context, th theme, lay layout, rows []row, labels i
 		}
 		label := dra.Pad(f.Styled(oneLine(r.label), th.label), labels, dra.AlignLeft)
 		parts = append(parts, label, f.Text(labelGap))
+		value := r.value
+		if !lay.details {
+			value = withoutDetails(value)
+		}
 		if r.meter != nil {
 			parts = append(parts, renderMeter(ctx, th, lay, *r.meter, cols))
-			if len(r.value) > 0 {
+			if len(value) > 0 {
 				parts = append(parts, f.Text("  "))
 			}
 		}
-		for _, s := range r.value {
+		for _, s := range value {
 			parts = append(parts, f.Styled(oneLine(s.text), th.style(s.role)))
+		}
+		if r.badge != nil {
+			if r.meter != nil || len(value) > 0 {
+				parts = append(parts, f.Text(" "))
+			}
+			b, err := blocks.Badge(r.badge.text, th.badgeStyle(r.badge.look)).Render(ctx.Unbounded())
+			if err == nil {
+				parts = append(parts, b)
+			}
 		}
 		lines = append(lines, dra.Concat(parts...))
 	}
 	return lines
+}
+
+// withoutDetails drops the detail segments of a value. The separator
+// of a list such as "1842 (dpkg), 12 (flatpak)" stays, giving "1842, 12".
+func withoutDetails(value []segment) []segment {
+	out := make([]segment, 0, len(value))
+	for _, s := range value {
+		if !s.detail {
+			out = append(out, s)
+		}
+	}
+	return out
+}
+
+// badgeStyle returns the style of a badge look.
+func (th theme) badgeStyle(look badgeLook) dra.Style {
+	switch look {
+	case badgeGood:
+		return th.good.WithAttrs(dra.Reverse)
+	case badgeWarning:
+		return th.warning.WithAttrs(dra.Reverse)
+	}
+	return th.badge
 }
 
 // style returns the style of a role.

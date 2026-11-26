@@ -74,7 +74,7 @@ func TestSizes(t *testing.T) {
 
 func TestMeterColumnsAlign(t *testing.T) {
 	ctx := beautify.NewContext(nil)
-	lay := layout{bars: true, barWidth: 4, barStyle: config.BarBlock, thresholds: [2]int{60, 85}}
+	lay := layout{details: true, bars: true, barWidth: 4, barStyle: config.BarBlock, thresholds: [2]int{60, 85}}
 	rows := []row{
 		{label: "RAM", meter: &meter{percent: 25, used: 8 * bytesGiB, total: 32 * bytesGiB, sizes: true}},
 		{label: "/home", meter: &meter{percent: 25, used: 250 * bytesGiB, total: 1000 * bytesGiB, sizes: true},

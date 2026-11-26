@@ -34,12 +34,12 @@ func TestRenderRowsAlignsLabels(t *testing.T) {
 	if width != 8 {
 		t.Fatalf("label width = %d, want 8", width)
 	}
-	got := plainLines(renderRows(ctx, testTheme(), layout{icons: true}, system, width))
+	got := plainLines(renderRows(ctx, testTheme(), layout{icons: true, details: true}, system, width))
 	want := "A OS        Arch Linux\n  Kernel    6.10 x"
 	if got != want {
 		t.Errorf("with icons:\n%s\nwant\n%s", got, want)
 	}
-	got = plainLines(renderRows(ctx, testTheme(), layout{}, system, width))
+	got = plainLines(renderRows(ctx, testTheme(), layout{details: true}, system, width))
 	want = "OS        Arch Linux\nKernel    6.10 x"
 	if got != want {
 		t.Errorf("without icons:\n%s\nwant\n%s", got, want)
@@ -49,7 +49,7 @@ func TestRenderRowsAlignsLabels(t *testing.T) {
 func TestRenderRowsStyles(t *testing.T) {
 	ctx := beautify.NewContext(nil)
 	rows := []row{{label: "K", value: []segment{{text: "v"}, {text: "m", role: roleMuted}}}}
-	got := dra.NewEngine(dra.ProfileANSI16).String(dra.Stack(dra.AlignLeft, renderRows(ctx, testTheme(), layout{}, rows, 1)...))
+	got := dra.NewEngine(dra.ProfileANSI16).String(dra.Stack(dra.AlignLeft, renderRows(ctx, testTheme(), layout{details: true}, rows, 1)...))
 	if !strings.Contains(got, "\x1b[0;90mm") {
 		t.Errorf("muted segment is not bright black: %q", got)
 	}
@@ -64,5 +64,28 @@ func TestRenderRowsHostileText(t *testing.T) {
 	got := plainLines(renderRows(ctx, testTheme(), layout{}, rows, 3))
 	if strings.Count(got, "\n") != 0 || strings.ContainsRune(got, '\x1b') {
 		t.Errorf("hostile text broke the row: %q", got)
+	}
+}
+
+func TestBadgesAndDetails(t *testing.T) {
+	ctx := beautify.NewContext(nil)
+	rows := []row{
+		{label: "WM", value: textValue("Mutter"), badge: &badge{text: "Wayland"}},
+		{label: "Swap", badge: &badge{text: "disabled"}},
+		{label: "Pkgs", value: []segment{{text: "1842"}, {text: " (dpkg)", role: roleMuted, detail: true},
+			{text: ", "}, {text: "12"}, {text: " (flatpak)", role: roleMuted, detail: true}}},
+	}
+	got := plainLines(renderRows(ctx, testTheme(), layout{details: true}, rows, 4))
+	want := "WM    Mutter  Wayland \nSwap   disabled \nPkgs  1842 (dpkg), 12 (flatpak)"
+	if got != want {
+		t.Errorf("got\n%s\nwant\n%s", got, want)
+	}
+	got = plainLines(renderRows(ctx, testTheme(), layout{}, rows[2:], 4))
+	if got != "Pkgs  1842, 12" {
+		t.Errorf("without details: %q", got)
+	}
+	ansi := dra.NewEngine(dra.ProfileANSI16).String(dra.Stack(dra.AlignLeft, renderRows(ctx, testTheme(), layout{}, rows[:1], 2)...))
+	if !strings.Contains(ansi, "\x1b[0;7;90m Wayland ") {
+		t.Errorf("neutral badge is not muted and reversed: %q", ansi)
 	}
 }
