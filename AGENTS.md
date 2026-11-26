@@ -8,20 +8,21 @@ deferred work and deliberate non-goals before changing the design.
 
 ## Architecture
 
-The program is three layers under a thin `main`. Imports only go downward,
-and `sysinfo` and `render` do not know about each other.
+The program is two layers under a thin `main`, built on the
+`go.xchunk.org/beautify` library. Imports only go downward, and `sysinfo`
+does not import beautify.
 
 ```
 main.go            flags, wiring, the only code that writes output
-internal/ui/       sysinfo.Info -> render.Block: content, wording, styles
+internal/ui/       sysinfo.Info -> beautify.Template: content, wording, styles
 internal/sysinfo/  collects machine facts as plain data
-internal/render/   styled text, layout operations, the ANSI Engine
+internal/golden/   golden-file test helper
 ```
 
 Pipeline:
 
 ```
-sysinfo.Collect() -> ui.Build(info) -> render.Engine.Append -> one Write
+sysinfo.Collect() -> ui.Build(info) -> beautify.Composer.Render -> one Write
 ```
 
 Design rules:
@@ -37,35 +38,16 @@ Design rules:
   in `ui.go`; a new line of output is a new `section`.
 - Styles are named by role in `ui/theme.go`. Do not use a color directly
   in a section.
-- `render` is the only package that produces escape sequences. Its values
-  are immutable, its text is sanitized on creation, and its Engine is
-  stateless and never reads the terminal or the environment.
-- Only `main` writes to the output, with a single `Write` call.
-
-## Migration to beautify
-
-`internal/render` is a temporary stand-in for
-`go.xchunk.org/beautify`, which is not implemented yet. It follows
-the model of `beautify/dra` so that it can be deleted once the library
-exists. Read `plan.md` in the beautify repository before changing it, and
-do not grow it beyond what fetchify needs today.
-
-Expected replacements:
-
-| fetchify today | beautify |
-|----------------|----------|
-| `render.Span`, `render.Line`, `render.Block` | `dra.Model` |
-| `render.Text`, `render.Styled` | `dra.Factory.Text`, `dra.Factory.Styled` |
-| `render.Style`, `render.Color` | `dra.Style`, `dra.Color` |
-| `render.Stack`, `render.Join`, `render.Repeat` | `dra.Stack`, `dra.Join`, `dra.Repeat` |
-| `render.Engine`, `render.Profile` | `dra.Engine`, `dra.Profile` |
-| the write in `main.run` | `beautify.Composer` |
-| `ui.Build` | a `beautify.Template` |
-| `ui.keyValue` and `entry` | `blocks.KeyValue` and `blocks.Pair` |
-| `ui.header` rule, `ui.logo`, the logo and column row | `blocks.Rule`, `blocks.Text`, `blocks.Row` |
-
-`sysinfo` is not affected by the migration. Keep it free of anything
-related to presentation so that this stays true.
+- Presentation is built from beautify blocks and `dra` operations. Models
+  are made with the factory of the render context, never with a factory
+  of their own. No code in fetchify produces escape sequences; if a look
+  needs something beautify cannot do, it is added to beautify.
+- beautify keeps line breaks in text as layout, so `ui` reduces collected
+  strings to one line before it shows them.
+- Only `main` writes to the output, through one `beautify.Composer`.
+- Screen output is pinned by golden files in `internal/ui/testdata`.
+  Regenerate them with `go test ./internal/ui -update` and review the
+  diff by hand before committing.
 
 ## Working in this repository
 
