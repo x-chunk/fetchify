@@ -1,6 +1,11 @@
 package ui
 
-import "go.xchunk.org/beautify/dra"
+import (
+	"go.xchunk.org/beautify/dra"
+
+	"go.xchunk.org/fetchify/internal/config"
+	"go.xchunk.org/fetchify/internal/distro"
+)
 
 // The styles of the screen, named by role so that the look is defined in
 // one place.
@@ -21,4 +26,58 @@ var (
 var paletteColors = []dra.Color{
 	dra.Black, dra.Red, dra.Green, dra.Yellow,
 	dra.Blue, dra.Magenta, dra.Cyan, dra.White,
+}
+
+// theme holds the styles of the card by role. It is resolved once per
+// run from the configuration and the distribution; no part of the screen
+// uses a color directly.
+//
+// Good, Warning, Danger, Muted and the palette use the 16-color palette
+// so that they follow the terminal theme. The accent is 24-bit: it
+// carries the identity of the distribution, and beautify converts it for
+// weaker terminals.
+type theme struct {
+	accent  dra.Color
+	frame   dra.Style
+	title   dra.Style
+	label   dra.Style
+	icon    dra.Style
+	value   dra.Style
+	muted   dra.Style
+	caption dra.Style
+	good    dra.Style
+	warning dra.Style
+	danger  dra.Style
+	// badge is the neutral look of a badge.
+	badge dra.Style
+}
+
+// newTheme resolves the theme. The accent is the configured color or, for
+// "auto" and anything that does not parse, the accent of d. root turns
+// the caption red, which replaces the old warning text.
+func newTheme(cfg config.Config, d distro.Distro, root bool) theme {
+	accent := d.Accent
+	if cfg.Colors.Accent != config.AccentAuto {
+		if c, err := dra.Hex(cfg.Colors.Accent); err == nil {
+			accent = c
+		}
+	}
+	muted := dra.Foreground(dra.BrightBlack)
+	caption := dra.Style{Attrs: dra.Bold}
+	if root {
+		caption = dra.Foreground(dra.Red).WithAttrs(dra.Bold)
+	}
+	return theme{
+		accent:  accent,
+		frame:   dra.Foreground(accent),
+		title:   dra.Foreground(accent).WithAttrs(dra.Bold),
+		label:   dra.Foreground(accent),
+		icon:    dra.Foreground(accent),
+		muted:   muted,
+		caption: caption,
+		good:    dra.Foreground(dra.Green),
+		warning: dra.Foreground(dra.Yellow),
+		danger:  dra.Foreground(dra.Red),
+		badge:   muted.WithAttrs(dra.Reverse),
+	}
 }
