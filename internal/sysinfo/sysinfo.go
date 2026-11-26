@@ -30,8 +30,8 @@ type Info struct {
 	Session Value[SessionType]
 	// DE is the name of the desktop environment.
 	DE Value[string]
-	// Desktop describes the graphical session.
-	Desktop Desktop
+	// WM is the name of the window manager or Wayland compositor.
+	WM Value[string]
 	// CPU describes the processor.
 	CPU CPU
 	// GPUs lists the names of the display adapters, in bus order.
@@ -43,13 +43,6 @@ type Info struct {
 	Swap *Usage
 	// Disks lists the mounted file systems worth showing, in mount order.
 	Disks []Disk
-}
-
-// Desktop describes the graphical session.
-type Desktop struct {
-	// WM is the name of the window manager or desktop environment. It is
-	// empty when there is no graphical session or it cannot be detected.
-	WM string
 }
 
 // CPU describes the processor.
@@ -100,7 +93,6 @@ func run(name string, args ...string) ([]byte, error) {
 // It may run external commands (lspci, xprop, wmctrl, dmidecode) and
 // tolerates their absence.
 func collectLegacy(info *Info) {
-	info.Desktop = desktop(run, os.Getenv)
 	info.CPU = processor()
 	info.GPUs = gpus(run)
 	info.Memory = memory(run, os.Geteuid() == 0)

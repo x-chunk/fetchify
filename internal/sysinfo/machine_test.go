@@ -87,6 +87,10 @@ var (
 			"SHELL": "/usr/bin/zsh",
 			"TERM":  "xterm-256color",
 
+			"XDG_SESSION_TYPE":    "wayland",
+			"WAYLAND_DISPLAY":     "wayland-0",
+			"XDG_CURRENT_DESKTOP": "ubuntu:GNOME",
+
 			"GNOME_TERMINAL_SCREEN": "/org/gnome/Terminal/screen/1",
 		},
 	}
@@ -97,8 +101,13 @@ var (
 		pid:   777,
 		users: map[int]string{1000: "bob"},
 		env: map[string]string{
-			"USER":  "bob",
-			"SHELL": "/bin/bash",
+			"USER":    "bob",
+			"SHELL":   "/bin/bash",
+			"DISPLAY": ":0",
+		},
+		commands: map[string]string{
+			"xprop -root _NET_SUPPORTING_WM_CHECK": "_NET_SUPPORTING_WM_CHECK(WINDOW): window id # 0x1a00003\n",
+			"xprop -id 0x1a00003 _NET_WM_NAME":     "_NET_WM_NAME(UTF8_STRING) = \"i3\"\n",
 		},
 	}
 	// sshServer is a headless Debian server reached over SSH, logged in
@@ -135,7 +144,12 @@ var (
 		uid:   1000,
 		pid:   2000,
 		users: map[int]string{1000: "carol"},
-		env:   map[string]string{"SHELL": "/usr/bin/fish", "TERM_PROGRAM": "tmux"},
+		env: map[string]string{
+			"SHELL":               "/usr/bin/fish",
+			"TERM_PROGRAM":        "tmux",
+			"XDG_SESSION_TYPE":    "wayland",
+			"XDG_CURRENT_DESKTOP": "KDE",
+		},
 		commands: map[string]string{
 			"rpm -qa": "bash-5.2.32-1.fc41.x86_64\nkernel-6.11.4-301.fc41.x86_64\nfish-3.7.1-3.fc41.x86_64\n",
 		},

@@ -3,6 +3,7 @@ package sysinfo
 import (
 	"fmt"
 	"io/fs"
+	"path"
 	"strconv"
 	"strings"
 )
@@ -36,4 +37,26 @@ func parseStatPPID(stat string) (int, error) {
 // kernel truncates it to 15 bytes.
 func processName(fsys fs.FS, pid int) (string, error) {
 	return readTrimmed(fsys, fmt.Sprintf("proc/%d/comm", pid))
+}
+
+// processNames returns the set of command names of all processes. The
+// process table is read once per collection run and shared by the
+// collectors that need it.
+func (s *session) processNames() map[string]bool {
+	s.procOnce.Do(func() {
+		s.procNames = map[string]bool{}
+		entries, err := fs.ReadDir(s.fsys(), "proc")
+		if err != nil {
+			return
+		}
+		for _, e := range entries {
+			if _, err := strconv.Atoi(e.Name()); err != nil || !e.IsDir() {
+				continue
+			}
+			if name, err := readTrimmed(s.fsys(), path.Join("proc", e.Name(), "comm")); err == nil {
+				s.procNames[name] = true
+			}
+		}
+	})
+	return s.procNames
 }

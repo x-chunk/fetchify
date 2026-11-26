@@ -4,6 +4,7 @@ import (
 	"context"
 	"maps"
 	"slices"
+	"sync"
 	"time"
 )
 
@@ -53,6 +54,9 @@ func fact[T any](get func(ctx context.Context, s *session) Value[T], field func(
 type session struct {
 	src  Source
 	opts Options
+
+	procOnce  sync.Once
+	procNames map[string]bool
 }
 
 // collectors maps every fact sysinfo knows to its collector.

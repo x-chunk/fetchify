@@ -11,6 +11,7 @@ var facts = []sysinfo.Fact{
 	sysinfo.FactUptime,
 	sysinfo.FactShell,
 	sysinfo.FactSession,
+	sysinfo.FactWM,
 }
 
 // Facts returns the facts the screen needs. Pass them to sysinfo.Collect.

@@ -24,43 +24,6 @@ func commands(outputs map[string]string) runner {
 	}
 }
 
-func TestDesktop(t *testing.T) {
-	tests := []struct {
-		name     string
-		commands map[string]string
-		env      map[string]string
-		want     Desktop
-	}{
-		{
-			name: "nothing available",
-			want: Desktop{},
-		},
-		{
-			name:     "xprop wins",
-			commands: map[string]string{"xprop": "_NET_WM_NAME(UTF8_STRING) = \"i3\"\n", "wmctrl": "Name: other\n"},
-			env:      map[string]string{"XDG_CURRENT_DESKTOP": "GNOME"},
-			want:     Desktop{WM: "i3"},
-		},
-		{
-			name:     "wmctrl when xprop has no value",
-			commands: map[string]string{"xprop": "_NET_WM_NAME:  not found.\n", "wmctrl": "Name: GNOME Shell\nClass: N/A\n"},
-			want:     Desktop{WM: "GNOME Shell"},
-		},
-		{
-			name: "environment as the last resort",
-			env:  map[string]string{"XDG_CURRENT_DESKTOP": "KDE", "WAYLAND_DISPLAY": "wayland-0"},
-			want: Desktop{WM: "KDE"},
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := desktop(commands(tt.commands), env(tt.env)); got != tt.want {
-				t.Errorf("got %+v, want %+v", got, tt.want)
-			}
-		})
-	}
-}
-
 func TestParseLspci(t *testing.T) {
 	out := "00:00.0 Host bridge: Intel Corporation Device 9b61\n" +
 		"00:02.0 VGA compatible controller: Intel Corporation UHD Graphics (rev 02)\n" +

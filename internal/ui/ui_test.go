@@ -23,7 +23,7 @@ func sample() sysinfo.Info {
 		Uptime:   sysinfo.Value[time.Duration]{State: sysinfo.Present, V: 3*time.Hour + 25*time.Minute + 7*time.Second},
 		Shell:    sysinfo.Value[string]{State: sysinfo.Present, V: "zsh"},
 		Session:  sysinfo.Value[sysinfo.SessionType]{State: sysinfo.Present, V: sysinfo.X11},
-		Desktop:  sysinfo.Desktop{WM: "i3"},
+		WM:       sysinfo.Value[string]{State: sysinfo.Present, V: "i3"},
 		CPU:      sysinfo.CPU{Model: "AMD Ryzen 7 5800X", Cores: 16},
 		GPUs:     []string{"NVIDIA GeForce RTX 3070"},
 		Memory: &sysinfo.Memory{
