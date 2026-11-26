@@ -1385,3 +1385,5 @@ added or changed, and why.
 | 2026-11-26 | `ui.Facts(cfg)` also asks for `user`, `hostname` and `os`, which the caption, the logo and the accent need although no item lists them. | Section 13.2 derives facts from items only. |
 | 2026-11-26 | Uptime keeps days and then hours with minutes, or minutes with seconds below an hour ("2d 3h 25m", "5m 12s", "42s"). | The rule "two largest non-zero units below a day" would give "3h 12s" for 3:00:12. |
 | 2026-11-26 | Opt-in item labels: Local IP, Public IP, Network, Bluetooth, CPU Temp, GPU Temp, CPU Usage, Load, GPU Driver, VRAM, Board, BIOS, Init, Processes, Users, Locale, Timezone, Date, Theme, Icons, Font, Cursor, Term Font, Media. Bluetooth is a badge. | Section 13.2 leaves them open. |
+| 2026-11-26 | `colors.mode = "none"` and `--no-color` render plain text, not `ProfileNoColor`. | With colors off, reverse video and bold would be the only escape sequences left, and a fixed profile writes them even into a pipe. |
+| 2026-11-26 | Clearing is a separate write before the Composer's single write. | The Composer writes the screen itself; section 14.2 orders the clear before the render. |
