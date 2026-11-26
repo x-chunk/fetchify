@@ -51,11 +51,11 @@ func cpuSection(info sysinfo.Info, f *dra.Factory) []entry {
 // gpuSection returns one entry per display adapter, or a single "Unknown"
 // entry when none is known.
 func gpuSection(info sysinfo.Info, f *dra.Factory) []entry {
-	if len(info.GPUs) == 0 {
+	if len(info.GPU.V) == 0 {
 		return one("GPU", missing(f, "Unknown"))
 	}
 	var result []entry
-	for _, name := range info.GPUs {
+	for _, name := range info.GPU.V {
 		result = append(result, one("GPU", f.Text(oneLine(name)))...)
 	}
 	return result

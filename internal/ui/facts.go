@@ -13,6 +13,7 @@ var facts = []sysinfo.Fact{
 	sysinfo.FactSession,
 	sysinfo.FactWM,
 	sysinfo.FactCPU,
+	sysinfo.FactGPU,
 }
 
 // Facts returns the facts the screen needs. Pass them to sysinfo.Collect.

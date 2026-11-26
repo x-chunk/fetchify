@@ -36,8 +36,9 @@ type Info struct {
 	Host Value[string]
 	// CPU describes the processor.
 	CPU Value[CPU]
-	// GPUs lists the names of the display adapters, in bus order.
-	GPUs []string
+	// GPU lists the names of the display adapters in bus order, as
+	// "<vendor> <device>" without cleaning.
+	GPU Value[[]string]
 	// Memory is the physical memory state, or nil when it cannot be read.
 	Memory *Memory
 	// Swap is the swap usage, or nil when it cannot be read. A Total of 0
@@ -87,7 +88,6 @@ func run(name string, args ...string) ([]byte, error) {
 // It may run external commands (lspci, xprop, wmctrl, dmidecode) and
 // tolerates their absence.
 func collectLegacy(info *Info) {
-	info.GPUs = gpus(run)
 	info.Memory = memory(run, os.Geteuid() == 0)
 	info.Swap = swap()
 	info.Disks = disks()

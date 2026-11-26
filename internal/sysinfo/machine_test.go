@@ -81,6 +81,9 @@ var (
 		uid:   1000,
 		pid:   4242,
 		users: map[int]string{1000: "alice"},
+		commands: map[string]string{
+			"lspci -mm": `01:00.0 "VGA compatible controller" "NVIDIA Corporation" "GA104 [GeForce RTX 3070]" -ra1 "Micro-Star International Co., Ltd. [MSI]" "Device 3903"` + "\n",
+		},
 		env: map[string]string{
 			"USER":  "alice",
 			"HOME":  "/home/alice",

@@ -24,29 +24,6 @@ func commands(outputs map[string]string) runner {
 	}
 }
 
-func TestParseLspci(t *testing.T) {
-	out := "00:00.0 Host bridge: Intel Corporation Device 9b61\n" +
-		"00:02.0 VGA compatible controller: Intel Corporation UHD Graphics (rev 02)\n" +
-		"01:00.0 VGA compatible controller: NVIDIA Corporation Device 1f99: Max-Q\n" +
-		"02:00.0 VGA compatible controller\n"
-	want := []string{
-		"Intel Corporation UHD Graphics (rev 02)",
-		"NVIDIA Corporation Device 1f99: Max-Q",
-	}
-	if got := parseLspci(out); !slices.Equal(got, want) {
-		t.Errorf("got %q, want %q", got, want)
-	}
-	if got := parseLspci(""); got != nil {
-		t.Errorf("parseLspci(\"\") = %q, want nil", got)
-	}
-}
-
-func TestGPUsWithoutLspci(t *testing.T) {
-	if got := gpus(commands(nil)); got != nil {
-		t.Errorf("got %q, want nil", got)
-	}
-}
-
 func TestParseMemoryTypes(t *testing.T) {
 	out := "Physical Memory Array\n" +
 		"\tUse: System Memory\n" +

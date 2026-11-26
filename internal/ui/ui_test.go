@@ -25,7 +25,7 @@ func sample() sysinfo.Info {
 		Session:  sysinfo.Value[sysinfo.SessionType]{State: sysinfo.Present, V: sysinfo.X11},
 		WM:       sysinfo.Value[string]{State: sysinfo.Present, V: "i3"},
 		CPU:      sysinfo.Value[sysinfo.CPU]{State: sysinfo.Present, V: sysinfo.CPU{Model: "AMD Ryzen 7 5800X", Count: 16}},
-		GPUs:     []string{"NVIDIA GeForce RTX 3070"},
+		GPU:      sysinfo.Value[[]string]{State: sysinfo.Present, V: []string{"NVIDIA GeForce RTX 3070"}},
 		Memory: &sysinfo.Memory{
 			Usage: sysinfo.Usage{Used: 8 * gib, Total: 32 * gib, Percent: 25},
 		},
@@ -140,7 +140,7 @@ func TestSections(t *testing.T) {
 		{"wayland", desktopSection, func(i *sysinfo.Info) { i.Session.V = sysinfo.Wayland }, []string{"WM: i3 (Wayland)"}},
 		{
 			"several gpus", gpuSection,
-			func(i *sysinfo.Info) { i.GPUs = []string{"Intel UHD", "NVIDIA RTX"} },
+			func(i *sysinfo.Info) { i.GPU.V = []string{"Intel UHD", "NVIDIA RTX"} },
 			[]string{"GPU: Intel UHD", "GPU: NVIDIA RTX"},
 		},
 		{
@@ -170,7 +170,7 @@ func TestSections(t *testing.T) {
 func TestBuildSanitizesCollectedText(t *testing.T) {
 	info := sample()
 	info.Hostname.V = "box\x1b[2J"
-	info.GPUs = []string{"evil\ncard"}
+	info.GPU.V = []string{"evil\ncard"}
 	out := string(render(t, Build(info), dra.ProfilePlain))
 	if strings.ContainsRune(out, '\x1b') {
 		t.Error("output contains an escape character from collected text")
