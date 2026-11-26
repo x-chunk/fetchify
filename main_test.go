@@ -97,7 +97,7 @@ func TestRunInvalidConfig(t *testing.T) {
 
 func TestHelpAndPrintConfigIgnoreBrokenConfig(t *testing.T) {
 	brokenConfig(t)
-	for _, flag := range []string{"--help", "--print-config"} {
+	for _, flag := range []string{"--help", "--print-config", "--version"} {
 		var stdout, stderr bytes.Buffer
 		if code := run([]string{flag}, &stdout, &stderr); code != 0 || stdout.Len() == 0 {
 			t.Errorf("%s: exit %d, stderr %q", flag, code, stderr.String())
@@ -164,6 +164,13 @@ func TestRunNotATerminal(t *testing.T) {
 	}
 	if bytes.ContainsRune(stdout.Bytes(), '\x1b') {
 		t.Errorf("output to a buffer contains escape sequences: %q", stdout.String())
+	}
+}
+
+func TestRunVersion(t *testing.T) {
+	var stdout bytes.Buffer
+	if code := run([]string{"--version"}, &stdout, io.Discard); code != 0 || stdout.String() != "fetchify dev\n" {
+		t.Errorf("exit %d, output %q", code, stdout.String())
 	}
 }
 

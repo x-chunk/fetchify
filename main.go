@@ -40,10 +40,14 @@ func run(args []string, stdout, stderr io.Writer) int {
 		fmt.Fprint(stderr, cli.Usage())
 		return 2
 	}
-	// Help and the default configuration do not read the configuration
-	// file, so they work when it is broken.
+	// Help, the version and the default configuration do not read the
+	// configuration file, so they work when it is broken.
 	if opts.Help {
 		fmt.Fprint(stdout, cli.Usage())
+		return 0
+	}
+	if opts.Version {
+		fmt.Fprintln(stdout, "fetchify", cli.Version())
 		return 0
 	}
 	if opts.PrintConfig {

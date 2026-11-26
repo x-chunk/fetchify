@@ -7,6 +7,7 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"runtime/debug"
 	"slices"
 	"strings"
 
@@ -30,6 +31,8 @@ type Options struct {
 	NoColor bool
 	// PrintConfig asks for the documented default configuration.
 	PrintConfig bool
+	// Version asks for the version.
+	Version bool
 }
 
 // Apply writes the overrides of the flags into cfg. Flags win over the
@@ -71,6 +74,7 @@ func Parse(args []string, logos []string) (Options, error) {
 	fs.BoolVar(&o.NoIcons, "no-icons", false, "")
 	fs.BoolVar(&o.NoColor, "no-color", false, "")
 	fs.BoolVar(&o.PrintConfig, "print-config", false, "")
+	fs.BoolVar(&o.Version, "version", false, "")
 	if err := fs.Parse(args); err != nil {
 		if errors.Is(err, flag.ErrHelp) {
 			return Options{Help: true}, nil
@@ -101,6 +105,17 @@ Flags:
   --no-color       do not use colors; NO_COLOR has the same effect
   --clear          clear the screen before printing
   --print-config   print the documented default configuration and exit
+  --version        print the version and exit
   --help           show this help and exit
 `, "\n")
+}
+
+// Version returns the version of the module from the build information,
+// which go install sets, or "dev" for a local build.
+func Version() string {
+	info, ok := debug.ReadBuildInfo()
+	if !ok || info.Main.Version == "" || info.Main.Version == "(devel)" {
+		return "dev"
+	}
+	return info.Main.Version
 }

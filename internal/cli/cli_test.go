@@ -24,6 +24,7 @@ func TestParse(t *testing.T) {
 		{[]string{"--config", "/x.toml", "--logo=arch", "--no-icons"}, Options{ConfigPath: "/x.toml", Logo: "arch", NoIcons: true}},
 		{[]string{"--logo", "none", "--print-config"}, Options{Logo: "none", PrintConfig: true}},
 		{[]string{"--no-color"}, Options{NoColor: true}},
+		{[]string{"--version"}, Options{Version: true}},
 	}
 	for _, tt := range tests {
 		got, err := Parse(tt.args, logos)
@@ -68,5 +69,12 @@ func TestUsage(t *testing.T) {
 	}
 	if strings.Contains(Usage(), "dont-clear") {
 		t.Error("the ignored --dont-clear is listed in the help")
+	}
+}
+
+func TestVersion(t *testing.T) {
+	// Test binaries carry no module version.
+	if v := Version(); v != "dev" {
+		t.Errorf("Version() = %q, want dev", v)
 	}
 }
