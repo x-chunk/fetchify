@@ -22,6 +22,7 @@ func TestParse(t *testing.T) {
 		{[]string{"--dont-clear"}, Options{DontClear: true}},
 		{[]string{"--config", "/x.toml", "--logo=arch", "--no-icons"}, Options{ConfigPath: "/x.toml", Logo: "arch", NoIcons: true}},
 		{[]string{"--logo", "none", "--print-config"}, Options{Logo: "none", PrintConfig: true}},
+		{[]string{"--no-color"}, Options{NoColor: true}},
 	}
 	for _, tt := range tests {
 		got, err := Parse(tt.args, logos)
@@ -49,8 +50,8 @@ func TestUnknownLogoListsKnown(t *testing.T) {
 
 func TestApply(t *testing.T) {
 	cfg := config.Defaults()
-	Options{Logo: "koala", NoIcons: true}.Apply(&cfg)
-	if cfg.Logo.Name != "koala" || cfg.Icons.Enabled {
+	Options{Logo: "koala", NoIcons: true, NoColor: true}.Apply(&cfg)
+	if cfg.Logo.Name != "koala" || cfg.Icons.Enabled || cfg.Colors.Mode != config.ModeNone {
 		t.Errorf("Apply: %+v %+v", cfg.Logo, cfg.Icons)
 	}
 	cfg = config.Defaults()

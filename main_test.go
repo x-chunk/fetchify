@@ -10,6 +10,9 @@ import (
 	"strings"
 	"testing"
 
+	"go.xchunk.org/beautify"
+	"go.xchunk.org/beautify/dra"
+
 	"go.xchunk.org/fetchify/internal/cli"
 	"go.xchunk.org/fetchify/internal/config"
 	"go.xchunk.org/fetchify/internal/distro"
@@ -148,5 +151,34 @@ func TestRunFlagOverridesFile(t *testing.T) {
 	opts.Apply(&cfg)
 	if cfg.Logo.Name != "none" {
 		t.Errorf("logo = %q, want the flag to win", cfg.Logo.Name)
+	}
+}
+
+func TestRunNotATerminal(t *testing.T) {
+	t.Setenv("XDG_CONFIG_HOME", t.TempDir())
+	t.Setenv("FORCE_COLOR", "")
+	t.Setenv("CLICOLOR_FORCE", "")
+	var stdout bytes.Buffer
+	if code := run([]string{"--dont-clear"}, &stdout, io.Discard); code != 0 {
+		t.Fatalf("exit code %d", code)
+	}
+	if bytes.ContainsRune(stdout.Bytes(), '\x1b') {
+		t.Errorf("output to a buffer contains escape sequences: %q", stdout.String())
+	}
+}
+
+func TestComposerOptions(t *testing.T) {
+	if composerOptions(config.ModeAuto) != nil {
+		t.Error("auto fixes a profile")
+	}
+	for mode := range profiles {
+		if len(composerOptions(mode)) != 1 {
+			t.Errorf("%s does not fix the profile", mode)
+		}
+	}
+	var buf bytes.Buffer
+	c := beautify.NewComposer(&buf, composerOptions(config.ModeTrueColor)...)
+	if c.Profile() != dra.ProfileTrueColor {
+		t.Errorf("profile = %v", c.Profile())
 	}
 }

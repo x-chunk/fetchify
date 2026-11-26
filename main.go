@@ -77,15 +77,33 @@ func run(args []string, stdout, stderr io.Writer) int {
 	info := sysinfo.Collect(context.Background(), sysinfo.SystemSource(), ui.Facts(cfg), ui.Options(cfg))
 	elapsed := time.Since(start)
 
-	// The profile is fixed until it is detected from the terminal: ANSI16
-	// is what fetchify has always written.
-	composer := beautify.NewComposer(stdout, beautify.WithProfile(dra.ProfileANSI16))
+	composer := beautify.NewComposer(stdout, composerOptions(cfg.Colors.Mode)...)
 	screen := beautify.NewTemplate(ui.Screen(ui.Input{Info: info, Config: cfg, Elapsed: elapsed}))
 	if err := composer.Render(screen); err != nil {
 		fmt.Fprintln(stderr, "fetchify:", err)
 		return 1
 	}
 	return 0
+}
+
+// profiles maps the fixed color modes to profiles. "none" is plain text:
+// with colors off, attributes such as reverse video would be the only
+// escape sequences left, and they are not worth them.
+var profiles = map[config.ColorMode]dra.Profile{
+	config.ModeTrueColor: dra.ProfileTrueColor,
+	config.Mode256:       dra.ProfileANSI256,
+	config.Mode16:        dra.ProfileANSI16,
+	config.ModeNone:      dra.ProfilePlain,
+}
+
+// composerOptions returns the options of the Composer for a color mode.
+// For "auto" the Composer detects the profile itself, which honors
+// NO_COLOR and writes plain text when the output is not a terminal.
+func composerOptions(mode config.ColorMode) []beautify.ComposerOption {
+	if p, ok := profiles[mode]; ok {
+		return []beautify.ComposerOption{beautify.WithProfile(p)}
+	}
+	return nil
 }
 
 // loadConfig reads the configuration file named by --config, or the

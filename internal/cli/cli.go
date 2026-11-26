@@ -26,6 +26,8 @@ type Options struct {
 	Logo string
 	// NoIcons turns the icons off.
 	NoIcons bool
+	// NoColor turns colors off.
+	NoColor bool
 	// PrintConfig asks for the documented default configuration.
 	PrintConfig bool
 }
@@ -38,6 +40,9 @@ func (o Options) Apply(cfg *config.Config) {
 	}
 	if o.NoIcons {
 		cfg.Icons.Enabled = false
+	}
+	if o.NoColor {
+		cfg.Colors.Mode = config.ModeNone
 	}
 }
 
@@ -58,6 +63,7 @@ func Parse(args []string, logos []string) (Options, error) {
 	fs.StringVar(&o.ConfigPath, "config", "", "")
 	fs.StringVar(&o.Logo, "logo", "", "")
 	fs.BoolVar(&o.NoIcons, "no-icons", false, "")
+	fs.BoolVar(&o.NoColor, "no-color", false, "")
 	fs.BoolVar(&o.PrintConfig, "print-config", false, "")
 	if err := fs.Parse(args); err != nil {
 		if errors.Is(err, flag.ErrHelp) {
@@ -86,6 +92,7 @@ Flags:
                    $XDG_CONFIG_HOME/fetchify/config.toml
   --logo <name>    show this logo: auto, none, koala or a distribution
   --no-icons       do not show Nerd Font icons
+  --no-color       do not use colors; NO_COLOR has the same effect
   --dont-clear     do not clear the screen before printing
   --print-config   print the documented default configuration and exit
   --help           show this help and exit
