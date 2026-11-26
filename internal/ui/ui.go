@@ -47,7 +47,7 @@ func header(info sysinfo.Info) beautify.Composable {
 		title := dra.Concat(
 			f.Styled(oneLine(info.User.V.Name), styleUser),
 			f.Styled("@", styleAt),
-			f.Styled(oneLine(info.Hostname), styleHost),
+			f.Styled(oneLine(info.Hostname.V), styleHost),
 		)
 		ruleStyle := styleRule
 		if isRoot(info) {

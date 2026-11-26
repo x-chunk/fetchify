@@ -5,6 +5,7 @@ import "go.xchunk.org/fetchify/internal/sysinfo"
 // facts lists what the screen shows, so that nothing else is collected.
 var facts = []sysinfo.Fact{
 	sysinfo.FactUser,
+	sysinfo.FactHostname,
 }
 
 // Facts returns the facts the screen needs. Pass them to sysinfo.Collect.

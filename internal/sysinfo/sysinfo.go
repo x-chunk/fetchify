@@ -12,7 +12,7 @@ type Info struct {
 	// User is the identity the process runs as.
 	User Value[User]
 	// Hostname is the host name reported by the kernel.
-	Hostname string
+	Hostname Value[string]
 	// OS identifies the operating system distribution.
 	OS OS
 	// Kernel is the kernel release, for example "6.8.0-45-generic".

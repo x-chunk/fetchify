@@ -17,7 +17,7 @@ const gib = 1 << 30
 func sample() sysinfo.Info {
 	return sysinfo.Info{
 		User:     sysinfo.Value[sysinfo.User]{State: sysinfo.Present, V: sysinfo.User{Name: "alice", UID: 1000}},
-		Hostname: "box",
+		Hostname: sysinfo.Value[string]{State: sysinfo.Present, V: "box"},
 		OS:       sysinfo.OS{Name: "ubuntu", Version: "24.04"},
 		Kernel:   "6.8.0-45-generic",
 		Uptime:   3*time.Hour + 25*time.Minute + 7*time.Second,
@@ -167,7 +167,7 @@ func TestSections(t *testing.T) {
 
 func TestBuildSanitizesCollectedText(t *testing.T) {
 	info := sample()
-	info.Hostname = "box\x1b[2J"
+	info.Hostname.V = "box\x1b[2J"
 	info.GPUs = []string{"evil\ncard"}
 	out := string(render(t, Build(info), dra.ProfilePlain))
 	if strings.ContainsRune(out, '\x1b') {

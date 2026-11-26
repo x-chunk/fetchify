@@ -1,7 +1,6 @@
 package sysinfo
 
 import (
-	"os"
 	"path"
 	"runtime"
 	"time"
@@ -10,12 +9,8 @@ import (
 	"github.com/shirou/gopsutil/v3/host"
 )
 
-// collectHost fills the identity fields of info: host name,
-// operating system, kernel and uptime.
+// collectHost fills the operating system, kernel and uptime of info.
 func collectHost(info *Info) {
-	if name, err := os.Hostname(); err == nil {
-		info.Hostname = name
-	}
 	if stat, err := host.Info(); err == nil {
 		info.OS = OS{Name: stat.Platform, Version: stat.PlatformVersion}
 		info.Kernel = stat.KernelVersion
