@@ -1,0 +1,20 @@
+╭─ System ────────────────────────────────── bob@archbook ─╮
+│   OS        Arch Linux btw                               │
+│   Kernel    6.10.5-arch1-1                               │
+│   Uptime    1d 2h 3m                                     │
+│   Packages  1205 (pacman)                                │
+│   Shell     bash                                         │
+│   Terminal  st                                           │
+│   WM        i3  X11                                      │
+├─ Hardware ───────────────────────────────────────────────┤
+│   Host      XPS 15 9520                                  │
+│   CPU       12th Gen Intel Core i7-12700H  20 cores      │
+│   GPU       Intel Iris Xe Graphics                       │
+│   GPU       NVIDIA GeForce RTX 3050 Mobile               │
+│   Display   1920x1200, 2560x1440                         │
+│   Battery   ██░░░░░░░░░░░░░░  12%  discharging           │
+├─ Storage ────────────────────────────────────────────────┤
+│   RAM       ██████████████░░  14.0 / 16.0 GiB  88%       │
+│   Swap       disabled                                    │
+│   /         ███████████████░   450 /  512 GiB  92%  ext4 │
+╰──────────────────────────────────────────────────────────╯

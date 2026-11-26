@@ -1,0 +1,14 @@
+╭─ System ─────────────────────────────── pi@raspberrypi ─╮
+│   OS        Raspbian GNU/Linux 11 (bullseye)            │
+│   Kernel    6.6.31+rpt-rpi-v8                           │
+│   Uptime    10m                                         │
+│   Packages  3 (dpkg)                                    │
+│   Shell     bash                                        │
+├─ Hardware ──────────────────────────────────────────────┤
+│   Host      Raspberry Pi 4 Model B Rev 1.4              │
+│   CPU       BCM2835  4 cores                            │
+├─ Storage ───────────────────────────────────────────────┤
+│   RAM       ████░░░░░░░░░░░░  0.9 /  3.7 GiB  24%       │
+│   Swap      ░░░░░░░░░░░░░░░░  0.0 /  100 MiB   0%       │
+│   /         ███░░░░░░░░░░░░░  6.0 / 29.0 GiB  21%  ext4 │
+╰─────────────────────────────────────────────────────────╯
