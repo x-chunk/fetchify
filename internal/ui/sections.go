@@ -35,7 +35,10 @@ func desktopSection(info sysinfo.Info, f *dra.Factory) []entry {
 	if info.Desktop.WM == "" {
 		return one("WM", missing(f, "Unknown"))
 	}
-	return one("WM", f.Text(oneLine(fmt.Sprintf("%s (%s)", info.Desktop.WM, info.Desktop.Server))))
+	if info.Session.State != sysinfo.Present {
+		return one("WM", f.Text(oneLine(info.Desktop.WM)))
+	}
+	return one("WM", f.Text(oneLine(fmt.Sprintf("%s (%s)", info.Desktop.WM, info.Session.V))))
 }
 
 func cpuSection(info sysinfo.Info, f *dra.Factory) []entry {

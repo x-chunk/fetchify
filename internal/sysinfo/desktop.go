@@ -2,15 +2,12 @@ package sysinfo
 
 import "strings"
 
-// desktop detects the window manager and the display server. The window
+// desktop detects the window manager. The window
 // manager is taken from the first source that knows it: the root window
 // property (xprop), the window manager itself (wmctrl), then the
 // XDG_CURRENT_DESKTOP variable.
 func desktop(run runner, getenv func(string) string) Desktop {
-	result := Desktop{Server: X11}
-	if getenv("WAYLAND_DISPLAY") != "" {
-		result.Server = Wayland
-	}
+	var result Desktop
 
 	if out, err := run("xprop", "-root", "_NET_WM_NAME"); err == nil {
 		result.WM = parseXprop(string(out))

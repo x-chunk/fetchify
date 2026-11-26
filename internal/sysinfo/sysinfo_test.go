@@ -33,23 +33,23 @@ func TestDesktop(t *testing.T) {
 	}{
 		{
 			name: "nothing available",
-			want: Desktop{Server: X11},
+			want: Desktop{},
 		},
 		{
 			name:     "xprop wins",
 			commands: map[string]string{"xprop": "_NET_WM_NAME(UTF8_STRING) = \"i3\"\n", "wmctrl": "Name: other\n"},
 			env:      map[string]string{"XDG_CURRENT_DESKTOP": "GNOME"},
-			want:     Desktop{WM: "i3", Server: X11},
+			want:     Desktop{WM: "i3"},
 		},
 		{
 			name:     "wmctrl when xprop has no value",
 			commands: map[string]string{"xprop": "_NET_WM_NAME:  not found.\n", "wmctrl": "Name: GNOME Shell\nClass: N/A\n"},
-			want:     Desktop{WM: "GNOME Shell", Server: X11},
+			want:     Desktop{WM: "GNOME Shell"},
 		},
 		{
 			name: "environment as the last resort",
 			env:  map[string]string{"XDG_CURRENT_DESKTOP": "KDE", "WAYLAND_DISPLAY": "wayland-0"},
-			want: Desktop{WM: "KDE", Server: Wayland},
+			want: Desktop{WM: "KDE"},
 		},
 	}
 	for _, tt := range tests {
@@ -131,8 +131,5 @@ func TestCollect(t *testing.T) {
 	info := Collect(context.Background(), SystemSource(), Facts(), Options{})
 	if info.CPU.Cores < 1 {
 		t.Errorf("CPU.Cores = %d, want at least 1", info.CPU.Cores)
-	}
-	if info.Desktop.Server != X11 && info.Desktop.Server != Wayland {
-		t.Errorf("Desktop.Server = %q", info.Desktop.Server)
 	}
 }

@@ -22,7 +22,8 @@ func sample() sysinfo.Info {
 		Kernel:   sysinfo.Value[string]{State: sysinfo.Present, V: "6.8.0-45-generic"},
 		Uptime:   sysinfo.Value[time.Duration]{State: sysinfo.Present, V: 3*time.Hour + 25*time.Minute + 7*time.Second},
 		Shell:    sysinfo.Value[string]{State: sysinfo.Present, V: "zsh"},
-		Desktop:  sysinfo.Desktop{WM: "i3", Server: sysinfo.X11},
+		Session:  sysinfo.Value[sysinfo.SessionType]{State: sysinfo.Present, V: sysinfo.X11},
+		Desktop:  sysinfo.Desktop{WM: "i3"},
 		CPU:      sysinfo.CPU{Model: "AMD Ryzen 7 5800X", Cores: 16},
 		GPUs:     []string{"NVIDIA GeForce RTX 3070"},
 		Memory: &sysinfo.Memory{
@@ -136,7 +137,7 @@ func TestSections(t *testing.T) {
 		want    []string
 	}{
 		{"arch", osSection, func(i *sysinfo.Info) { i.OS.V = []byte("ID=arch\nBUILD_ID=rolling\n") }, []string{"OS: i use arch, btw"}},
-		{"wayland", desktopSection, func(i *sysinfo.Info) { i.Desktop.Server = sysinfo.Wayland }, []string{"WM: i3 (Wayland)"}},
+		{"wayland", desktopSection, func(i *sysinfo.Info) { i.Session.V = sysinfo.Wayland }, []string{"WM: i3 (Wayland)"}},
 		{
 			"several gpus", gpuSection,
 			func(i *sysinfo.Info) { i.GPUs = []string{"Intel UHD", "NVIDIA RTX"} },
@@ -147,6 +148,7 @@ func TestSections(t *testing.T) {
 			func(i *sysinfo.Info) { i.Memory.Types = []string{"DDR4", "DDR5"} },
 			[]string{"RAM: 8.00 GiB / 32.00 GiB (25%) - DDR4, DDR5"},
 		},
+		{"no session", desktopSection, func(i *sysinfo.Info) { i.Session = sysinfo.Value[sysinfo.SessionType]{State: sysinfo.Absent} }, []string{"WM: i3"}},
 		{"swap disabled", swapSection, func(i *sysinfo.Info) { i.Swap = &sysinfo.Usage{} }, []string{"Swap: Disabled"}},
 		{"no disks", diskSection, func(i *sysinfo.Info) { i.Disks = nil }, nil},
 	}

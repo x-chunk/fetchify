@@ -26,6 +26,8 @@ type Info struct {
 	Shell Value[string]
 	// Terminal is the name of the terminal emulator.
 	Terminal Value[string]
+	// Session is the protocol of the graphical session.
+	Session Value[SessionType]
 	// Desktop describes the graphical session.
 	Desktop Desktop
 	// CPU describes the processor.
@@ -46,18 +48,7 @@ type Desktop struct {
 	// WM is the name of the window manager or desktop environment. It is
 	// empty when there is no graphical session or it cannot be detected.
 	WM string
-	// Server is the display server protocol of the session.
-	Server DisplayServer
 }
-
-// DisplayServer is a display server protocol.
-type DisplayServer string
-
-// The display server protocols fetchify can tell apart.
-const (
-	X11     DisplayServer = "X11"
-	Wayland DisplayServer = "Wayland"
-)
 
 // CPU describes the processor.
 type CPU struct {
