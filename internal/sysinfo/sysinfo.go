@@ -78,4 +78,8 @@ type Info struct {
 	// GPUMemory lists the video memory use of the GPUs that report it,
 	// in bus order.
 	GPUMemory Value[[]Usage]
+	// Board is the vendor and the name of the main board.
+	Board Value[string]
+	// BIOS identifies the firmware.
+	BIOS Value[BIOS]
 }
