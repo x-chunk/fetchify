@@ -3,6 +3,7 @@ package ui
 import (
 	"strings"
 	"testing"
+	"time"
 
 	"go.xchunk.org/beautify"
 	"go.xchunk.org/beautify/dra"
@@ -20,7 +21,7 @@ func renderScreen(t *testing.T, info sysinfo.Info, cfg config.Config, p dra.Prof
 	if width > 0 {
 		ctx = ctx.WithWidth(width)
 	}
-	m, err := Screen(Input{Info: info, Config: cfg}).Render(ctx)
+	m, err := Screen(Input{Info: info, Config: cfg, Elapsed: 12345 * time.Microsecond}).Render(ctx)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -61,6 +62,8 @@ func screenCases() []screenCase {
 	customFrame := config.Defaults()
 	customFrame.Border.Color = config.BorderCustom
 	customFrame.Border.Colors = []string{"#00ff00"}
+	noFooter := config.Defaults()
+	noFooter.Footer = false
 	return []screenCase{
 		{"ubuntu", ubuntuDesktop(), config.Defaults()},
 		{"arch", archLaptop(), config.Defaults()},
@@ -77,6 +80,7 @@ func screenCases() []screenCase {
 		{"gradient_logo", ubuntuDesktop(), logoGradient},
 		{"gradient_rainbow", archLaptop(), rainbowFrame},
 		{"frame_custom_solid", archLaptop(), customFrame},
+		{"no_footer", ubuntuDesktop(), noFooter},
 	}
 }
 

@@ -3,19 +3,20 @@
                      │   Kernel    6.8.0-45-generic                             │
                      │   Uptime    3h 25m                                       │
                      │   Packages  1842 (dpkg), 12 (flatpak)                    │
-   __         __     │   Shell     zsh                                          │
- /"  "\     /"  "\   │   Terminal  kitty                                        │
-(  (\  )___(  /)  )  │   DE        GNOME                                        │
- \               /   │   WM        Mutter  Wayland                              │
- /               \   ├─ Hardware ───────────────────────────────────────────────┤
-/    () ___ ()    \  │   Host      ThinkPad X1 Carbon Gen 11                    │
-|      (   )      |  │   CPU       AMD Ryzen 7 5800X  16 cores                  │
- \      \_/      /   │   GPU       NVIDIA GeForce RTX 3070                      │
-   \...__!__.../     │   Display   2560x1440                                    │
-        " mh         │   Battery   ████████████░░░░  78%  charging              │
-                     ├─ Storage ────────────────────────────────────────────────┤
+                     │   Shell     zsh                                          │
+   __         __     │   Terminal  kitty                                        │
+ /"  "\     /"  "\   │   DE        GNOME                                        │
+(  (\  )___(  /)  )  │   WM        Mutter  Wayland                              │
+ \               /   ├─ Hardware ───────────────────────────────────────────────┤
+ /               \   │   Host      ThinkPad X1 Carbon Gen 11                    │
+/    () ___ ()    \  │   CPU       AMD Ryzen 7 5800X  16 cores                  │
+|      (   )      |  │   GPU       NVIDIA GeForce RTX 3070                      │
+ \      \_/      /   │   Display   2560x1440                                    │
+   \...__!__.../     │   Battery   ████████████░░░░  78%  charging              │
+        " mh         ├─ Storage ────────────────────────────────────────────────┤
                      │   RAM       ████░░░░░░░░░░░░  8.0 / 32.0 GiB  25%        │
                      │   Swap      ████░░░░░░░░░░░░  1.0 /  4.0 GiB  25%        │
                      │   /         ███░░░░░░░░░░░░░  100 /  500 GiB  21%  ext4  │
                      │   /home     ████░░░░░░░░░░░░  250 / 1000 GiB  25%  btrfs │
                      ╰──────────────────────────────────────── ● ● ● ● ● ● ● ● ─╯
+                       collected in 12 ms

@@ -91,6 +91,9 @@ func (s screen) column(lay layout) beautify.Composable {
 	if s.in.Config.Palette.Style == config.PaletteBlocks {
 		children = append(children, paletteBlocks())
 	}
+	if s.in.Config.Footer {
+		children = append(children, footer(s.theme, s.in.Elapsed))
+	}
 	return blocks.Column(children)
 }
 
