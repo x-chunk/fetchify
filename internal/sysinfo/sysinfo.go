@@ -104,4 +104,6 @@ type Info struct {
 	Cursor Value[string]
 	// TerminalFont is the font of the terminal emulator.
 	TerminalFont Value[string]
+	// Media is what a media player is playing.
+	Media Value[Media]
 }
