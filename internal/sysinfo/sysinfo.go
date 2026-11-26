@@ -1,12 +1,11 @@
 package sysinfo
 
-import (
-	"os/exec"
-	"time"
-)
+import "time"
 
-// Info is a snapshot of the machine. Every field is optional: a zero
-// value means the fact could not be determined.
+// Info is a snapshot of the machine: one field per fact, each with the
+// state of its collection. Fields of facts that were not requested are
+// Unknown. Values are raw data, such as sizes in bytes and unformatted
+// names; presenting them is the job of the caller.
 type Info struct {
 	// User is the identity the process runs as.
 	User Value[User]
@@ -51,19 +50,4 @@ type Info struct {
 	Swap Value[Usage]
 	// Disks lists the mounted file systems worth showing, in mount order.
 	Disks Value[[]Disk]
-}
-
-// runner runs an external command and returns its standard output.
-// Collectors take it as a parameter so tests can replace it.
-type runner func(name string, args ...string) ([]byte, error)
-
-// run is the runner that executes real commands.
-func run(name string, args ...string) ([]byte, error) {
-	return exec.Command(name, args...).Output()
-}
-
-// collectLegacy fills the fields that are not yet collected as facts.
-// It may run external commands (lspci, xprop, wmctrl, dmidecode) and
-// tolerates their absence.
-func collectLegacy(info *Info) {
 }

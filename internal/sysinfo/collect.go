@@ -88,7 +88,6 @@ func Collect(ctx context.Context, src Source, facts []Fact, opts Options) Info {
 // tests can supply fake collectors.
 func collect(ctx context.Context, src Source, facts []Fact, opts Options, registry map[Fact]collector) Info {
 	var info Info
-	collectLegacy(&info)
 
 	s := &session{src: src, opts: opts}
 	seen := make(map[Fact]bool, len(facts))
