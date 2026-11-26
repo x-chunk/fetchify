@@ -1,53 +1,91 @@
 # fetchify
 
 A fetch tool for Linux written in Go: it prints facts about the machine
-next to an ASCII-art logo. Module path: `go.xchunk.org/fetchify`.
+in a framed card next to the logo of the distribution. Module path:
+`go.xchunk.org/fetchify`.
 
-Read `plan.md` for the plan of the next version and `goals.md` for
-deferred work and deliberate non-goals before changing the design.
+Read `plan.md` for the design of version 2.0 and its decision log, and
+`goals.md` for deferred work and deliberate non-goals, before changing
+the design.
 
 ## Architecture
 
-The program is two layers under a thin `main`, built on the
-`go.xchunk.org/beautify` library. Imports only go downward, and `sysinfo`
-does not import beautify.
-
 ```
-main.go            flags, wiring, the only code that writes output
-internal/ui/       sysinfo.Info and config -> beautify.Composable: content, styles
-internal/sysinfo/  collects machine facts as plain data
+main.go            flags -> config -> collect -> ui -> one Composer
+internal/cli/      flag parsing, help text, version
+internal/config/   Config, defaults, default.toml, TOML loading and validation
+internal/sysinfo/  facts about the machine as plain data, collected in parallel
+internal/distro/   os-release parsing, the distribution table, logos
+internal/ui/       the screen: theme, items, rows, card, logo, responsive layout
 internal/golden/   golden-file test helper
 ```
 
 Pipeline:
 
 ```
-sysinfo.Collect() -> ui.Screen(input) -> beautify.Composer.Render -> one Write
+cli.Parse -> config.Load -> sysinfo.Collect(ui.Facts(cfg), ui.Options(cfg))
+          -> ui.Screen(Input) -> beautify.Composer.Render
 ```
+
+Imports:
+
+- `sysinfo`, `distro`, `golden` import nothing from this module. `config`
+  imports only `sysinfo` (for defaults). `cli` imports `config`. `ui`
+  imports `sysinfo`, `distro`, `config` and beautify. `main` imports
+  everything.
+- Only `ui`, `main` and `distro` (for colors) import beautify.
 
 Design rules:
 
-- `sysinfo` returns data only: no formatting, no colors, no fallback
-  strings. A fact that cannot be determined is a zero value. It never
-  fails and never panics when a tool or a file is missing.
-- Code that parses the output of an external command is a pure function
-  with tests. The code that runs the command takes a `runner` so tests can
-  replace it.
-- `ui` is a pure function of `ui.Input`. It collects nothing and writes
-  nothing. What is shown and in which order is the configuration; a new
-  kind of row is a new item in the registry of `ui/items.go`.
-- Styles are named by role in `ui/theme.go`. Do not use a color directly
-  in a section.
-- Presentation is built from beautify blocks and `dra` operations. Models
-  are made with the factory of the render context, never with a factory
-  of their own. No code in fetchify produces escape sequences; if a look
-  needs something beautify cannot do, it is added to beautify.
+- Never break the shell startup. A missing tool, file or sensor is never
+  an error: the fact is `Absent` (does not exist here) or `Unknown`
+  (could not be determined). Only invalid configuration and invalid flags
+  stop the program, with exit code 2.
+- `sysinfo` returns raw data only: sizes in bytes, durations, unformatted
+  names. Collectors read the machine only through `sysinfo.Source`, honor
+  their context and never panic on bad input; `Collect` still recovers a
+  panic and gives every fact its own time limit.
+- Code that parses files or command output is a pure function with
+  table-driven tests. Collectors are tested against the fixture machines
+  in `internal/sysinfo/testdata`, never against the machine running the
+  tests, except for one smoke test.
+- `ui` is a pure function of `ui.Input`. It collects, measures and writes
+  nothing. Styles are named by role in `ui/theme.go`; no part of the
+  screen uses a color directly.
+- Presentation is built from beautify blocks and `dra` operations, with
+  models made by the factory of the render context. No code produces
+  escape sequences except the screen clear in `main`. If the look needs
+  something beautify cannot do, add it to beautify.
 - beautify keeps line breaks in text as layout, so `ui` reduces collected
   strings to one line before it shows them.
-- Only `main` writes to the output, through one `beautify.Composer`.
-- Screen output is pinned by golden files in `internal/ui/testdata`.
+- Only `main` writes to the output.
+- The screen is pinned by golden files in `internal/ui/testdata`.
   Regenerate them with `go test ./internal/ui -update` and review the
   diff by hand before committing.
+
+## Adding an item
+
+1. If it needs new data, add a fact to `sysinfo`: a `Fact` constant, a
+   field of `Info`, a collector registered in `collectors`, fixtures and
+   tests. A new facility of the machine becomes a field of `Source`.
+2. Register the item in `ui/items.go` (or `ui/optin.go` for opt-in items)
+   with its label, the facts it needs and a `rows` function. Return no
+   rows for `Absent` and `unknownRow` for `Unknown`.
+3. Add its icon to `ui/icons.go` with the Nerd Font glyph name.
+4. A default item also goes into a group of `config.Defaults()` and
+   `config/default.toml`; a test keeps the two equal.
+5. Document it in `README.md`.
+
+## Adding a distribution
+
+1. Add an entry to one of the `distro/table_*.go` files: ID, name,
+   palette, accent and the Nerd Font icon, plus aliases of other IDs.
+2. Add `logos/<id>.txt` (at most 40x20) and `logos/<id>_small.txt` (at
+   most 16x8). `${1}` to `${9}` select palette colors; `$$` is a dollar
+   sign. No tabs and no trailing spaces; the tests enforce the format.
+3. Record the source of both files in `logos/NOTICE`.
+4. Add a real os-release file to `distro/testdata/os-release` and the
+   expected entry to `TestLookupReleaseFiles`.
 
 ## Working in this repository
 
