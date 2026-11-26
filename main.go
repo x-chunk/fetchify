@@ -4,7 +4,6 @@ package main
 
 import (
 	"context"
-	"flag"
 	"fmt"
 	"io"
 	"os"
@@ -14,6 +13,7 @@ import (
 	"go.xchunk.org/beautify"
 	"go.xchunk.org/beautify/dra"
 
+	"go.xchunk.org/fetchify/internal/cli"
 	"go.xchunk.org/fetchify/internal/config"
 	"go.xchunk.org/fetchify/internal/sysinfo"
 	"go.xchunk.org/fetchify/internal/ui"
@@ -31,22 +31,18 @@ func main() {
 // This function is the only place that writes program output; the layers
 // below it only build values.
 func run(args []string, stdout, stderr io.Writer) int {
-	flags := flag.NewFlagSet("fetchify", flag.ContinueOnError)
-	flags.SetOutput(stderr)
-	help := flags.Bool("help", false, "Show help message")
-	dontClear := flags.Bool("dont-clear", false, "Don't clear screen before print fetch")
-	if err := flags.Parse(args); err != nil {
+	opts, err := cli.Parse(args)
+	if err != nil {
+		fmt.Fprintln(stderr, "fetchify:", err)
+		fmt.Fprint(stderr, cli.Usage())
 		return 2
 	}
-
-	if *help {
-		fmt.Fprintln(stdout, "Use:")
-		fmt.Fprintln(stdout, "  --help   Show help message")
-		fmt.Fprintln(stdout, "  --dont-clear  Don't clear screen before print fetch")
+	if opts.Help {
+		fmt.Fprint(stdout, cli.Usage())
 		return 0
 	}
 
-	if !*dontClear {
+	if !opts.DontClear {
 		clearScreen(stdout)
 	}
 
