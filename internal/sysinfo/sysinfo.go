@@ -102,4 +102,6 @@ type Info struct {
 	Font Value[string]
 	// Cursor is the cursor theme.
 	Cursor Value[string]
+	// TerminalFont is the font of the terminal emulator.
+	TerminalFont Value[string]
 }
