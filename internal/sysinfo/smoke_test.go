@@ -2,15 +2,18 @@ package sysinfo
 
 import (
 	"context"
+	"slices"
 	"sync"
 	"testing"
 	"time"
 )
 
 // TestCollectSystem is the smoke test against the machine that runs the
-// tests. It checks only facts every Linux machine has.
+// tests. It collects every fact that stays on the machine and checks only
+// those every Linux machine has.
 func TestCollectSystem(t *testing.T) {
-	info := Collect(context.Background(), SystemSource(), Facts(), Options{Timeout: 2 * time.Second})
+	local := slices.DeleteFunc(Facts(), func(f Fact) bool { return f == FactPublicIP })
+	info := Collect(context.Background(), SystemSource(), local, Options{Timeout: 2 * time.Second})
 	checks := map[Fact]State{
 		FactUser:     info.User.State,
 		FactHostname: info.Hostname.State,

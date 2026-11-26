@@ -19,15 +19,25 @@ type Options struct {
 	// Timeouts overrides Timeout for single facts. Zero or negative
 	// values are ignored.
 	Timeouts map[Fact]time.Duration
+	// PublicIPURL is the endpoint the public_ip fact asks. It must answer
+	// with the address as plain text. Empty means DefaultPublicIPURL.
+	PublicIPURL string
 	// DiskIgnore lists the mount points whose trees the disks fact leaves
 	// out. Nil means DefaultDiskIgnore; an empty, non-nil list ignores
 	// nothing.
 	DiskIgnore []string
 }
 
+// factTimeouts are the default time limits of facts that need more than
+// DefaultTimeout. They apply unless Options.Timeouts overrides them.
+var factTimeouts = map[Fact]time.Duration{}
+
 // timeout returns the time limit of f.
 func (o Options) timeout(f Fact) time.Duration {
 	if d := o.Timeouts[f]; d > 0 {
+		return d
+	}
+	if d := factTimeouts[f]; d > 0 {
 		return d
 	}
 	if o.Timeout > 0 {

@@ -1,6 +1,9 @@
 package sysinfo
 
-import "time"
+import (
+	"net/netip"
+	"time"
+)
 
 // Info is a snapshot of the machine: one field per fact, each with the
 // state of its collection. Fields of facts that were not requested are
@@ -50,4 +53,11 @@ type Info struct {
 	Swap Value[Usage]
 	// Disks lists the mounted file systems worth showing, in mount order.
 	Disks Value[[]Disk]
+
+	// The facts below are opt-in: they are collected only when asked for.
+
+	// LocalIP is the first global unicast address of the machine.
+	LocalIP Value[LocalIP]
+	// PublicIP is the address the machine has on the internet.
+	PublicIP Value[netip.Addr]
 }
