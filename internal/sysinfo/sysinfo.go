@@ -23,7 +23,7 @@ type Info struct {
 	// Uptime is the time since boot, with one-second resolution.
 	Uptime Value[time.Duration]
 	// Shell is the base name of the user's login shell.
-	Shell string
+	Shell Value[string]
 	// Desktop describes the graphical session.
 	Desktop Desktop
 	// CPU describes the processor.
@@ -105,7 +105,6 @@ func run(name string, args ...string) ([]byte, error) {
 // It may run external commands (lspci, xprop, wmctrl, dmidecode) and
 // tolerates their absence.
 func collectLegacy(info *Info) {
-	info.Shell = shell(os.Getenv)
 	info.Desktop = desktop(run, os.Getenv)
 	info.CPU = processor()
 	info.GPUs = gpus(run)

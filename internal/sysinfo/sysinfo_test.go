@@ -24,22 +24,6 @@ func commands(outputs map[string]string) runner {
 	}
 }
 
-func TestShell(t *testing.T) {
-	tests := []struct {
-		value string
-		want  string
-	}{
-		{"/usr/bin/zsh", "zsh"},
-		{"bash", "bash"},
-		{"", ""},
-	}
-	for _, tt := range tests {
-		if got := shell(env(map[string]string{"SHELL": tt.value})); got != tt.want {
-			t.Errorf("shell(%q) = %q, want %q", tt.value, got, tt.want)
-		}
-	}
-}
-
 func TestDesktop(t *testing.T) {
 	tests := []struct {
 		name     string

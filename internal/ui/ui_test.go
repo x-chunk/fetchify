@@ -21,7 +21,7 @@ func sample() sysinfo.Info {
 		OS:       sysinfo.Value[[]byte]{State: sysinfo.Present, V: []byte("ID=ubuntu\nVERSION_ID=24.04\n")},
 		Kernel:   sysinfo.Value[string]{State: sysinfo.Present, V: "6.8.0-45-generic"},
 		Uptime:   sysinfo.Value[time.Duration]{State: sysinfo.Present, V: 3*time.Hour + 25*time.Minute + 7*time.Second},
-		Shell:    "zsh",
+		Shell:    sysinfo.Value[string]{State: sysinfo.Present, V: "zsh"},
 		Desktop:  sysinfo.Desktop{WM: "i3", Server: sysinfo.X11},
 		CPU:      sysinfo.CPU{Model: "AMD Ryzen 7 5800X", Cores: 16},
 		GPUs:     []string{"NVIDIA GeForce RTX 3070"},

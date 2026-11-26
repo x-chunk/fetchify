@@ -28,7 +28,7 @@ func uptimeSection(info sysinfo.Info, f *dra.Factory) []entry {
 }
 
 func shellSection(info sysinfo.Info, f *dra.Factory) []entry {
-	return one("Shell", textOrMissing(f, info.Shell))
+	return one("Shell", textOrMissing(f, info.Shell.V))
 }
 
 func desktopSection(info sysinfo.Info, f *dra.Factory) []entry {
