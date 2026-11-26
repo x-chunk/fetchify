@@ -73,4 +73,9 @@ type Info struct {
 	CPUUsage Value[float64]
 	// Load is the load average over 1, 5 and 15 minutes.
 	Load Value[[3]float64]
+	// GPUDriver lists the kernel drivers of the GPUs in bus order.
+	GPUDriver Value[[]string]
+	// GPUMemory lists the video memory use of the GPUs that report it,
+	// in bus order.
+	GPUMemory Value[[]Usage]
 }

@@ -70,7 +70,7 @@ func collectGPUTemp(ctx context.Context, s *session) Value[[]float64] {
 	if len(devices) == 0 {
 		return absent[[]float64]()
 	}
-	var nvidia []float64
+	var nvidia [][]float64
 	var asked bool
 	var temps []float64
 	for _, d := range devices {
@@ -86,7 +86,7 @@ func collectGPUTemp(ctx context.Context, s *session) Value[[]float64] {
 			nvidia = nvidiaSMI(ctx, s, "temperature.gpu")
 		}
 		if len(nvidia) > 0 {
-			temps = append(temps, nvidia[0])
+			temps = append(temps, nvidia[0][0])
 			nvidia = nvidia[1:]
 		}
 	}
@@ -114,19 +114,33 @@ func readMilliCelsius(fsys fs.FS, name string) (float64, bool) {
 	return float64(n) / 1000, ok
 }
 
-// nvidiaSMI asks nvidia-smi for one numeric property of every NVIDIA GPU
-// and returns the values in its order. It returns nil when the tool is
-// missing or fails.
-func nvidiaSMI(ctx context.Context, s *session, property string) []float64 {
-	out, err := s.run(ctx, "nvidia-smi", "--query-gpu="+property, "--format=csv,noheader,nounits")
+// nvidiaSMI asks nvidia-smi for numeric properties of every NVIDIA GPU,
+// given as a comma-separated list, and returns one row of values per GPU
+// in its order. Rows that do not parse are skipped. It returns nil when
+// the tool is missing or fails.
+func nvidiaSMI(ctx context.Context, s *session, properties string) [][]float64 {
+	out, err := s.run(ctx, "nvidia-smi", "--query-gpu="+properties, "--format=csv,noheader,nounits")
 	if err != nil {
 		return nil
 	}
-	var values []float64
+	want := strings.Count(properties, ",") + 1
+	var rows [][]float64
 	for line := range strings.SplitSeq(string(out), "\n") {
-		if v, err := strconv.ParseFloat(strings.TrimSpace(line), 64); err == nil {
-			values = append(values, v)
+		fields := strings.Split(line, ",")
+		if len(fields) != want {
+			continue
+		}
+		row := make([]float64, 0, want)
+		for _, f := range fields {
+			v, err := strconv.ParseFloat(strings.TrimSpace(f), 64)
+			if err != nil {
+				break
+			}
+			row = append(row, v)
+		}
+		if len(row) == want {
+			rows = append(rows, row)
 		}
 	}
-	return values
+	return rows
 }
