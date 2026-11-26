@@ -159,11 +159,25 @@ func TestRunNotATerminal(t *testing.T) {
 	t.Setenv("FORCE_COLOR", "")
 	t.Setenv("CLICOLOR_FORCE", "")
 	var stdout bytes.Buffer
-	if code := run([]string{"--dont-clear"}, &stdout, io.Discard); code != 0 {
+	if code := run([]string{"--clear"}, &stdout, io.Discard); code != 0 {
 		t.Fatalf("exit code %d", code)
 	}
 	if bytes.ContainsRune(stdout.Bytes(), '\x1b') {
 		t.Errorf("output to a buffer contains escape sequences: %q", stdout.String())
+	}
+}
+
+func TestIsTerminal(t *testing.T) {
+	if isTerminal(&bytes.Buffer{}) {
+		t.Error("a buffer is a terminal")
+	}
+	f, err := os.CreateTemp(t.TempDir(), "out")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer f.Close()
+	if isTerminal(f) {
+		t.Error("a regular file is a terminal")
 	}
 }
 

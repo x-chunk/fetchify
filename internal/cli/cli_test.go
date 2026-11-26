@@ -19,7 +19,8 @@ func TestParse(t *testing.T) {
 		{nil, Options{}},
 		{[]string{"--help"}, Options{Help: true}},
 		{[]string{"-h"}, Options{Help: true}},
-		{[]string{"--dont-clear"}, Options{DontClear: true}},
+		{[]string{"--dont-clear"}, Options{}},
+		{[]string{"--clear"}, Options{Clear: true}},
 		{[]string{"--config", "/x.toml", "--logo=arch", "--no-icons"}, Options{ConfigPath: "/x.toml", Logo: "arch", NoIcons: true}},
 		{[]string{"--logo", "none", "--print-config"}, Options{Logo: "none", PrintConfig: true}},
 		{[]string{"--no-color"}, Options{NoColor: true}},
@@ -50,8 +51,8 @@ func TestUnknownLogoListsKnown(t *testing.T) {
 
 func TestApply(t *testing.T) {
 	cfg := config.Defaults()
-	Options{Logo: "koala", NoIcons: true, NoColor: true}.Apply(&cfg)
-	if cfg.Logo.Name != "koala" || cfg.Icons.Enabled || cfg.Colors.Mode != config.ModeNone {
+	Options{Logo: "koala", NoIcons: true, NoColor: true, Clear: true}.Apply(&cfg)
+	if cfg.Logo.Name != "koala" || cfg.Icons.Enabled || cfg.Colors.Mode != config.ModeNone || !cfg.Clear {
 		t.Errorf("Apply: %+v %+v", cfg.Logo, cfg.Icons)
 	}
 	cfg = config.Defaults()
@@ -64,5 +65,8 @@ func TestApply(t *testing.T) {
 func TestUsage(t *testing.T) {
 	if !strings.HasPrefix(Usage(), "Usage: fetchify") {
 		t.Errorf("usage = %q", Usage())
+	}
+	if strings.Contains(Usage(), "dont-clear") {
+		t.Error("the ignored --dont-clear is listed in the help")
 	}
 }

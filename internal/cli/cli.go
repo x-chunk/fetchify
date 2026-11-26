@@ -17,8 +17,8 @@ import (
 type Options struct {
 	// Help asks for the usage text.
 	Help bool
-	// DontClear keeps the screen instead of clearing it.
-	DontClear bool
+	// Clear clears the screen before printing.
+	Clear bool
 	// ConfigPath is the configuration file to read instead of the
 	// default one, or "".
 	ConfigPath string
@@ -44,6 +44,9 @@ func (o Options) Apply(cfg *config.Config) {
 	if o.NoColor {
 		cfg.Colors.Mode = config.ModeNone
 	}
+	if o.Clear {
+		cfg.Clear = true
+	}
 }
 
 // ErrUsage wraps every error of Parse: the command line is invalid and
@@ -59,7 +62,10 @@ func Parse(args []string, logos []string) (Options, error) {
 	fs.SetOutput(io.Discard)
 	fs.Usage = func() {}
 	fs.BoolVar(&o.Help, "help", false, "")
-	fs.BoolVar(&o.DontClear, "dont-clear", false, "")
+	fs.BoolVar(&o.Clear, "clear", false, "")
+	// --dont-clear is accepted and ignored so that shell rc files written
+	// when clearing was the default keep working. It is not in the help.
+	fs.Bool("dont-clear", false, "")
 	fs.StringVar(&o.ConfigPath, "config", "", "")
 	fs.StringVar(&o.Logo, "logo", "", "")
 	fs.BoolVar(&o.NoIcons, "no-icons", false, "")
@@ -93,7 +99,7 @@ Flags:
   --logo <name>    show this logo: auto, none, koala or a distribution
   --no-icons       do not show Nerd Font icons
   --no-color       do not use colors; NO_COLOR has the same effect
-  --dont-clear     do not clear the screen before printing
+  --clear          clear the screen before printing
   --print-config   print the documented default configuration and exit
   --help           show this help and exit
 `, "\n")

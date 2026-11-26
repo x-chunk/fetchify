@@ -9,7 +9,6 @@ import (
 	"io"
 	"io/fs"
 	"os"
-	"os/exec"
 	"strings"
 	"time"
 
@@ -69,14 +68,18 @@ func run(args []string, stdout, stderr io.Writer) int {
 	}
 	opts.Apply(&cfg)
 
-	if !opts.DontClear {
-		clearScreen(stdout)
-	}
-
 	start := time.Now()
 	info := sysinfo.Collect(context.Background(), sysinfo.SystemSource(), ui.Facts(cfg), ui.Options(cfg))
 	elapsed := time.Since(start)
 
+	if cfg.Clear && isTerminal(stdout) {
+		// Home, erase the screen and erase the scrollback. This is the one
+		// escape sequence fetchify writes itself.
+		if _, err := io.WriteString(stdout, "\x1b[H\x1b[2J\x1b[3J"); err != nil {
+			fmt.Fprintln(stderr, "fetchify:", err)
+			return 1
+		}
+	}
 	composer := beautify.NewComposer(stdout, composerOptions(cfg.Colors.Mode)...)
 	screen := beautify.NewTemplate(ui.Screen(ui.Input{Info: info, Config: cfg, Elapsed: elapsed}))
 	if err := composer.Render(screen); err != nil {
@@ -126,11 +129,13 @@ func loadConfig(opts cli.Options, getenv func(string) string) (config.Config, er
 	return cfg, err
 }
 
-// clearScreen clears the terminal behind w with the clear utility. A
-// failure is ignored: the screen is then printed below the existing
-// content.
-func clearScreen(w io.Writer) {
-	cmd := exec.Command("clear")
-	cmd.Stdout = w
-	_ = cmd.Run()
+// isTerminal reports whether w is a terminal. The screen is never
+// cleared when the output goes elsewhere.
+func isTerminal(w io.Writer) bool {
+	f, ok := w.(*os.File)
+	if !ok {
+		return false
+	}
+	info, err := f.Stat()
+	return err == nil && info.Mode()&os.ModeCharDevice != 0
 }
