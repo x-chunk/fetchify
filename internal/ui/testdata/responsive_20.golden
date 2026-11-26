@@ -1,0 +1,22 @@
+╭─ System ─────────╮
+│   OS        Ubu… │
+│   Kernel    6.8… │
+│   Uptime    3h … │
+│   Packages  184… │
+│   Shell     zsh  │
+│   Terminal  kit… │
+│   DE        GNO… │
+│   WM        Mut… │
+├─ Hardware ───────┤
+│   Host      Thi… │
+│   CPU       AMD… │
+│   GPU       NVI… │
+│   Display   256… │
+│   Battery   78%… │
+├─ Storage ────────┤
+│   RAM       8.0… │
+│   Swap      1.0… │
+│   /         100… │
+│   /home     250… │
+╰──────────────────╯
+  collected in 12 ms

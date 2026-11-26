@@ -23,16 +23,99 @@ type Input struct {
 	Elapsed time.Duration
 }
 
-// Screen returns the whole fetch screen for in.
+// Screen returns the whole fetch screen for in. It adapts to the width
+// of the context: see screen.render.
 func Screen(in Input) beautify.Composable {
 	return beautify.ComposableFunc(func(ctx beautify.Context) (dra.Model, error) {
-		s := newScreen(in)
-		size := distro.Full
-		if in.Config.Logo.Size == config.SizeSmall {
-			size = distro.Small
-		}
-		return s.withLogo(size, s.column(s.fullLayout())).Render(ctx)
+		m, _, err := newScreen(in).render(ctx)
+		return m, err
 	})
+}
+
+// step names a layout of the screen, from the richest to the poorest.
+type step uint8
+
+// The layout steps of section 13.11 of the plan.
+const (
+	stepFullLogo step = iota + 1
+	stepSmallLogo
+	stepNoLogo
+	stepNoDetails
+	stepNarrowBars
+	stepNoBars
+	stepTruncated
+)
+
+// minBarWidth is the narrowest bar the screen shrinks bars to before it
+// drops them.
+const minBarWidth = 6
+
+// candidate is a layout of the screen to try.
+type candidate struct {
+	step  step
+	build beautify.Composable
+}
+
+// candidates returns the layouts to try in order: the logo sizes the
+// configuration allows, then no logo, then a card with less and less
+// detail.
+func (s screen) candidates() []candidate {
+	var list []candidate
+	full := s.fullLayout()
+	if _, ok := s.logoDistro(); ok {
+		switch s.in.Config.Logo.Size {
+		case config.SizeFull:
+			list = append(list, candidate{stepFullLogo, s.withLogo(distro.Full, s.column(full))})
+		case config.SizeSmall:
+			list = append(list, candidate{stepSmallLogo, s.withLogo(distro.Small, s.column(full))})
+		default:
+			list = append(list,
+				candidate{stepFullLogo, s.withLogo(distro.Full, s.column(full))},
+				candidate{stepSmallLogo, s.withLogo(distro.Small, s.column(full))})
+		}
+	}
+	list = append(list, candidate{stepNoLogo, s.column(full)})
+	lay := full
+	lay.details = false
+	list = append(list, candidate{stepNoDetails, s.column(lay)})
+	for w := lay.barWidth - 1; w >= minBarWidth; w-- {
+		lay.barWidth = w
+		list = append(list, candidate{stepNarrowBars, s.column(lay)})
+	}
+	lay.bars = false
+	list = append(list, candidate{stepNoBars, s.column(lay)})
+	lay.truncate = true
+	list = append(list, candidate{stepTruncated, s.column(lay)})
+	return list
+}
+
+// render draws the first candidate that fits the width of ctx, measured
+// by rendering it without a bound. In an unbounded context that is the
+// richest one. When nothing fits, the last candidate, whose values are
+// truncated, is rendered within the bound, and beautify cuts what still
+// sticks out.
+func (s screen) render(ctx beautify.Context) (dra.Model, step, error) {
+	list := s.candidates()
+	bound, bounded := ctx.Width()
+	if !bounded {
+		m, err := list[0].build.Render(ctx)
+		return m, list[0].step, err
+	}
+	for _, c := range list[:len(list)-1] {
+		m, err := c.build.Render(ctx.Unbounded())
+		if err != nil {
+			return dra.Model{}, c.step, err
+		}
+		if m.Width() <= bound {
+			return m, c.step, nil
+		}
+	}
+	last := list[len(list)-1]
+	m, err := last.build.Render(ctx)
+	if err == nil && m.Width() > bound {
+		m = dra.Truncate(m, bound, dra.Model{})
+	}
+	return m, last.step, err
 }
 
 // screen holds what every layout of the screen shares.

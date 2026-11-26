@@ -26,6 +26,9 @@ type layout struct {
 	// thresholds are the percentages where a fill turns to warning and
 	// danger.
 	thresholds [2]int
+	// truncate cuts rows that are wider than the bound and marks the cut
+	// with an ellipsis.
+	truncate bool
 }
 
 // meterColumns are the widths of the right-aligned columns of the meters

@@ -123,6 +123,12 @@ func (c card) Render(ctx beautify.Context) (dra.Model, error) {
 			Title: title,
 			Body: beautify.ComposableFunc(func(ctx beautify.Context) (dra.Model, error) {
 				lines := renderRows(ctx, c.theme, c.layout, rows, labels)
+				if w, bounded := ctx.Width(); bounded && c.layout.truncate {
+					ellipsis := ctx.Factory().Styled("…", c.theme.muted)
+					for i, line := range lines {
+						lines[i] = dra.Truncate(line, w, ellipsis)
+					}
+				}
 				return blocks.Model(dra.Stack(dra.AlignLeft, lines...)).Render(ctx)
 			}),
 		}
