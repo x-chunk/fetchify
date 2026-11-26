@@ -18,7 +18,7 @@ func sample() sysinfo.Info {
 	return sysinfo.Info{
 		User:     sysinfo.Value[sysinfo.User]{State: sysinfo.Present, V: sysinfo.User{Name: "alice", UID: 1000}},
 		Hostname: sysinfo.Value[string]{State: sysinfo.Present, V: "box"},
-		OS:       sysinfo.OS{Name: "ubuntu", Version: "24.04"},
+		OS:       sysinfo.Value[[]byte]{State: sysinfo.Present, V: []byte("ID=ubuntu\nVERSION_ID=24.04\n")},
 		Kernel:   sysinfo.Value[string]{State: sysinfo.Present, V: "6.8.0-45-generic"},
 		Uptime:   sysinfo.Value[time.Duration]{State: sysinfo.Present, V: 3*time.Hour + 25*time.Minute + 7*time.Second},
 		Shell:    "zsh",
@@ -135,7 +135,7 @@ func TestSections(t *testing.T) {
 		edit    func(*sysinfo.Info)
 		want    []string
 	}{
-		{"arch", osSection, func(i *sysinfo.Info) { i.OS = sysinfo.OS{Name: "arch"} }, []string{"OS: i use arch, btw"}},
+		{"arch", osSection, func(i *sysinfo.Info) { i.OS.V = []byte("ID=arch\nBUILD_ID=rolling\n") }, []string{"OS: i use arch, btw"}},
 		{"wayland", desktopSection, func(i *sysinfo.Info) { i.Desktop.Server = sysinfo.Wayland }, []string{"WM: i3 (Wayland)"}},
 		{
 			"several gpus", gpuSection,

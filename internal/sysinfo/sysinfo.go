@@ -13,8 +13,9 @@ type Info struct {
 	User Value[User]
 	// Hostname is the host name reported by the kernel.
 	Hostname Value[string]
-	// OS identifies the operating system distribution.
-	OS OS
+	// OS is the raw content of os-release. Parse it with
+	// distro.ParseRelease.
+	OS Value[[]byte]
 	// Kernel is the kernel release, for example "6.8.0-45-generic".
 	Kernel Value[string]
 	// Uptime is the time since boot, with one-second resolution.
@@ -34,14 +35,6 @@ type Info struct {
 	Swap *Usage
 	// Disks lists the mounted file systems worth showing, in mount order.
 	Disks []Disk
-}
-
-// OS identifies an operating system distribution.
-type OS struct {
-	// Name is the distribution identifier, for example "ubuntu".
-	Name string
-	// Version is the distribution version, for example "24.04".
-	Version string
 }
 
 // Desktop describes the graphical session.
@@ -110,7 +103,6 @@ func run(name string, args ...string) ([]byte, error) {
 // It may run external commands (lspci, xprop, wmctrl, dmidecode) and
 // tolerates their absence.
 func collectLegacy(info *Info) {
-	collectHost(info)
 	info.Shell = shell(os.Getenv)
 	info.Desktop = desktop(run, os.Getenv)
 	info.CPU = processor()

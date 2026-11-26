@@ -7,6 +7,7 @@ var facts = []sysinfo.Fact{
 	sysinfo.FactUser,
 	sysinfo.FactHostname,
 	sysinfo.FactKernel,
+	sysinfo.FactOS,
 	sysinfo.FactUptime,
 }
 

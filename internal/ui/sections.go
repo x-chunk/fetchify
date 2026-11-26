@@ -6,15 +6,17 @@ import (
 
 	"go.xchunk.org/beautify/dra"
 
+	"go.xchunk.org/fetchify/internal/distro"
 	"go.xchunk.org/fetchify/internal/sysinfo"
 )
 
 func osSection(info sysinfo.Info, f *dra.Factory) []entry {
-	name := info.OS.Name
+	release := distro.ParseRelease(info.OS.V)
+	name := release.ID
 	if name == "arch" {
 		name = "i use arch, btw"
 	}
-	return one("OS", textOrMissing(f, strings.TrimSpace(name+" "+info.OS.Version)))
+	return one("OS", textOrMissing(f, strings.TrimSpace(name+" "+release.VersionID)))
 }
 
 func kernelSection(info sysinfo.Info, f *dra.Factory) []entry {
