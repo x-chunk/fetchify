@@ -39,6 +39,8 @@ type Info struct {
 	// GPU lists the names of the display adapters in bus order, as
 	// "<vendor> <device>" without cleaning.
 	GPU Value[[]string]
+	// Display lists the connected outputs.
+	Display Value[[]Display]
 	// Memory is the physical memory state, or nil when it cannot be read.
 	Memory *Memory
 	// Swap is the swap usage, or nil when it cannot be read. A Total of 0
