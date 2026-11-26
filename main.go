@@ -74,7 +74,7 @@ func run(args []string, stdout, stderr io.Writer) int {
 	}
 
 	start := time.Now()
-	info := sysinfo.Collect(context.Background(), sysinfo.SystemSource(), ui.Facts(cfg), sysinfo.Options{})
+	info := sysinfo.Collect(context.Background(), sysinfo.SystemSource(), ui.Facts(cfg), ui.Options(cfg))
 	elapsed := time.Since(start)
 
 	// The profile is fixed until it is detected from the terminal: ANSI16

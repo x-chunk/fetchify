@@ -2,6 +2,7 @@ package ui
 
 import (
 	"slices"
+	"time"
 
 	"go.xchunk.org/fetchify/internal/config"
 	"go.xchunk.org/fetchify/internal/sysinfo"
@@ -33,4 +34,26 @@ func Facts(cfg config.Config) []sysinfo.Fact {
 	}
 	slices.Sort(facts)
 	return facts
+}
+
+// Options returns the collection settings of cfg: the default time limit,
+// the limits of single items applied to their facts, and the settings of
+// the disks and public_ip items. When two items set a limit for the same
+// fact, the longer one wins.
+func Options(cfg config.Config) sysinfo.Options {
+	opts := sysinfo.Options{
+		Timeout:     cfg.Timeout,
+		Timeouts:    map[sysinfo.Fact]time.Duration{},
+		DiskIgnore:  cfg.Items["disks"].Ignore,
+		PublicIPURL: cfg.Items["public_ip"].URL,
+	}
+	for id, settings := range cfg.Items {
+		if settings.Timeout <= 0 {
+			continue
+		}
+		for _, f := range registry[id].facts {
+			opts.Timeouts[f] = max(opts.Timeouts[f], settings.Timeout)
+		}
+	}
+	return opts
 }
