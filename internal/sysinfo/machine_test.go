@@ -83,6 +83,7 @@ var (
 		users: map[int]string{1000: "alice"},
 		env: map[string]string{
 			"USER":  "alice",
+			"HOME":  "/home/alice",
 			"SHELL": "/usr/bin/zsh",
 		},
 	}
@@ -132,6 +133,9 @@ var (
 		pid:   2000,
 		users: map[int]string{1000: "carol"},
 		env:   map[string]string{"SHELL": "/usr/bin/fish"},
+		commands: map[string]string{
+			"rpm -qa": "bash-5.2.32-1.fc41.x86_64\nkernel-6.11.4-301.fc41.x86_64\nfish-3.7.1-3.fc41.x86_64\n",
+		},
 	}
 	// placeholderDMI is a self-built desktop whose firmware reports
 	// placeholder strings everywhere.

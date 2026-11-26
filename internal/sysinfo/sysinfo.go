@@ -18,6 +18,8 @@ type Info struct {
 	OS Value[[]byte]
 	// Kernel is the kernel release, for example "6.8.0-45-generic".
 	Kernel Value[string]
+	// Packages lists the installed package counts per manager.
+	Packages Value[[]PackageCount]
 	// Uptime is the time since boot, with one-second resolution.
 	Uptime Value[time.Duration]
 	// Shell is the base name of the user's login shell.
