@@ -42,6 +42,9 @@ type Source struct {
 	LookupUser func(uid int) (string, error)
 	// Interfaces returns the network interfaces with their addresses.
 	Interfaces func() ([]NetInterface, error)
+	// Readlink returns the target of the symbolic link at name, a path in
+	// the form FS uses.
+	Readlink func(name string) (string, error)
 	// Fetch sends an HTTP GET request for url and returns at most limit
 	// bytes of the body of a successful response. It must stop when ctx
 	// is done.
@@ -92,6 +95,7 @@ func SystemSource() Source {
 			return u.Username, nil
 		},
 		Interfaces: interfaces,
+		Readlink:   func(name string) (string, error) { return os.Readlink("/" + name) },
 		Fetch:      fetch,
 	}
 }

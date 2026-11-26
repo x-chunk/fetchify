@@ -88,4 +88,10 @@ type Info struct {
 	Processes Value[int]
 	// Users is the number of distinct users with a login session.
 	Users Value[int]
+	// Locale is the locale of messages, for example "en_US.UTF-8".
+	Locale Value[string]
+	// Timezone is the IANA name of the time zone.
+	Timezone Value[string]
+	// Date is the current time.
+	Date Value[time.Time]
 }
