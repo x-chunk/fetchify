@@ -17,11 +17,17 @@ type Config struct {
 	Footer bool
 	// Timeout is the default time limit of every item.
 	Timeout time.Duration
-	Logo    Logo
-	Colors  Colors
-	Border  Border
-	Icons   Icons
-	Bars    Bars
+	// Logo configures the logo next to the card.
+	Logo Logo
+	// Colors configures the color profile and the accent.
+	Colors Colors
+	// Border configures the frame of the card.
+	Border Border
+	// Icons configures the Nerd Font icons.
+	Icons Icons
+	// Bars configures the usage bars.
+	Bars Bars
+	// Palette configures how the terminal palette is shown.
 	Palette Palette
 	// Groups are the sections of the card in display order.
 	Groups []Group
@@ -34,16 +40,20 @@ type Config struct {
 type Logo struct {
 	// Name is LogoAuto, LogoNone or the identifier of a logo.
 	Name string
+	// Size pins the logo size; SizeAuto lets the screen choose.
 	Size LogoSize
 	// Gradient recolors the logo with a gradient through Colors, or
 	// through the logo's own colors when Colors is empty.
-	Gradient  bool
-	Colors    []string
+	Gradient bool
+	// Colors are the gradient stops, "#rgb" or "#rrggbb".
+	Colors []string
+	// Direction is the axis of the gradient.
 	Direction Direction
 }
 
 // Colors configures the color output.
 type Colors struct {
+	// Mode selects the color profile.
 	Mode ColorMode
 	// Accent is AccentAuto or a color.
 	Accent string
@@ -51,20 +61,25 @@ type Colors struct {
 
 // Border configures the frame of the card.
 type Border struct {
+	// Style selects the characters of the frame.
 	Style BorderStyle
+	// Color selects how the frame is colored.
 	Color BorderColor
 	// Colors are the gradient stops of BorderCustom.
-	Colors    []string
+	Colors []string
+	// Direction is the axis of the frame gradient.
 	Direction Direction
 }
 
 // Icons configures the Nerd Font icons.
 type Icons struct {
+	// Enabled shows the icons; they need a Nerd Font.
 	Enabled bool
 }
 
 // Bars configures the usage bars.
 type Bars struct {
+	// Style selects the characters of the bars.
 	Style BarStyle
 	// Width is the number of cells of a bar.
 	Width int
@@ -75,11 +90,13 @@ type Bars struct {
 
 // Palette configures the color palette.
 type Palette struct {
+	// Style selects dots in the frame, blocks under it or nothing.
 	Style PaletteStyle
 }
 
 // Group is a section of the card.
 type Group struct {
+	// Title is shown in the edge above the section.
 	Title string
 	// Icon is IconAuto, "" for none, or the icon itself.
 	Icon string
