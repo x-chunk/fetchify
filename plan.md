@@ -1350,3 +1350,11 @@ Decisions already made. Do not revisit them without the maintainer.
 
 Record additions below this line while implementing: the date, what was
 added or changed, and why.
+
+| Date | Change | Reason |
+|------|--------|--------|
+| 2026-11-26 | Built against beautify `v0.1.0-rc.2`. | The first tag that has every addition listed in section 2. |
+| 2026-11-26 | `golden.Assert` takes `testing.TB` instead of `*testing.T`. | Benchmarks and fuzz targets can use it too; callers with `*testing.T` are unaffected. |
+| 2026-11-26 | Milestone 1 keeps its own `key: value` list instead of `blocks.KeyValue`. | `KeyValue` always aligns the values, which would break the byte-for-byte equality the milestone requires. Rows are rebuilt in milestone 7 anyway. |
+| 2026-11-26 | `ui` replaces line breaks in collected text with U+FFFD. | beautify keeps `\n` as layout, while `render` used to sanitize it. A value must stay one line. |
+| 2026-11-26 | The Composer of milestone 1 also fixes an unbounded width. | The Composer bounds the width to the terminal by default, which would cut lines that were never cut before. Milestone 7 makes the screen responsive. |
