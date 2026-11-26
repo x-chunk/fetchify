@@ -27,7 +27,11 @@ type Input struct {
 func Screen(in Input) beautify.Composable {
 	return beautify.ComposableFunc(func(ctx beautify.Context) (dra.Model, error) {
 		s := newScreen(in)
-		return s.column(s.fullLayout()).Render(ctx)
+		size := distro.Full
+		if in.Config.Logo.Size == config.SizeSmall {
+			size = distro.Small
+		}
+		return s.withLogo(size, s.column(s.fullLayout())).Render(ctx)
 	})
 }
 
@@ -88,4 +92,22 @@ func (s screen) column(lay layout) beautify.Composable {
 		children = append(children, paletteBlocks())
 	}
 	return blocks.Column(children)
+}
+
+// withLogo places the logo of the given size left of column, both
+// centered vertically against each other. Without a logo the column
+// stands alone.
+func (s screen) withLogo(size distro.Size, column beautify.Composable) beautify.Composable {
+	d, ok := s.logoDistro()
+	if !ok {
+		return column
+	}
+	logo := beautify.ComposableFunc(func(ctx beautify.Context) (dra.Model, error) {
+		return blocks.Model(logoModel(ctx.Factory(), d, d.Logo(size))).Render(ctx)
+	})
+	return blocks.Row(
+		[]blocks.Cell{blocks.Auto(logo), blocks.Auto(column)},
+		blocks.RowGap(logoSpacing),
+		blocks.RowAlign(dra.AlignMiddle),
+	)
 }

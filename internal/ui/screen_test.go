@@ -43,6 +43,12 @@ func screenCases() []screenCase {
 	blocksPalette.Palette.Style = config.PaletteBlocks
 	noPalette := config.Defaults()
 	noPalette.Palette.Style = config.PaletteNone
+	koala := config.Defaults()
+	koala.Logo.Name = "koala"
+	small := config.Defaults()
+	small.Logo.Size = config.SizeSmall
+	noLogo := config.Defaults()
+	noLogo.Logo.Name = config.LogoNone
 	return []screenCase{
 		{"ubuntu", ubuntuDesktop(), config.Defaults()},
 		{"arch", archLaptop(), config.Defaults()},
@@ -53,6 +59,9 @@ func screenCases() []screenCase {
 		{"no_icons", ubuntuDesktop(), noIcons},
 		{"palette_blocks", ubuntuDesktop(), blocksPalette},
 		{"palette_none", ubuntuDesktop(), noPalette},
+		{"logo_koala", ubuntuDesktop(), koala},
+		{"logo_small", archLaptop(), small},
+		{"logo_none", ubuntuDesktop(), noLogo},
 	}
 }
 
@@ -86,8 +95,13 @@ func assertCardAligned(t *testing.T, plain string) {
 func TestScreenWithoutGroups(t *testing.T) {
 	cfg := config.Defaults()
 	cfg.Groups = nil
+	cfg.Logo.Name = config.LogoNone
 	if got := renderScreen(t, ubuntuDesktop(), cfg, dra.ProfilePlain, 0); got != "" {
-		t.Errorf("no groups: %q", got)
+		t.Errorf("no groups and no logo: %q", got)
+	}
+	cfg.Logo.Name = "koala"
+	if got := renderScreen(t, ubuntuDesktop(), cfg, dra.ProfilePlain, 0); !strings.Contains(got, `/"  "\`) || strings.Contains(got, "╭") {
+		t.Errorf("no groups draws the logo only:\n%s", got)
 	}
 }
 
