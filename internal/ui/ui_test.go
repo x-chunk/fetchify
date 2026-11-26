@@ -20,7 +20,7 @@ func sample() sysinfo.Info {
 		Hostname: sysinfo.Value[string]{State: sysinfo.Present, V: "box"},
 		OS:       sysinfo.OS{Name: "ubuntu", Version: "24.04"},
 		Kernel:   sysinfo.Value[string]{State: sysinfo.Present, V: "6.8.0-45-generic"},
-		Uptime:   3*time.Hour + 25*time.Minute + 7*time.Second,
+		Uptime:   sysinfo.Value[time.Duration]{State: sysinfo.Present, V: 3*time.Hour + 25*time.Minute + 7*time.Second},
 		Shell:    "zsh",
 		Desktop:  sysinfo.Desktop{WM: "i3", Server: sysinfo.X11},
 		CPU:      sysinfo.CPU{Model: "AMD Ryzen 7 5800X", Cores: 16},

@@ -7,6 +7,7 @@ var facts = []sysinfo.Fact{
 	sysinfo.FactUser,
 	sysinfo.FactHostname,
 	sysinfo.FactKernel,
+	sysinfo.FactUptime,
 }
 
 // Facts returns the facts the screen needs. Pass them to sysinfo.Collect.

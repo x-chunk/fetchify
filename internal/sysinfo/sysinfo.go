@@ -18,7 +18,7 @@ type Info struct {
 	// Kernel is the kernel release, for example "6.8.0-45-generic".
 	Kernel Value[string]
 	// Uptime is the time since boot, with one-second resolution.
-	Uptime time.Duration
+	Uptime Value[time.Duration]
 	// Shell is the base name of the user's login shell.
 	Shell string
 	// Desktop describes the graphical session.

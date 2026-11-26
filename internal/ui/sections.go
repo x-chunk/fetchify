@@ -22,7 +22,7 @@ func kernelSection(info sysinfo.Info, f *dra.Factory) []entry {
 }
 
 func uptimeSection(info sysinfo.Info, f *dra.Factory) []entry {
-	return one("Uptime", f.Text(info.Uptime.String()))
+	return one("Uptime", f.Text(info.Uptime.V.String()))
 }
 
 func shellSection(info sysinfo.Info, f *dra.Factory) []entry {
