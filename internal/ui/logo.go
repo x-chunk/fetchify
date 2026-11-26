@@ -1,6 +1,11 @@
 package ui
 
-import "go.xchunk.org/fetchify/internal/render"
+import (
+	"strings"
+
+	"go.xchunk.org/beautify"
+	"go.xchunk.org/beautify/blocks"
+)
 
 // logoLines is the ASCII-art koala shown to the left of the info column.
 var logoLines = []string{
@@ -18,11 +23,8 @@ var logoLines = []string{
 	"   v1.0.4-generic   ",
 }
 
-// logo returns the logo as an unstyled block.
-func logo() render.Block {
-	block := make(render.Block, len(logoLines))
-	for i, line := range logoLines {
-		block[i] = render.Line{render.Text(line)}
-	}
-	return block
+// logo returns the logo as unstyled text. Wrapping would destroy the
+// drawing, so lines that do not fit are cut instead.
+func logo() beautify.Composable {
+	return blocks.Text(strings.Join(logoLines, "\n"), blocks.TextOverflow(blocks.OverflowKeep))
 }

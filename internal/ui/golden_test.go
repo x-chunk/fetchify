@@ -3,16 +3,11 @@ package ui
 import (
 	"testing"
 
+	"go.xchunk.org/beautify/dra"
+
 	"go.xchunk.org/fetchify/internal/golden"
-	"go.xchunk.org/fetchify/internal/render"
 	"go.xchunk.org/fetchify/internal/sysinfo"
 )
-
-// screen renders the whole screen for info the way main writes it: at
-// profile p and followed by a newline.
-func screen(info sysinfo.Info, p render.Profile) []byte {
-	return append(render.NewEngine(p).Append(nil, Build(info)), '\n')
-}
 
 // TestScreenGolden pins the exact bytes of the screen, escape sequences
 // and padding included.
@@ -31,15 +26,15 @@ func TestScreenGolden(t *testing.T) {
 	}
 	profiles := []struct {
 		name    string
-		profile render.Profile
+		profile dra.Profile
 	}{
-		{"plain", render.ProfilePlain},
-		{"ansi16", render.ProfileANSI16},
+		{"plain", dra.ProfilePlain},
+		{"ansi16", dra.ProfileANSI16},
 	}
 	for _, f := range fixtures {
 		for _, p := range profiles {
 			t.Run(f.name+"_"+p.name, func(t *testing.T) {
-				golden.Assert(t, f.name+"_"+p.name, screen(f.info, p.profile))
+				golden.Assert(t, f.name+"_"+p.name, append(render(t, Build(f.info), p.profile), '\n'))
 			})
 		}
 	}

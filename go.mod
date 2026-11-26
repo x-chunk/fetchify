@@ -2,7 +2,10 @@ module go.xchunk.org/fetchify
 
 go 1.24.1
 
-require github.com/shirou/gopsutil/v3 v3.24.5
+require (
+	github.com/shirou/gopsutil/v3 v3.24.5
+	go.xchunk.org/beautify v0.1.0-rc.2
+)
 
 require (
 	github.com/go-ole/go-ole v1.2.6 // indirect
@@ -12,6 +15,5 @@ require (
 	github.com/tklauser/go-sysconf v0.3.12 // indirect
 	github.com/tklauser/numcpus v0.6.1 // indirect
 	github.com/yusufpapurcu/wmi v1.2.4 // indirect
-	go.xchunk.org/beautify v0.1.0-rc.2 // indirect
 	golang.org/x/sys v0.20.0 // indirect
 )

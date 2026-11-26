@@ -9,7 +9,9 @@ import (
 	"os"
 	"os/exec"
 
-	"go.xchunk.org/fetchify/internal/render"
+	"go.xchunk.org/beautify"
+	"go.xchunk.org/beautify/dra"
+
 	"go.xchunk.org/fetchify/internal/sysinfo"
 	"go.xchunk.org/fetchify/internal/ui"
 )
@@ -45,8 +47,12 @@ func run(args []string, stdout, stderr io.Writer) int {
 		clearScreen(stdout)
 	}
 
-	screen := ui.Build(sysinfo.Collect())
-	out := render.NewEngine(render.ProfileANSI16).Append(nil, screen)
+	screen, err := ui.Build(sysinfo.Collect()).Render(beautify.NewContext(nil))
+	if err != nil {
+		fmt.Fprintln(stderr, "fetchify:", err)
+		return 1
+	}
+	out := dra.NewEngine(dra.ProfileANSI16).Append(nil, screen)
 	out = append(out, '\n')
 	if _, err := stdout.Write(out); err != nil {
 		fmt.Fprintln(stderr, "fetchify:", err)

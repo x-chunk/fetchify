@@ -3,7 +3,10 @@ package ui
 import (
 	"strings"
 
-	"go.xchunk.org/fetchify/internal/render"
+	"go.xchunk.org/beautify"
+	"go.xchunk.org/beautify/blocks"
+	"go.xchunk.org/beautify/dra"
+
 	"go.xchunk.org/fetchify/internal/sysinfo"
 )
 
@@ -21,70 +24,89 @@ const (
 // Build returns the whole fetch screen for info: the logo on the left and,
 // next to it, the header, the info list and the color palette. The result
 // ends with an empty line that separates it from the shell prompt.
-func Build(info sysinfo.Info) render.Block {
-	column := render.Stack(
+func Build(info sysinfo.Info) beautify.Template {
+	column := blocks.Column([]beautify.Composable{
 		header(info),
-		keyValue(entries(info)),
-		render.Block{nil},
+		keyValue(info),
+		blocks.Space(0, 1),
 		palette(),
-		render.Block{nil},
-	)
-	return render.Join(logoGap, logo(), column)
+		blocks.Space(0, 1),
+	})
+	return beautify.NewTemplate(blocks.Row(
+		[]blocks.Cell{blocks.Auto(logo()), blocks.Auto(column)},
+		blocks.RowGap(logoGap),
+	))
 }
 
 // header returns the "user@host" title and the rule under it. For root it
 // adds a warning to the title and draws the rule in the warning style.
-func header(info sysinfo.Info) render.Block {
-	title := render.Line{
-		render.Styled(info.User, styleUser),
-		render.Styled("@", styleAt),
-		render.Styled(info.Hostname, styleHost),
-	}
-	ruleStyle := styleRule
-	if info.Root {
-		title = append(title,
-			render.Text(" - "),
-			render.Styled("Don't login as root ^-^", styleWarning),
+// The rule is exactly as wide as the title.
+func header(info sysinfo.Info) beautify.Composable {
+	return beautify.ComposableFunc(func(ctx beautify.Context) (dra.Model, error) {
+		f := ctx.Factory()
+		title := dra.Concat(
+			f.Styled(oneLine(info.User), styleUser),
+			f.Styled("@", styleAt),
+			f.Styled(oneLine(info.Hostname), styleHost),
 		)
-		ruleStyle = styleWarning
-	}
-	rule := render.Line{render.Repeat("─", title.Width(), ruleStyle)}
-	return render.Block{title, rule}
+		ruleStyle := styleRule
+		if info.Root {
+			title = dra.Concat(title,
+				f.Text(" - "),
+				f.Styled("Don't login as root ^-^", styleWarning),
+			)
+			ruleStyle = styleWarning
+		}
+		rule, err := blocks.Rule(blocks.RuleStyle(ruleStyle)).Render(ctx.WithWidth(title.Width()))
+		if err != nil {
+			return dra.Model{}, err
+		}
+		return blocks.Model(dra.Stack(dra.AlignLeft, title, rule)).Render(ctx)
+	})
 }
 
 // palette returns the rows of color swatches.
-func palette() render.Block {
-	row := make(render.Line, len(paletteColors))
-	for i, color := range paletteColors {
-		row[i] = render.Styled(swatch, render.Foreground(color))
-	}
-	block := make(render.Block, paletteRows)
-	for i := range block {
-		block[i] = row
-	}
-	return block
+func palette() beautify.Composable {
+	return beautify.ComposableFunc(func(ctx beautify.Context) (dra.Model, error) {
+		f := ctx.Factory()
+		cells := make([]dra.Model, len(paletteColors))
+		for i, color := range paletteColors {
+			cells[i] = f.Styled(swatch, dra.Foreground(color))
+		}
+		row := dra.Concat(cells...)
+		rows := make([]dra.Model, paletteRows)
+		for i := range rows {
+			rows[i] = row
+		}
+		return blocks.Model(dra.Stack(dra.AlignLeft, rows...)).Render(ctx)
+	})
 }
 
 // entry is one row of the info list.
 type entry struct {
 	key   string
-	value render.Line
+	value dra.Model
 }
 
-// keyValue lays entries out one per line as "key: value", with the key in
-// the key style. Keys are not padded to a common width.
-func keyValue(entries []entry) render.Block {
-	block := make(render.Block, len(entries))
-	for i, e := range entries {
-		line := render.Line{render.Styled(e.key, styleKey), render.Text(": ")}
-		block[i] = append(line, e.value...)
-	}
-	return block
+// keyValue lays the entries of info out one per line as "key: value",
+// with the key in the key style. Keys are not padded to a common width,
+// which is why blocks.KeyValue, which always aligns the values, is not
+// used here.
+func keyValue(info sysinfo.Info) beautify.Composable {
+	return beautify.ComposableFunc(func(ctx beautify.Context) (dra.Model, error) {
+		f := ctx.Factory()
+		var lines []dra.Model
+		for _, e := range entries(info, f) {
+			lines = append(lines, dra.Concat(f.Styled(oneLine(e.key), styleKey), f.Text(": "), e.value))
+		}
+		return blocks.Model(dra.Stack(dra.AlignLeft, lines...)).Render(ctx)
+	})
 }
 
-// section produces the entries of one topic of the info list. A section
-// may return no entries when it has nothing to show.
-type section func(sysinfo.Info) []entry
+// section produces the entries of one topic of the info list, with
+// values built by f. A section may return no entries when it has nothing
+// to show.
+type section func(sysinfo.Info, *dra.Factory) []entry
 
 // sections is the content of the info list, in display order. To add,
 // remove or reorder what fetchify shows, edit this slice.
@@ -102,29 +124,41 @@ var sections = []section{
 }
 
 // entries runs every section and returns their entries in order.
-func entries(info sysinfo.Info) []entry {
+func entries(info sysinfo.Info, f *dra.Factory) []entry {
 	var result []entry
 	for _, s := range sections {
-		result = append(result, s(info)...)
+		result = append(result, s(info, f)...)
 	}
 	return result
 }
 
 // one returns a single-entry list, the result of most sections.
-func one(key string, value ...render.Span) []entry {
+func one(key string, value dra.Model) []entry {
 	return []entry{{key: key, value: value}}
 }
 
 // textOrMissing returns s as plain text, or the "Unknown" marker when s
 // is blank.
-func textOrMissing(s string) render.Span {
+func textOrMissing(f *dra.Factory, s string) dra.Model {
 	if strings.TrimSpace(s) == "" {
-		return missing("Unknown")
+		return missing(f, "Unknown")
 	}
-	return render.Text(s)
+	return f.Text(oneLine(s))
+}
+
+// oneLine replaces line breaks in collected text with U+FFFD. beautify
+// sanitizes every other control character, but it keeps line breaks as
+// layout, and a value that spans several lines would break the list.
+func oneLine(s string) string {
+	return strings.Map(func(r rune) rune {
+		if r == '\n' || r == '\r' {
+			return '\uFFFD'
+		}
+		return r
+	}, s)
 }
 
 // missing returns reason in the style that marks absent information.
-func missing(reason string) render.Span {
-	return render.Styled(reason, styleMissing)
+func missing(f *dra.Factory, reason string) dra.Model {
+	return f.Styled(reason, styleMissing)
 }

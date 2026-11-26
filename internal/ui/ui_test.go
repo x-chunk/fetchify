@@ -5,7 +5,9 @@ import (
 	"testing"
 	"time"
 
-	"go.xchunk.org/fetchify/internal/render"
+	"go.xchunk.org/beautify"
+	"go.xchunk.org/beautify/dra"
+
 	"go.xchunk.org/fetchify/internal/sysinfo"
 )
 
@@ -34,10 +36,21 @@ func sample() sysinfo.Info {
 	}
 }
 
-// plain renders b without styles and strips trailing spaces, which are
+// render renders c in an unbounded context at profile p.
+func render(t *testing.T, c beautify.Composable, p dra.Profile) []byte {
+	t.Helper()
+	m, err := c.Render(beautify.NewContext(nil))
+	if err != nil {
+		t.Fatalf("render: %v", err)
+	}
+	return dra.NewEngine(p).Append(nil, m)
+}
+
+// plain renders c without styles and strips trailing spaces, which are
 // padding and not part of what the test pins down.
-func plain(b render.Block) string {
-	lines := strings.Split(render.NewEngine(render.ProfilePlain).String(b), "\n")
+func plain(t *testing.T, c beautify.Composable) string {
+	t.Helper()
+	lines := strings.Split(string(render(t, c, dra.ProfilePlain)), "\n")
 	for i, line := range lines {
 		lines[i] = strings.TrimRight(line, " ")
 	}
@@ -64,7 +77,7 @@ func TestBuild(t *testing.T) {
 		`                     ████████████████████████`,
 		``,
 	}, "\n")
-	if got := plain(Build(sample())); got != want {
+	if got := plain(t, Build(sample())); got != want {
 		t.Errorf("got:\n%s\nwant:\n%s", got, want)
 	}
 }
@@ -87,31 +100,30 @@ func TestBuildWithNothingKnown(t *testing.T) {
 		`                     ████████████████████████`,
 		``,
 	}, "\n")
-	if got := plain(Build(sysinfo.Info{})); got != want {
+	if got := plain(t, Build(sysinfo.Info{})); got != want {
 		t.Errorf("got:\n%s\nwant:\n%s", got, want)
 	}
 }
 
 func TestHeader(t *testing.T) {
-	ansi := render.NewEngine(render.ProfileANSI16)
-
 	user := sysinfo.Info{User: "alice", Hostname: "box"}
 	want := "\x1b[0;31malice\x1b[0;32m@\x1b[0;36mbox\x1b[0m\n" +
 		"\x1b[0;32m─────────\x1b[0m"
-	if got := ansi.String(header(user)); got != want {
+	if got := string(render(t, header(user), dra.ProfileANSI16)); got != want {
 		t.Errorf("user header = %q, want %q", got, want)
 	}
 
 	root := sysinfo.Info{User: "root", Hostname: "box", Root: true}
-	block := header(root)
-	if got := block[0].String(); got != "root@box - Don't login as root ^-^" {
-		t.Errorf("root title = %q", got)
+	lines := strings.Split(string(render(t, header(root), dra.ProfilePlain)), "\n")
+	if len(lines) != 2 || lines[0] != "root@box - Don't login as root ^-^" {
+		t.Fatalf("root header = %q", lines)
 	}
-	if block[1].Width() != block[0].Width() {
-		t.Errorf("rule width = %d, want the title width %d", block[1].Width(), block[0].Width())
+	if got, want := len([]rune(lines[1])), len([]rune(lines[0])); got != want {
+		t.Errorf("rule width = %d, want the title width %d", got, want)
 	}
-	if got := ansi.String(block[1:]); !strings.HasPrefix(got, "\x1b[0;31m") {
-		t.Errorf("root rule = %q, want the warning style", got)
+	ansi := strings.Split(string(render(t, header(root), dra.ProfileANSI16)), "\n")
+	if !strings.HasPrefix(ansi[1], "\x1b[0;31m") {
+		t.Errorf("root rule = %q, want the warning style", ansi[1])
 	}
 }
 
@@ -142,8 +154,8 @@ func TestSections(t *testing.T) {
 			info := sample()
 			tt.edit(&info)
 			var got []string
-			for _, line := range keyValue(tt.section(info)) {
-				got = append(got, line.String())
+			for _, e := range tt.section(info, dra.NewFactory()) {
+				got = append(got, e.key+": "+e.value.String())
 			}
 			if strings.Join(got, "\n") != strings.Join(tt.want, "\n") {
 				t.Errorf("got %q, want %q", got, tt.want)
@@ -156,11 +168,12 @@ func TestBuildSanitizesCollectedText(t *testing.T) {
 	info := sample()
 	info.Hostname = "box\x1b[2J"
 	info.GPUs = []string{"evil\ncard"}
-	out := render.NewEngine(render.ProfilePlain).String(Build(info))
+	out := string(render(t, Build(info), dra.ProfilePlain))
 	if strings.ContainsRune(out, '\x1b') {
 		t.Error("output contains an escape character from collected text")
 	}
-	if got, want := strings.Count(out, "\n"), Build(sample()).Height()-1; got != want {
+	clean := string(render(t, Build(sample()), dra.ProfilePlain))
+	if got, want := strings.Count(out, "\n"), strings.Count(clean, "\n"); got != want {
 		t.Errorf("output has %d newlines, want %d", got, want)
 	}
 }
