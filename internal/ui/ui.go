@@ -45,12 +45,12 @@ func header(info sysinfo.Info) beautify.Composable {
 	return beautify.ComposableFunc(func(ctx beautify.Context) (dra.Model, error) {
 		f := ctx.Factory()
 		title := dra.Concat(
-			f.Styled(oneLine(info.User), styleUser),
+			f.Styled(oneLine(info.User.V.Name), styleUser),
 			f.Styled("@", styleAt),
 			f.Styled(oneLine(info.Hostname), styleHost),
 		)
 		ruleStyle := styleRule
-		if info.Root {
+		if isRoot(info) {
 			title = dra.Concat(title,
 				f.Text(" - "),
 				f.Styled("Don't login as root ^-^", styleWarning),
@@ -63,6 +63,11 @@ func header(info sysinfo.Info) beautify.Composable {
 		}
 		return blocks.Model(dra.Stack(dra.AlignLeft, title, rule)).Render(ctx)
 	})
+}
+
+// isRoot reports whether the process is known to run as root.
+func isRoot(info sysinfo.Info) bool {
+	return info.User.State == sysinfo.Present && info.User.V.UID == 0
 }
 
 // palette returns the rows of color swatches.

@@ -9,12 +9,10 @@ import (
 // Info is a snapshot of the machine. Every field is optional: a zero
 // value means the fact could not be determined.
 type Info struct {
-	// User is the login name of the current user.
-	User string
+	// User is the identity the process runs as.
+	User Value[User]
 	// Hostname is the host name reported by the kernel.
 	Hostname string
-	// Root reports whether the process runs with superuser privileges.
-	Root bool
 	// OS identifies the operating system distribution.
 	OS OS
 	// Kernel is the kernel release, for example "6.8.0-45-generic".
@@ -113,12 +111,11 @@ func run(name string, args ...string) ([]byte, error) {
 // tolerates their absence.
 func collectLegacy(info *Info) {
 	collectHost(info)
-	info.Root = os.Geteuid() == 0
 	info.Shell = shell(os.Getenv)
 	info.Desktop = desktop(run, os.Getenv)
 	info.CPU = processor()
 	info.GPUs = gpus(run)
-	info.Memory = memory(run, info.Root)
+	info.Memory = memory(run, os.Geteuid() == 0)
 	info.Swap = swap()
 	info.Disks = disks()
 }

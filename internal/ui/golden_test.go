@@ -13,8 +13,7 @@ import (
 // and padding included.
 func TestScreenGolden(t *testing.T) {
 	root := sample()
-	root.User = "root"
-	root.Root = true
+	root.User = sysinfo.Value[sysinfo.User]{State: sysinfo.Present, V: sysinfo.User{Name: "root"}}
 
 	fixtures := []struct {
 		name string

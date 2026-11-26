@@ -16,7 +16,7 @@ const gib = 1 << 30
 // sample returns a fully populated snapshot of an ordinary desktop.
 func sample() sysinfo.Info {
 	return sysinfo.Info{
-		User:     "alice",
+		User:     sysinfo.Value[sysinfo.User]{State: sysinfo.Present, V: sysinfo.User{Name: "alice", UID: 1000}},
 		Hostname: "box",
 		OS:       sysinfo.OS{Name: "ubuntu", Version: "24.04"},
 		Kernel:   "6.8.0-45-generic",
@@ -106,14 +106,15 @@ func TestBuildWithNothingKnown(t *testing.T) {
 }
 
 func TestHeader(t *testing.T) {
-	user := sysinfo.Info{User: "alice", Hostname: "box"}
+	user := sample()
 	want := "\x1b[0;31malice\x1b[0;32m@\x1b[0;36mbox\x1b[0m\n" +
 		"\x1b[0;32m─────────\x1b[0m"
 	if got := string(render(t, header(user), dra.ProfileANSI16)); got != want {
 		t.Errorf("user header = %q, want %q", got, want)
 	}
 
-	root := sysinfo.Info{User: "root", Hostname: "box", Root: true}
+	root := sample()
+	root.User = sysinfo.Value[sysinfo.User]{State: sysinfo.Present, V: sysinfo.User{Name: "root"}}
 	lines := strings.Split(string(render(t, header(root), dra.ProfilePlain)), "\n")
 	if len(lines) != 2 || lines[0] != "root@box - Don't login as root ^-^" {
 		t.Fatalf("root header = %q", lines)
@@ -175,5 +176,17 @@ func TestBuildSanitizesCollectedText(t *testing.T) {
 	clean := string(render(t, Build(sample()), dra.ProfilePlain))
 	if got, want := strings.Count(out, "\n"), strings.Count(clean, "\n"); got != want {
 		t.Errorf("output has %d newlines, want %d", got, want)
+	}
+}
+
+func TestFactsAreKnown(t *testing.T) {
+	known := map[sysinfo.Fact]bool{}
+	for _, f := range sysinfo.Facts() {
+		known[f] = true
+	}
+	for _, f := range Facts() {
+		if !known[f] {
+			t.Errorf("ui needs %q, which sysinfo does not know", f)
+		}
 	}
 }
